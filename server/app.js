@@ -21,13 +21,15 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use("/", express.static("public"));
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/posts', postsRouter);
 app.use('/comments', commentsRouter);
+
+// ELB를 위한 헬스체크
+app.get("/healthcheck", (_, res) => res.send("Im alive"));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
