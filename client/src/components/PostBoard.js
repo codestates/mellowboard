@@ -1,1 +1,1 @@
-export default PostBoard = () => {};
+export default function PostBoard() {}

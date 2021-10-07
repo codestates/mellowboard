@@ -1,1 +1,1 @@
-export default SignUp = () => {};
+export default function SignUp() {}

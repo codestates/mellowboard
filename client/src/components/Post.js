@@ -1,1 +1,1 @@
-export default Post = () => {};
+export default function Post() {}
