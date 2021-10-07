@@ -1,23 +1,21 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var authRouter = require('./routes/auth');
-var usersRouter = require('./routes/users');
-var postsRouter = require('./routes/posts');
-var commentsRouter = require('./routes/comments');
+const authRouter = require('./routes/auth');
+const usersRouter = require('./routes/users');
+const postsRouter = require('./routes/posts');
+const commentsRouter = require('./routes/comments');
 
-
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(logger('dev'));
+app.use(logger('combined'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
@@ -46,5 +44,11 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+const db = require("./models");
+if(process.env.NODE_ENV !== "production"){
+  db.sequelize.sync({alter: true});
+}
+
 
 module.exports = app;
