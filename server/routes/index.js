@@ -1,9 +1,8 @@
-var express = require('express');
-var router = express.Router();
+const posts = require("./posts");
+const users = require("./users");
+const comments = require("./comments");
+const auth = require("./auth");
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'mellowBoard API' });
-});
-
-module.exports = router;
+module.exports = {
+  posts, users, comments, auth
+}

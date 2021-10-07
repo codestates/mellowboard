@@ -1,9 +1,20 @@
 var express = require('express');
+// const { router } = require('./auth');
 var router = express.Router();
+const post = require("../controllers/post");
 
 /* GET users listing. */
 
 // 게시글 조회 - 전체 게시글
+router.get("/", post.get);
+router.post("/", post.post);
+
+
+
+
+
+
+
 router.get('/', function (req, res, next) {
   res.status(200).send({
     "message": "게시글을 조회합니다.",
