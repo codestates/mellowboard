@@ -4,10 +4,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const db = require("./models");
 
-const authRouter = require('./routes/auth');
-const usersRouter = require('./routes/users');
-const postsRouter = require('./routes/posts');
-const commentsRouter = require('./routes/comments');
+const router = require("./routes");
 
 const app = express();
 
@@ -21,10 +18,10 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
 app.use("/", express.static("public"));
-app.use('/auth', authRouter);
-app.use('/users', usersRouter);
-app.use('/posts', postsRouter);
-app.use('/comments', commentsRouter);
+app.use('/auth', router.auth);
+app.use('/users', router.users);
+app.use('/posts', router.posts);
+app.use('/comments', router.comments);
 
 // ELB를 위한 헬스체크
 app.get("/healthcheck", (_, res) => res.send("Im alive"));
