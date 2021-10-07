@@ -1,4 +1,9 @@
-import styled, { createGlobalStyle } from 'styled-components';
+import React from 'react';
+import { createGlobalStyle } from 'styled-components';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Nav from './components/Nav';
+import BoardPage from './pages/BoardPage';
+import MyPage from './pages/MyPage';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -30,8 +35,17 @@ const App = () => {
   return (
     <>
       <GlobalStyle />
-      <div className="app">Mellow Board!</div>
-      <div className="App">무르익게 익명 게시판!</div>
+      <Router>
+        <Nav />
+        <Switch>
+          <Route exact path="/">
+            <BoardPage />
+          </Route>
+          <Route path="/mypage">
+            <MyPage />
+          </Route>
+        </Switch>
+      </Router>
     </>
   );
 };
