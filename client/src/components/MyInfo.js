@@ -1,1 +1,1 @@
-export default MyInfo = () => {};
+export default function MyInfo() {}
