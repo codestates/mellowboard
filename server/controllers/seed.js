@@ -8,9 +8,14 @@ const seedData = async () => {
                 user_id: "iidd0101"
             }
         })
-    }catch {
-        console.log("asd");
+    }catch(err) {
+        console.log("err");
+        console.log(err);
     }
+
+    return 
+
+
     // User 생성
     const user = await db.User.create({
         user_id: "iidd0101",
@@ -26,13 +31,14 @@ const seedData = async () => {
         include: db.Post
     });
 
-    const samplePost = db.post.build({
+    const samplePost = db.Post.create({
         content: "content",
+        user_id: user1.id,
         background: "1"
     })
 
-    user1.Posts.push(samplePost);
+    // user1.Posts.push(samplePost);
 
-    user1.save();
+    // user1.save();
 }
 seedData();

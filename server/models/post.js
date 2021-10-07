@@ -13,11 +13,11 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.belongsTo(models.User, {
         foreignKey: "user_id",
-        onDelete: "CASCADE"
+        onDelete: "cascade"
       });
       this.hasMany(models.Comment, {
         foreignKey: "post_id",
-        onDelete: "CASCADE"
+        onDelete: "cascade"
       })
       this.belongsToMany(models.Hashtag, {through: "PostTags"})
     }
