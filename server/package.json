@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "NODE_ENV=production && npx sequelize-cli db:migrate && node ./bin/www",
+    "start": "export NODE_ENV=production && node ./bin/www",
     "dev": "nodemon ./bin/www"
   },
   "dependencies": {
