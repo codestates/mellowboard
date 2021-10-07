@@ -1,8 +1,8 @@
-const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const db = require("./models");
 
 const authRouter = require('./routes/auth');
 const usersRouter = require('./routes/users');
@@ -29,7 +29,7 @@ app.use('/comments', commentsRouter);
 // ELB를 위한 헬스체크
 app.get("/healthcheck", (_, res) => res.send("Im alive"));
 
-app.get("*", (req, res) => {
+app.get("/*", (req, res) => {
   return res.sendFile(__dirname + "/public/index.html");
 })
 
@@ -49,10 +49,10 @@ app.use(function (err, req, res, next) {
   res.send(err.message);
 });
 
-const db = require("./models");
-if(process.env.NODE_ENV !== "production"){
-  db.sequelize.sync({alter: true});
-}
+
+if(process.env.NODE_ENV === "production") db.sequelize.sync();
+else db.sequelize.sync({alter: true});
+
 
 
 module.exports = app;
