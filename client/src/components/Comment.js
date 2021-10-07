@@ -1,1 +1,1 @@
-export default Comment = () => {};
+export default function Comment() {}

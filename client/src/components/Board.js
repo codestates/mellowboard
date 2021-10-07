@@ -1,5 +1,5 @@
 import Post from './Post';
 
-export default Board = () => {
+export default function Board() {
   return <Post />;
-};
+}

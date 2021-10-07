@@ -1,1 +1,1 @@
-export default MyPosts = () => {};
+export default function MyPosts() {}

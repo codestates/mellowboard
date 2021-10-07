@@ -1,1 +1,1 @@
-export default LogIn = () => {};
+export default function LogIn() {}

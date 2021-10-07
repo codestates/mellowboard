@@ -1,1 +1,1 @@
-export default MyComments = () => {};
+export default function MyComments() {}
