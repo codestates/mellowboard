@@ -16,32 +16,36 @@ module.exports = {
   // 회원정보 수정
   patch: async (req, res) => {
     if (res.locals.userId) {
+      const encryptedPassword = bcrypt.hashSync(req.body.password, 10);
       const editedUserInfoData = await User.update({
-        "password": req.body.password,
-        "email"   : req.body.email
+        email   : req.body.email,
+        password: encryptedPassword
       }, {
         where: {id: res.locals.userId}
       })
       if (!editedUserInfoData) return res.status(401).send({
-        message: "아이디 없음. 잘못된 접근입니다."
+        message: "아이디 없음. 잘못된 접근입니다.",
+        result : false
       });
-      console.log(editedUserInfoData);
       const userInfoData = await User.findOne({where: {id: res.locals.userId}});
       const userInfo = userInfoData.toJSON();
+      const accessToken = generateAccessToken(userInfo);
       return res.status(200).send({
-        "message" : "회원정보를 수정하였습니다.",
-        "result"  : true,
-        "userinfo":
+        "message"    : "회원정보를 수정하였습니다.",
+        "result"     : true,
+        "userinfo"   :
           {
             "userId"   : userInfo.userId,
             "email"    : userInfo.email,
             "createdAt": userInfo.createdAt,
             "updatedAt": userInfo.updatedAt
-          }
+          },
+        "accessToken": accessToken
       });
     }
     return res.status(401).send({
-      message: "잘못된 접근입니다."
+      message: "잘못된 접근입니다.",
+      result : false
     })
   },
 
@@ -53,14 +57,20 @@ module.exports = {
           id: res.locals.userId
         }
       });
-      console.log('del', deletedUserInfoData);
+      if(!deletedUserInfoData) return res.status(401).send({
+        message: "잘못된 접근입니다.",
+        result: false
+      })
+
       return res.status(200).send({
         "message": "회원정보를 삭제하였습니다.",
         "result" : true
       });
+
     }
     return res.status(401).send({
-      message: "잘못된 접근입니다."
+      message: "잘못된 접근입니다.",
+      result: false
     })
 
   }
