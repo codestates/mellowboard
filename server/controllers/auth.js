@@ -38,8 +38,8 @@ module.exports = {
       })
     }
     // encrypted password
-    const saltRounds = 10;
-    const encryptedPassword = await bcrypt.hash(req.body.password, saltRounds);
+    const encryptedPassword = await bcrypt.hash(req.body.password, 10);
+    console.log(encryptedPassword)
     const encryptedUserInfo = {
       userId : req.body.userId,
       email   : req.body.email,
@@ -49,9 +49,10 @@ module.exports = {
 
     // create record in DB
     const [userInfo, created] = await User.findOrCreate({
-      where   : {email: req.body.email},
+      where   : {userId: req.body.userId},
       defaults: encryptedUserInfo
     });
+    console.log(userInfo,created)
 
     if (!created) {
       return res.status(400).send({
