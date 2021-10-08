@@ -4,20 +4,28 @@
   "private": true,
   "scripts": {
     "start": "export NODE_ENV=production && node ./bin/www",
-    "dev": "nodemon ./bin/www"
+    "dev": "export NODE_ENV=test && nodemon ./bin/www",
+    "test": "NODE_ENV=test mocha '__tests__/server.test.js' --exit"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "chai": "^4.3.4",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^10.0.0",
     "eslint-config-prettier": "^8.3.0",
     "express": "~4.16.1",
+    "express-validator": "^6.12.2",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
+    "jsonwebtoken": "^8.5.1",
+    "mocha": "^9.1.2",
     "morgan": "~1.9.1",
+    "mysql": "^2.18.1",
     "mysql2": "^2.3.0",
     "nodemon": "^2.0.13",
-    "sequelize": "^6.6.5"
+    "sequelize": "^6.6.5",
+    "supertest": "^6.1.6"
   },
   "devDependencies": {
     "eslint": "^7.32.0",

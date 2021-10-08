@@ -1,99 +1,50 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
 
-/* GET users listing. */
+const router = express.Router();
+const { query, body } = require("express-validator");
+const post = require("../controllers/posts");
+const validationError = require("../middleware/error");
+const {isValidToken} = require("../middleware")
+
+router.use(isValidToken);
 
 // 게시글 조회 - 전체 게시글
-router.get('/', function (req, res, next) {
-  res.status(200).send({
-    "message": "게시글을 조회합니다.",
-    "result" : true,
-    "posts"  :
-      [{
-        "id"        : "id",
-        "isMine"    : "boolean",
-        "content"   : "content",
-        "background": "background",
-        "created_at": "created_at",
-        "updated_at": "updated_at",
-        "tag"       : ["tag1", "..."]
-      }, "..."],
-    "pages"  : {
-      "total": "total",
-      "size" : "size",
-      "page" : "page"
-    }
-  });
-});
+router.get("/", 
+  query("page").default(1).isInt({min: 1}),
+  query("size").default(100).isInt(),
+  validationError,
+  post.get);
 
-// 게시글 조회 - 사용자가 작성한 게시글
-router.get('/me', function (req, res, next) {
-  res.status(200).send({
-    "message": "게시글을 조회합니다.",
-    "result" : true,
-    "posts"  :
-      [{
-        "id"        : "id",
-        "content"   : "content",
-        "background": "background",
-        "created_at": "created_at",
-        "updated_at": "updated_at",
-        "tag"       : ["tag", "..."]
-      }, "..."],
-    "pages"  : {
-      "total": "total",
-      "size" : "size",
-      "page" : "page"
-    }
-  });
-});
+// 게시글 조회 - 내가 쓴 게시글
+router.get("/mypage", 
+  query("page").default(1).isInt({min: 1}),
+  query("size").default(100).isInt(),
+  validationError,
+  post.mine);
 
 // 게시글 작성
-router.post('/', function (req, res, next) {
-  res.status(201).send({
-    "message": "게시글을 작성했습니다.",
-    "result" : true,
-    "posts"  :
-      {
-        "id"        : "id",
-        "content"   : "content",
-        "background": "background",
-        "created_at": "created_at",
-        "updated_at": "updated_at",
-        "tag"       : ["tag", "..."]
-      },
-  });
-});
+router.post("/",
+  body("content", "글내용을 추가해주세요").notEmpty().isString(),
+  body("background", "배경색을 선택해주세요").notEmpty().isString(),
+  body("tags").default([]).isArray(),
+  validationError,
+  post.post
+)
 
 // 게시글 수정
-router.patch('/', function (req, res, next) {
-  res.status(200).send({
-    "message": "게시글을 작성했습니다.",
-    "result" : true,
-    "posts"  :
-      {
-        "id"        : "id",
-        "content"   : "content",
-        "background": "background",
-        "created_at": "created_at",
-        "updated_at": "updated_at",
-        "tag"       : ["tag", "..."]
-      }
-  });
-  res.status(403).send({
-    "message": "타인의 게시글은 수정할 수 없습니다."
-  })
-});
+router.patch("/",
+  body("postId").notEmpty().isInt(),
+  body("content").default("").isString(),
+  body("background").default("").isString(),
+  body("tags").default([]).isArray(),
+  validationError,
+  post.patch)
 
-// 게시글 삭제
-router.delete('/', function (req, res, next) {
-  res.status(200).send({
-    "message": "게시글을 삭제했습니다.",
-    "result" : true
-  });
-  res.status(403).send({
-    "message": "해당 게시글 삭제는 금지되어 있습니다."
-  })
-});
+router.delete("/",
+  body("postId").notEmpty().isInt(),
+  validationError,
+  post.delete
+)
+
 
 module.exports = router;
