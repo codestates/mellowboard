@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import logo from '../images/logo.png';
 
 const NavContainer = styled.header`
   margin: 1rem;
@@ -39,7 +40,7 @@ export default function Nav({}) {
       <NavContainer>
         <Link to="/" style={{ textDecoration: 'none', color: '#f5f6fa' }}>
           <NavTitle>
-            <img className="logo" src="../images/logo.png" alt="logo" />
+            <img className="logo" src={logo} alt="logo" />
             <h1>무르익게</h1>
           </NavTitle>
         </Link>
