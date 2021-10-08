@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import Nav from './components/Nav';
 import BoardPage from './pages/BoardPage';
 import MyPage from './pages/MyPage';
@@ -35,6 +37,27 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const PostBtn = styled.button`
+  all: unset;
+  cursor: pointer;
+  border: 0.2rem inset #5758bb;
+  border-radius: 3rem;
+  width: 5rem;
+  height: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: sticky;
+  bottom: 3rem;
+  color: #5758bb;
+  margin-left: 49%;
+
+  #pencil_icon {
+    font-size: 2rem;
+  }
+`;
+
 export default function App() {
   const [isLogin, setIsLogin] = useState(false);
 
@@ -51,6 +74,10 @@ export default function App() {
             <MyPage />
           </Route>
         </Switch>
+        <PostBtn>
+          <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} />
+          <span>글 작성</span>
+        </PostBtn>
       </Router>
     </>
   );
