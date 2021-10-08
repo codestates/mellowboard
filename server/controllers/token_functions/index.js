@@ -2,9 +2,11 @@ const { sign, verify } = require('jsonwebtoken');
 
 module.exports = {
   generateAccessToken: (data) => {
+    delete data.password;
     return sign(data, process.env.ACCESS_SECRET, {expiresIn: "2h"});
   },
   generateRefreshToken: (data) => {
+    delete data.password;
     return sign(data, process.env.REFRESH_SECRET, {expiresIn: "2h"});
   },
   sendTokenInCookie: (res, accessToken) => {

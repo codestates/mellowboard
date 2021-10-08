@@ -7,7 +7,6 @@ const bcrypt = require('bcrypt');
 // 로그아웃 - 완료
 module.exports = {
   logout: (req, res) => {
-    console.log('1231173027130127931729038120318');
     res.clearCookie("jwt");
     return res.status(301).send('Moved Permanently');
   },
@@ -15,7 +14,7 @@ module.exports = {
 // ID 중복검사 - 완료
   dup: async (req, res) => {
     const isValidUser = await User.findOne({
-      where: {email: req.body.email, password: req.body.password}
+      where: {email: req.body.email}
     });
     if (isValidUser) {
       return res.status(200).send({
@@ -32,7 +31,7 @@ module.exports = {
 
 // 회원가입 - 완료
   signup: async (req, res) => {
-    if (!req.body || !req.body.email || !req.body.password || !req.body.user_id) {
+    if (!req.body || !req.body.email || !req.body.password || !req.body.userId) {
       return res.status(400).send({
         "message": "회원가입을 실패했습니다.",
         "result" : false
@@ -42,7 +41,7 @@ module.exports = {
     const saltRounds = 10;
     const encryptedPassword = await bcrypt.hash(req.body.password, saltRounds);
     const encryptedUserInfo = {
-      user_id : req.body.user_id,
+      userId : req.body.userId,
       email   : req.body.email,
       password: encryptedPassword
     };
@@ -68,7 +67,7 @@ module.exports = {
       "result"     : true,
       "userinfo"   :
         {
-          "user_id"  : userInfo.dataValues.user_id,
+          "userId"  : userInfo.dataValues.userId,
           "email"    : userInfo.dataValues.email,
           "createdAt": userInfo.dataValues.createdAt,
           "updatedAt": userInfo.dataValues.updatedAt
@@ -80,7 +79,7 @@ module.exports = {
 // 로그인 - 완료
   signin: async (req, res) => {
     // 가입한 유저인지 확인
-    const userInfo = await User.findOne({where: {email: req.body.email}});
+    const userInfo = await User.findOne({where: {userId: req.body.userId}});
     if (!userInfo) {
       return res.status(401).send({
         "message": "로그인에 실패했습니다.",
@@ -90,9 +89,8 @@ module.exports = {
 
     // 비밀번호가 맞는지 확인
     const hash = userInfo.toJSON().password;
-    console.log(1231,req.body.password,hash);
     const isValidPassword = await bcrypt.compare(req.body.password, hash);
-    if(!isValidPassword) {
+    if (!isValidPassword) {
       return res.status(401).send({
         "message": "로그인에 실패했습니다.",
         "result" : false
@@ -108,7 +106,7 @@ module.exports = {
       "result"     : true,
       "userinfo"   :
         {
-          "user_id"  : userInfo.dataValues.user_id,
+          "userId"  : userInfo.dataValues.userId,
           "email"    : userInfo.dataValues.email,
           "createdAt": userInfo.dataValues.createdAt,
           "updatedAt": userInfo.dataValues.updatedAt
@@ -127,7 +125,7 @@ module.exports = {
     }
 
     const isValidUser = await User.findOne({
-      where: {email: userInfo.email, password: userInfo.password}
+      where: {email: userInfo.email}
     });
 
     if (!isValidUser) {
@@ -142,7 +140,7 @@ module.exports = {
         "result"     : true,
         "userinfo"   :
           {
-            "user_id"  : userInfo.dataValues.user_id,
+            "userId"  : userInfo.dataValues.userId,
             "email"    : userInfo.dataValues.email,
             "createdAt": userInfo.dataValues.createdAt,
             "updatedAt": userInfo.dataValues.updatedAt
