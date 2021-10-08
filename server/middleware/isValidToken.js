@@ -8,7 +8,16 @@ module.exports = async (req, res, next) => {
   * */
   const authorization = req.headers.authorization;
   const accessToken = authorization.split(' ')[1];
-  const userId = verify(accessToken, process.env.ACCESS_SECRET).userId;
+  let userId;
+  try{
+    userId = await verify(accessToken, process.env.ACCESS_SECRET).userId
+  }catch(err){
+    return res.status(401).json({
+      message: "토큰이 올바르지 않습니다.",
+      result: false
+    })
+  }
+
   const userInfo = (await User.findOne({
     where: {userId: userId}
   }));

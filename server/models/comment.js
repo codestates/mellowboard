@@ -12,21 +12,21 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.belongsTo(models.User, {
-        foreignKey: "user_id",
+        foreignKey: "userId",
         onDelete: "cascade"
       });
       this.belongsTo(models.Post, {
-        foreignKey: "post_id",
+        foreignKey: "postId",
         onDelete: "cascade"
       })
     }
   };
   Comment.init({
-    post_id: {
+    postId: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    user_id: {
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: false
     },

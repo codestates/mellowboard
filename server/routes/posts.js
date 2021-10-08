@@ -2,19 +2,16 @@ const express = require('express');
 
 const router = express.Router();
 const { query, body } = require("express-validator");
-const post = require("../controllers/post");
-const validationError = require("../controllers/error");
+const post = require("../controllers/posts");
+const validationError = require("../middleware/error");
+const {isValidToken} = require("../middleware")
 
-const tempMiddleware = (req, res, next) => {
-  res.locals.userId = 2;
-  next();
-}
+router.use(isValidToken);
 
 // 게시글 조회 - 전체 게시글
 router.get("/", 
   query("page").default(1).isInt({min: 1}),
   query("size").default(100).isInt(),
-  tempMiddleware,
   validationError,
   post.get);
 
@@ -22,7 +19,6 @@ router.get("/",
 router.get("/mypage", 
   query("page").default(1).isInt({min: 1}),
   query("size").default(100).isInt(),
-  tempMiddleware,
   validationError,
   post.mine);
 
@@ -32,24 +28,21 @@ router.post("/",
   body("background", "배경색을 선택해주세요").notEmpty().isString(),
   body("tags").default([]).isArray(),
   validationError,
-  tempMiddleware,
   post.post
 )
 
 // 게시글 수정
 router.patch("/",
-  body("post_id").notEmpty().isInt(),
+  body("postId").notEmpty().isInt(),
   body("content").default("").isString(),
   body("background").default("").isString(),
   body("tags").default([]).isArray(),
   validationError,
-  tempMiddleware,
   post.patch)
 
 router.delete("/",
-  body("post_id").notEmpty().isInt(),
+  body("postId").notEmpty().isInt(),
   validationError,
-  tempMiddleware,
   post.delete
 )
 

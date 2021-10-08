@@ -5,7 +5,7 @@ const seedData = async () => {
     try{
         await db.User.destroy({
             where: {
-                user_id: "iidd0101"
+                userId: "iidd0101"
             }
         })
     }catch(err) {
@@ -18,7 +18,7 @@ const seedData = async () => {
 
     // User 생성
     const user = await db.User.create({
-        user_id: "iidd0101",
+        userId: "iidd0101",
         password: "123123",
         email: "aa@a.com"
     });
@@ -26,39 +26,39 @@ const seedData = async () => {
     // User 조회
     const user1 = await db.User.findOne({
         where: {
-            user_id: "iidd0101"
+            userId: "iidd0101"
         },
         include: db.Post
     });
 
     db.Post.create({
         content: "content",
-        user_id: user1.id,
+        userId: user1.id,
         background: "1"
     })
     db.Post.create({
         content: "content",
-        user_id: user1.id,
+        userId: user1.id,
         background: "1"
     })
     db.Post.create({
         content: "content",
-        user_id: user1.id,
+        userId: user1.id,
         background: "1"
     })
     db.Post.create({
         content: "content",
-        user_id: user1.id,
+        userId: user1.id,
         background: "1"
     })
     db.Post.create({
         content: "content",
-        user_id: user1.id,
+        userId: user1.id,
         background: "1"
     })
     db.Post.create({
         content: "content",
-        user_id: user1.id,
+        userId: user1.id,
         background: "1"
     })
 

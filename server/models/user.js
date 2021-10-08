@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     json() {
       return {
         id: this.id,
-        user_id: this.user_id,
+        userId: this.userId,
         email: this.email
       }
     }
