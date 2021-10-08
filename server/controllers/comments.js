@@ -5,7 +5,7 @@ module.exports = {
         // 게시글의 댓글 조회 
         const {userId} = res.locals;
         const page = req.query.page - 1;
-        const size = req.query.size;
+        const size = parseInt(req.query.size);
         const comments = await Comment.findAll({
             where: {
                 postId: req.query.postId

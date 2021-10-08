@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
   const accessToken = authorization.split(' ')[1];
   let userId;
   try{
-    userId = await verify(accessToken, process.env.ACCESS_SECRET).userId
+    userId = await verify(accessToken, process.env.ACCESS_SECRET).id
   }catch(err){
     return res.status(401).json({
       message: "토큰이 올바르지 않습니다.",
@@ -18,9 +18,7 @@ module.exports = async (req, res, next) => {
     })
   }
 
-  const userInfo = (await User.findOne({
-    where: {userId: userId}
-  }));
-  if (userInfo) res.locals.userId = userInfo.toJSON().id;
+  const userInfo = await User.findByPk(userId);
+  if (userInfo) res.locals.userId = userInfo.id;
   next();
 }

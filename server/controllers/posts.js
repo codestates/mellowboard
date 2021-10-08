@@ -1,12 +1,14 @@
-const { Post, Comment } = require("../models");
+const { Post, Comment, Hashtag } = require("../models");
 
 module.exports = {
     get: async (req, res) => {
         // 최근 게시물 조회 
-        console.log(req.query);
         const {userId} = res.locals;
         const page = req.query.page - 1;
-        const size = req.query.size;
+        const size = parseInt(req.query.size);
+
+        /*
+        //코멘트 같이 조회
         const posts = await Post.findAll({
             offset: page * size, 
             limit: size, 
@@ -17,6 +19,14 @@ module.exports = {
             },
             order: [["id", "DESC"]]
         });
+        */
+       // 게시글과 해시태그 조회 
+       const posts = await Post.findAll({
+           offset: page * size,
+           litmit: size,
+           include: Hashtag,
+           order: [["id", "DESC"]]
+       })
         const postsCount = await Post.count();
         const total = parseInt(postsCount / size, 10) + postsCount % size ? 1 : 0
 
@@ -29,6 +39,7 @@ module.exports = {
                 if(post.userId === userId) post.isMine = true;
                 else post.isMine=false;
 
+                /*
                 // 자신이 작성한 댓글인지 체크
                 post.Comments.map(comment => {
                     if(comment.userId === userId) comment.isMine = true;
@@ -39,6 +50,8 @@ module.exports = {
                 // Comments 모델키 소문자로 변경..
                 post.comments = post.Comments;
                 delete post.Comments
+                */
+
                 return post;
             }),
             pages: { page, size, total }
@@ -49,6 +62,8 @@ module.exports = {
         const {userId} = res.locals;
         const page = req.query.page - 1;
         const size = req.query.size;
+        /*
+        // 댓글 같이 가져오기
         const posts = await Post.findAll({
             where: {uesrId: userId},
             offset: page * size, 
@@ -60,6 +75,16 @@ module.exports = {
             },
             order: [["id", "DESC"]]
         });
+        */
+
+        // 해시태그와 게시글 가져오기
+        const posts = await Post.findAll({
+            where: {userId: userId},
+            offset: page * size,
+            limit: size,
+            include: Hashtag,
+            order: [["id", "DESC"]]
+        })
         const postsCount = await Post.count();
         const total = parseInt(postsCount / size, 10) + postsCount % size ? 1 : 0
 
@@ -71,6 +96,7 @@ module.exports = {
             // 자신이 작성한 글 체크
             el.isMine = true
 
+            /*
             // 자신이 작성한 댓글인지 체크
             post.Comments.map(comment => {
                 if(comment.userId === userId) comment.isMine = true;
@@ -81,6 +107,8 @@ module.exports = {
             // Comments 모델키 소문자로 변경..
             post.comments = post.Comments;
             delete post.Comments
+            */
+
             return post;
         }),
         pages: {page, size, total}
@@ -95,6 +123,8 @@ module.exports = {
             content: req.body.content,
             background: req.body.background
         })
+        const tag = await Hashtag.findOrCreate({where: {tag: "#여행"}});
+        console.log(tag);
         return res.json({
             message: "게시글을 작성했습니다.",
             result: true,

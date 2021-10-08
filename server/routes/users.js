@@ -1,7 +1,8 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
 const users = require('../controllers/users');
 const isValidToken = require("../middleware/isValidToken");
+
+const router = express.Router();
 
 router.use(isValidToken);
 router.get('/', users.get);
