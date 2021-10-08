@@ -1,4 +1,4 @@
-const db = require("../models/index");
+const db = require("../models");
 
 const seedData = async () => {
     // User 삭제
@@ -13,7 +13,7 @@ const seedData = async () => {
         console.log(err);
     }
 
-    return 
+    // return 
 
 
     // User 생성
@@ -31,11 +31,37 @@ const seedData = async () => {
         include: db.Post
     });
 
-    const samplePost = db.Post.create({
+    db.Post.create({
         content: "content",
         user_id: user1.id,
         background: "1"
     })
+    db.Post.create({
+        content: "content",
+        user_id: user1.id,
+        background: "1"
+    })
+    db.Post.create({
+        content: "content",
+        user_id: user1.id,
+        background: "1"
+    })
+    db.Post.create({
+        content: "content",
+        user_id: user1.id,
+        background: "1"
+    })
+    db.Post.create({
+        content: "content",
+        user_id: user1.id,
+        background: "1"
+    })
+    db.Post.create({
+        content: "content",
+        user_id: user1.id,
+        background: "1"
+    })
+
 
     // user1.Posts.push(samplePost);
 

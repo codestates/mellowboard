@@ -1,6 +1,9 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const { User } = require("../models");
 
+const router = express.Router();
+// User.
+// console.log(User.json());
 /* GET users listing. */
 // 회원정보 조회
 router.get('/', function(req, res, next) {

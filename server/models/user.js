@@ -20,6 +20,14 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "cascade"
       });
     }
+
+    json() {
+      return {
+        id: this.id,
+        user_id: this.user_id,
+        email: this.email
+      }
+    }
   };
   User.init({
     user_id: {
