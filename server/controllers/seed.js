@@ -1,11 +1,16 @@
+const dotenv = require("dotenv");
+dotenv.config({path: ".env.dev"});
+
+
 const db = require("../models");
+
 
 const seedData = async () => {
     // User 삭제
     try{
         await db.User.destroy({
             where: {
-                userId: "iidd0101"
+                account: "iidd0101"
             }
         })
     }catch(err) {
@@ -18,7 +23,7 @@ const seedData = async () => {
 
     // User 생성
     const user = await db.User.create({
-        userId: "iidd0101",
+        account: "iidd0101",
         password: "123123",
         email: "aa@a.com"
     });
@@ -26,7 +31,7 @@ const seedData = async () => {
     // User 조회
     const user1 = await db.User.findOne({
         where: {
-            userId: "iidd0101"
+            account: "iidd0101"
         },
         include: db.Post
     });

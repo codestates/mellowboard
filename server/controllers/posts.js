@@ -1,11 +1,11 @@
-const { Post, Comment, Hashtag } = require("../models");
+const { Post, Comment, Hashtag, PostTags, sequelize } = require("../models");
 
 module.exports = {
     get: async (req, res) => {
         // 최근 게시물 조회 
         const {userId} = res.locals;
         const page = req.query.page - 1;
-        const size = parseInt(req.query.size);
+        const size = parseInt(req.query.size, 10);
 
         /*
         //코멘트 같이 조회
@@ -21,24 +21,36 @@ module.exports = {
         });
         */
        // 게시글과 해시태그 조회 
-       const posts = await Post.findAll({
-           offset: page * size,
-           litmit: size,
-           include: Hashtag,
-           order: [["id", "DESC"]]
+       const postsModel = await Post.findAll({
+            offset: page * size,
+            limit: size,
+            include: [Hashtag, {
+                model: Comment,
+                attributes: ["id"]
+            }],
+            attributes: {
+                include: [[sequelize.fn("COUNT", "Comments.id"), "commentCount"]]
+            },
+            group: ["Post.id"],
+            order: [["id", "DESC"]]
        })
+       console.log(postsModel[3].toJSON());
         const postsCount = await Post.count();
         const total = parseInt(postsCount / size, 10) + postsCount % size ? 1 : 0
 
         return res.json({
             message: "최근 게시글을 조회합니다.",
             result: true,
-            posts: posts.map(el => {
+            posts:  postsModel.map(el => {
                 const post = el.toJSON();
                 // 자신이 작성한 글인지 체크
                 if(post.userId === userId) post.isMine = true;
                 else post.isMine=false;
 
+                post.commentCount = post.Comments.length;
+                delete post.Comments;
+                return post;
+    
                 /*
                 // 자신이 작성한 댓글인지 체크
                 post.Comments.map(comment => {
@@ -46,13 +58,11 @@ module.exports = {
                     else comment.isMine = false;
                     return comment;
                 })
-
+    
                 // Comments 모델키 소문자로 변경..
                 post.comments = post.Comments;
                 delete post.Comments
                 */
-
-                return post;
             }),
             pages: { page, size, total }
         });
@@ -60,8 +70,8 @@ module.exports = {
     mine: async (req, res) => {
         // 내가 쓴 게시물 조회
         const {userId} = res.locals;
+        const {size} = req.query;
         const page = req.query.page - 1;
-        const size = req.query.size;
         /*
         // 댓글 같이 가져오기
         const posts = await Post.findAll({
@@ -77,12 +87,19 @@ module.exports = {
         });
         */
 
-        // 해시태그와 게시글 가져오기
+        // 해시태그와 댓글개수를 포함한 게시글 가져오기
         const posts = await Post.findAll({
-            where: {userId: userId},
+            where: {userId},
             offset: page * size,
             limit: size,
-            include: Hashtag,
+            attributes: {
+                include: [[sequelize.fn("COUNT", "Comments.id"), "commentCount"]]
+            },
+            include: [Hashtag,{
+                model: Comment,
+                attributes: ["id"]
+            }],
+            group: ["Post.id"],
             order: [["id", "DESC"]]
         })
         const postsCount = await Post.count();
@@ -94,7 +111,9 @@ module.exports = {
         posts: posts.map(el => {
             const post = el.toJSON();
             // 자신이 작성한 글 체크
-            el.isMine = true
+            post.isMine = true
+            post.commentCount = post.Comments.length;
+            delete post.Comments;
 
             /*
             // 자신이 작성한 댓글인지 체크
@@ -119,12 +138,22 @@ module.exports = {
         // 게시물 작성
         const {userId} = res.locals;
         const post = await Post.create({
-            userId: userId,
+            userId,
             content: req.body.content,
             background: req.body.background
         })
-        const tag = await Hashtag.findOrCreate({where: {tag: "#여행"}});
-        console.log(tag);
+        // 태그 추가
+        if(req.body.tags.length > 0){
+            const tags = [];
+            req.body.tags.forEach(async (tag) => {
+                const tagModel = await Hashtag.findOrCreate({where: {tag}});
+                tags.push({
+                    PostId: post.id,
+                    HashtagId: tagModel.id
+                });
+            })
+            PostTags.bulkCreate(tags);
+        }
         return res.json({
             message: "게시글을 작성했습니다.",
             result: true,

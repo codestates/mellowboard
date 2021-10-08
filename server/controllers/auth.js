@@ -8,18 +8,18 @@ const bcrypt = require('bcrypt');
 module.exports = {
   logout: (req, res) => {
     res.clearCookie("jwt");
-    return res.status(301).send('Moved Permanently');
+    return res.redirect("/");
   },
 
 // ID 중복검사 - 완료
   dup: async (req, res) => {
     const isValidUser = await User.findOne({
-      where: {email: req.body.email}
+      where: {account: req.query.id}
     });
     if (isValidUser) {
       return res.status(200).send({
         "message": "중복된 아이디 입니다.",
-        "result" : true
+        "result" : false
       });
     } else {
       return res.status(200).send({
@@ -39,9 +39,9 @@ module.exports = {
     }
     // encrypted password
     const encryptedPassword = await bcrypt.hash(req.body.password, 10);
-    console.log(encryptedPassword)
+
     const encryptedUserInfo = {
-      userId : req.body.userId,
+      account : req.body.userId,
       email   : req.body.email,
       password: encryptedPassword
     };
@@ -49,10 +49,10 @@ module.exports = {
 
     // create record in DB
     const [userInfo, created] = await User.findOrCreate({
-      where   : {userId: req.body.userId},
+      where   : {account: req.body.userId},
       defaults: encryptedUserInfo
     });
-    console.log(userInfo,created)
+
 
     if (!created) {
       return res.status(400).send({
@@ -66,13 +66,7 @@ module.exports = {
     return res.status(201).send({
       "message"    : "회원가입을 성공했습니다.",
       "result"     : true,
-      "userinfo"   :
-        {
-          "userId"  : userInfo.dataValues.userId,
-          "email"    : userInfo.dataValues.email,
-          "createdAt": userInfo.dataValues.createdAt,
-          "updatedAt": userInfo.dataValues.updatedAt
-        },
+      "userInfo"   : userInfo.json(),
       "accessToken": accessToken
     });
   },
@@ -105,18 +99,12 @@ module.exports = {
     return res.status(200).json({
       "message"    : "로그인을 성공했습니다.",
       "result"     : true,
-      "userinfo"   :
-        {
-          "userId"  : userInfo.dataValues.userId,
-          "email"    : userInfo.dataValues.email,
-          "createdAt": userInfo.dataValues.createdAt,
-          "updatedAt": userInfo.dataValues.updatedAt
-        },
+      "userinfo"   : userInfo.json(),
       "accessToken": accessToken
     });
   },
 
-// 토큰 갱신 - 완료
+  // 토큰 갱신 - 완료
   refresh: async (req, res) => {
     let userInfo;
     try {
@@ -125,29 +113,20 @@ module.exports = {
       return res.status(401).send({data: null, message: 'not authorized'});
     }
 
-    const isValidUser = await User.findOne({
-      where: {email: userInfo.email}
-    });
+    const isValidUser = await User.findByPk(userInfo.id);
 
     if (!isValidUser) {
       return res.status(401).send({
         "message": "토큰 갱신에 실패했습니다. 로그아웃 이후 다시 로그인 해주세요.",
         "result" : false
       });
-    } else {
-      const accessToken = generateAccessToken(userInfo.toJSON());
-      return res.status(200).send({
-        "message"    : "access token 발급이 성공했습니다.",
-        "result"     : true,
-        "userinfo"   :
-          {
-            "userId"  : userInfo.dataValues.userId,
-            "email"    : userInfo.dataValues.email,
-            "createdAt": userInfo.dataValues.createdAt,
-            "updatedAt": userInfo.dataValues.updatedAt
-          },
-        "accessToken": accessToken
-      });
-    }
+    } 
+    const accessToken = generateAccessToken(userInfo.toJSON());
+    return res.status(200).send({
+      "message"    : "access token 발급이 성공했습니다.",
+      "result"     : true,
+      "userinfo"   : userInfo.json(),
+      "accessToken": accessToken
+    });
   }
-};
+}

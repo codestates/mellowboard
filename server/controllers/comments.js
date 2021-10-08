@@ -55,12 +55,12 @@ module.exports = {
         // 댓글 작성
         const {userId} = res.locals;
         const comment = await Comment.create({
-            userId: userId,
+            userId,
             postId: req.body.postId,
             comment: req.body.comment
         })
         return res.json({
-            message: "게시글을 작성했습니다.",
+            message: "댓글을 작성했습니다.",
             result: true,
             comment 
         })
