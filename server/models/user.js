@@ -22,15 +22,17 @@ module.exports = (sequelize, DataTypes) => {
       
     }
   };
+
+  // unique column: email - email로 로그인하기 때문이다.
   User.init({
     user_id: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
+      allowNull: false
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true
     },
     password: {
       type: DataTypes.STRING,

@@ -1,18 +1,20 @@
-const {user} = require('../models');
+const {User} = require('../models');
 const {generateAccessToken, sendTokenInCookie, generateRefreshToken, isAuthorized} = require('./token_functions');
+const bcrypt = require('bcrypt');
 
 // 변수 이름 변경
 /* GET users listing. */
 // 로그아웃 - 완료
 module.exports = {
   logout: (req, res) => {
+    console.log('1231173027130127931729038120318');
     res.clearCookie("jwt");
     return res.status(301).send('Moved Permanently');
   },
 
 // ID 중복검사 - 완료
   dup: async (req, res) => {
-    const isValidUser = await user.findOne({
+    const isValidUser = await User.findOne({
       where: {email: req.body.email, password: req.body.password}
     });
     if (isValidUser) {
@@ -36,9 +38,20 @@ module.exports = {
         "result" : false
       })
     }
-    const [userInfo, created] = await user.findOrCreate({
+    // encrypted password
+    const saltRounds = 10;
+    const encryptedPassword = await bcrypt.hash(req.body.password, saltRounds);
+    const encryptedUserInfo = {
+      user_id : req.body.user_id,
+      email   : req.body.email,
+      password: encryptedPassword
+    };
+    // end encrypted user info
+
+    // create record in DB
+    const [userInfo, created] = await User.findOrCreate({
       where   : {email: req.body.email},
-      defaults: req.body
+      defaults: encryptedUserInfo
     });
 
     if (!created) {
@@ -47,7 +60,6 @@ module.exports = {
         "result" : false
       })
     }
-
     userInfo.save();
     const accessToken = generateAccessToken(userInfo.toJSON());
     sendTokenInCookie(res, generateRefreshToken(userInfo.toJSON()));
@@ -56,10 +68,10 @@ module.exports = {
       "result"     : true,
       "userinfo"   :
         {
-          "userid"   : "userid",
-          "email"    : "email",
-          "createdAt": "created time",
-          "updatedAt": "updated time"
+          "user_id"  : userInfo.dataValues.user_id,
+          "email"    : userInfo.dataValues.email,
+          "createdAt": userInfo.dataValues.createdAt,
+          "updatedAt": userInfo.dataValues.updatedAt
         },
       "accessToken": accessToken
     });
@@ -67,14 +79,26 @@ module.exports = {
 
 // 로그인 - 완료
   signin: async (req, res) => {
-    console.log('signin');
-    const userInfo = await user.findOne({where: {email: req.body.email, password: req.body.password}});
+    // 가입한 유저인지 확인
+    const userInfo = await User.findOne({where: {email: req.body.email}});
     if (!userInfo) {
       return res.status(401).send({
         "message": "로그인에 실패했습니다.",
         "result" : false
       })
     }
+
+    // 비밀번호가 맞는지 확인
+    const hash = userInfo.toJSON().password;
+    console.log(1231,req.body.password,hash);
+    const isValidPassword = await bcrypt.compare(req.body.password, hash);
+    if(!isValidPassword) {
+      return res.status(401).send({
+        "message": "로그인에 실패했습니다.",
+        "result" : false
+      })
+    }
+
     // generate accessToken & declare accessToken
     const accessToken = generateAccessToken(userInfo.toJSON());
     // send refresh token
@@ -84,10 +108,10 @@ module.exports = {
       "result"     : true,
       "userinfo"   :
         {
-          "userid"   : "userid",
-          "email"    : "email",
-          "createdAt": "created time",
-          "updatedAt": "updated time"
+          "user_id"  : userInfo.dataValues.user_id,
+          "email"    : userInfo.dataValues.email,
+          "createdAt": userInfo.dataValues.createdAt,
+          "updatedAt": userInfo.dataValues.updatedAt
         },
       "accessToken": accessToken
     });
@@ -102,7 +126,7 @@ module.exports = {
       return res.status(401).send({data: null, message: 'not authorized'});
     }
 
-    const isValidUser = await user.findOne({
+    const isValidUser = await User.findOne({
       where: {email: userInfo.email, password: userInfo.password}
     });
 
@@ -118,10 +142,10 @@ module.exports = {
         "result"     : true,
         "userinfo"   :
           {
-            "userid"   : "userid",
-            "email"    : "email",
-            "createdAt": "created time",
-            "updatedAt": "updated time"
+            "user_id"  : userInfo.dataValues.user_id,
+            "email"    : userInfo.dataValues.email,
+            "createdAt": userInfo.dataValues.createdAt,
+            "updatedAt": userInfo.dataValues.updatedAt
           },
         "accessToken": accessToken
       });
