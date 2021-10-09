@@ -65,6 +65,13 @@ const cookies = new Cookies();
 export default function App() {
   // const [isLogin, setIsLogin] = useState(false);
   const [session, setSession] = useState({ accessToken: '', isLogin: false });
+  const handleSession = (token) => {
+    /**
+     * 세션관리 핸들러
+     */
+    if (!token) setSession({ accessToken: '', isLogin: false });
+    else setSession({ accessToken: token, isLogin: true });
+  };
   useEffect(() => {
     /**
      * 리액트가 처음 렌더링 될 때 브라우저로 쿠키에 있는 리프레쉬 토큰이 있는지 검사한다.
@@ -78,10 +85,7 @@ export default function App() {
         .then((res) => {
           // API 요청이 실패되면 함수 종료
           if (!res.data.result) return;
-          setSession({
-            accessToken: res.data.accessToken,
-            isLogin: true,
-          });
+          handleSession(res.data.accessToken);
         })
         .catch((err) => {
           // 에러발생..! 개발모드에서만 로그를 찍는다.
