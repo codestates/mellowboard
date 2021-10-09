@@ -60,7 +60,11 @@ const PostBtn = styled.button`
 
 export default function App() {
   const [isLogin, setIsLogin] = useState(false);
-
+  const [isOpenPostBoard, setIsOpenPostBoard] = useState(false);
+  const openPostBoardHandler = () => {
+    setIsOpenPostBoard(!isOpenPostBoard);
+  };
+  console.log("app",isOpenPostBoard);
   return (
     <>
       <GlobalStyle />
@@ -68,14 +72,17 @@ export default function App() {
         <Nav isLogin={isLogin} />
         <Switch>
           <Route exact path="/">
-            <BoardPage />
+            <BoardPage
+              isOpenPostBoard={isOpenPostBoard}
+              openPostBoardHandler={openPostBoardHandler}
+            />
           </Route>
           <Route path="/mypage">
             <MyPage />
           </Route>
         </Switch>
         <PostBtn>
-          <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} />
+          <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} onClick={openPostBoardHandler}/>
           <span>글 작성</span>
         </PostBtn>
       </Router>
