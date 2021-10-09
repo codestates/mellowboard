@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
+import { Cookies } from 'react-cookie';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 import Nav from './components/Nav';
 import BoardPage from './pages/BoardPage';
 import MyPage from './pages/MyPage';
@@ -58,14 +60,41 @@ const PostBtn = styled.button`
   }
 `;
 
+const cookies = new Cookies();
+
 export default function App() {
-  const [isLogin, setIsLogin] = useState(false);
+  // const [isLogin, setIsLogin] = useState(false);
+  const [session, setSession] = useState({ accessToken: '', isLogin: false });
+  useEffect(() => {
+    /**
+     * 리액트가 처음 렌더링 될 때 브라우저로 쿠키에 있는 리프레쉬 토큰이 있는지 검사한다.
+     * 있을 경우 accessToken을 갱신해서 로그인 상태를 true로 설정하고 토큰 상태를 등록한다.
+     */
+    const refreshToken = cookies.get('jwt');
+    if (refreshToken) {
+      // 리프레시 토큰이 있을 경우
+      axios.post(`${process.env.REACT_APP_API_URI}/auth/refresh`, { withCredentials: true })
+        .then((res) => res.json())
+        .then((res) => {
+          // API 요청이 실패되면 함수 종료
+          if (!res.data.result) return;
+          setSession({
+            accessToken: res.data.accessToken,
+            isLogin: true,
+          });
+        })
+        .catch((err) => {
+          // 에러발생..! 개발모드에서만 로그를 찍는다.
+          if (process.env.NODE_ENV === 'development') console.log(err);
+        });
+    }
+  }, []);
 
   return (
     <>
       <GlobalStyle />
       <Router>
-        <Nav isLogin={isLogin} />
+        <Nav isLogin={session.isLogin} />
         <Switch>
           <Route exact path="/">
             <BoardPage />
