@@ -12,18 +12,29 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.hasMany(models.Post, {
-        foreignKey: "user_id",
+        foreignKey: "userId",
         onDelete: "CASCADE"
       });
       this.hasMany(models.Comment, {
-        foreignKey: "user_id",
+        foreignKey: "userId",
         onDelete: "CASCADE"
       });
-      
+    }
+
+    json() {
+      return {
+        id: this.id,
+        account: this.account,
+        email: this.email,
+        createdAt: this.createdAt,
+        updatedAt: this.updatedAt
+      }
     }
   };
+
+  // unique column: email - email로 로그인하기 때문이다.
   User.init({
-    user_id: {
+    account: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true
