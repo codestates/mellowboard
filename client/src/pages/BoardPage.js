@@ -8,6 +8,7 @@ const BoardContainer = styled.ul`
   margin: 1rem 1rem -4.5rem 1rem;
   display: flex;
   flex-wrap: wrap;
+  height: 100%;
 `;
 
 export default function BoardPage() {
