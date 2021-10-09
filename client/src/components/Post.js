@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import post_background from '../images/post_background/joy_1.png';
+import PostBackground from '../images/post_background/joy_1.png';
 import Comments from './Comments';
 
 const PostList = styled.li`
-  background: url(${post_background}) center center / cover no-repeat;
+  background: url(${PostBackground}) center center / cover no-repeat;
   border: 3px solid blue;
   width: 50%;
-  height: auto;
   margin: 1rem -2.3rem;
   display: flex;
   flex-direction: column;
