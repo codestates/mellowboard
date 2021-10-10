@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import Button from "./Button"
-import ButtonBackground from "./ButtonBackground"
-import TextArea from "./TextArea"
-import {ModalView, ModalBackdrop} from "./Modal"
+import Button from "./Button";
+import ButtonBackground from "./ButtonBackground";
+import TextArea from "./TextArea";
+import {ModalView, ModalBackdrop} from "./Modal";
 import Wrapper from "./Wrapper";
-import './index.css'
-import axios from "axios"
+import './index.css';
+import axios from "axios";
 
 const imageFiles = Array(20).fill(1).map((el, idx) => {
   if (`${el + idx}`.length === 1) {
@@ -14,6 +14,7 @@ const imageFiles = Array(20).fill(1).map((el, idx) => {
     return `${el + idx}` + '.png';
   }
 })
+
 function importAll(r) {
   let images = {};
   r.keys().forEach((item) => {
@@ -26,7 +27,7 @@ const images = importAll(require.context('../../images/background', false, /\.(p
 
 
 export default function PostBoard({isOpenPostBoard, openPostBoardHandler, accessToken}) {
-  const [image, setImage] = useState(images['01.png']);
+  const [image, setImage] = useState('01.png');
   const [content, setContent] = useState("");
 
   const randomInteger = () => {
@@ -40,28 +41,33 @@ export default function PostBoard({isOpenPostBoard, openPostBoardHandler, access
   const confirm = () => {
     openPostBoardHandler();
 
-    const hashtagRule = /\B(\#[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]+)(?!;)/;
+    const hashtagRule = /(\#[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]+\b)(?!;)/g;
     let hashtagList = "";
     try {
-      hashtagList = hashtagRule.exec(content).input.split(" ");
+      const array = [...content.matchAll(hashtagRule)].slice(0);
+      hashtagList = array.map(el => el[0]);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
 
-    const background = imageFiles[image];
-
+    console.log(typeof content, typeof image, typeof hashtagList);
+    console.log(typeof "안녕하세요\n #감사합니다", typeof "01.png", typeof ["#감사합니다"]);
     const url = 'http://localhost:4000/posts';
-    axios.post(url, {
-      content  : content,
-      backgroud: background,
-      hashtags : hashtagList
-    }, {
+    axios({
+      method : 'post',
+      url    : url,
       headers: {
-        'Authorization': "Bearer " + accessToken
+        'Authorization': 'Bearer ' + accessToken
+      },
+      data   : {
+        "content"   : content,
+        "background": image,
+        "tags"      : hashtagList
       }
     }).catch((err) => {
       console.log(err);
     })
+    console.log(content, image, hashtagList);
 
     setContent("");
   }
@@ -71,7 +77,7 @@ export default function PostBoard({isOpenPostBoard, openPostBoardHandler, access
       <>
         <ModalBackdrop>
           <ModalView
-            img={image.default}
+            img={images[image].default}
           >
             <ButtonBackground onClick={randomInteger}>배경 선택</ButtonBackground>
             <TextArea placeholder="이야기를 적어주세요." value={content} onChange={changeContent}/>
