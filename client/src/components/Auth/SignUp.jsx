@@ -2,16 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import {
-  Form, FormTitle, Input, Button,
+  Form, FormTitle, Input, Button, ErrorMessage,
 } from './Form';
-
-const ErrorMessage = styled.div`
-  color: red;
-  font-size: small;
-  display: inline-block;
-  width: 100%;
-  text-align: left;
-`;
 
 export default function SignUp({ handleSession }) {
   const [formState, setFormState] = useState({

@@ -11,6 +11,14 @@ export const Form = styled.form`
   text-align: center;
 `;
 
+export const ErrorMessage = styled.div`
+  color: red;
+  font-size: small;
+  display: inline-block;
+  width: 100%;
+  text-align: left;
+`;
+
 export const FormTitle = styled.h2`
   font-weight: 300;
   margin: 0;

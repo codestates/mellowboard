@@ -163,7 +163,7 @@ const ContainerForm = styled.div`
 `;
 
 export default function Auth({ handleSession }) {
-  const [active, setActive] = useState(true);
+  const [active, setActive] = useState(false);
 
   // 회원가입, 로그인 보기 전환
   const handleActive = (bool) => setActive(bool);
