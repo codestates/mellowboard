@@ -74,7 +74,7 @@ module.exports = {
 // 로그인 - 완료
   signin: async (req, res) => {
     // 가입한 유저인지 확인
-    const userInfo = await User.findOne({where: {userId: req.body.userId}});
+    const userInfo = await User.findOne({where: {account: req.body.userId}});
     if (!userInfo) {
       return res.status(401).send({
         "message": "로그인에 실패했습니다.",
