@@ -80,6 +80,7 @@ const AuthRoot = styled.div`
   .overlay {
     background-color: var(--lightblue);
     background: url("https://res.cloudinary.com/dci1eujqw/image/upload/v1616769558/Codepen/waldemar-brandt-aThdSdgx0YM-unsplash_cnq4sb.jpg");
+    /* background-color: rgba( 255, 255, 255, 0 ); */
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
@@ -138,7 +139,7 @@ const AuthRoot = styled.div`
 `;
 
 const Container = styled.div`
-  background-color: rgba( 255, 255, 255, 0 ); // 투명하게
+  background-color: rgba( 255, 255, 255, 1 ); // 투명하게
   border-radius: var(--button-radius);
   box-shadow: 0 0.9rem 1.7rem rgba(0, 0, 0, 0.25),
     0 0.7rem 0.7rem rgba(0, 0, 0, 0.22);
@@ -161,7 +162,7 @@ const ContainerForm = styled.div`
   }
 `;
 
-export default function Auth() {
+export default function Auth({ handleSession }) {
   const [active, setActive] = useState(true);
 
   // 회원가입, 로그인 보기 전환
@@ -171,10 +172,10 @@ export default function Auth() {
     <AuthRoot>
       <Container className={active ? 'container right-panel-active' : 'container'}>
         <ContainerForm className="container--signup">
-          <SignUp />
+          <SignUp handleSession={handleSession} />
         </ContainerForm>
         <ContainerForm className="container--signin">
-          <SignIn />
+          <SignIn handleSession={handleSession} />
         </ContainerForm>
         <Overlay handleActive={handleActive} />
       </Container>
