@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import PostBackground from '../images/background/03.png';
+import PostBackground from './images/background/03.png';
 
 const MyPostList = styled.li`
   background: url(${PostBackground}) center center / cover no-repeat;

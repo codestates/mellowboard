@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, {ThemeProvider} from 'styled-components';
-import PostBackground from "../images/background/01.png";
+import PostBackground from "./images/background/01.png";
 import theme from 'styled-theming'
 
 const CommentsModal = styled.li`
