@@ -110,7 +110,7 @@ module.exports = {
     try {
       userInfo = isAuthorized(req);
     } catch (err) {
-      return res.status(401).send({data: null, message: 'not authorized'});
+      return res.status(401).send({data: null, result: false, message: 'not authorized'});
     }
 
     const isValidUser = await User.findByPk(userInfo.id);
@@ -121,11 +121,11 @@ module.exports = {
         "result" : false
       });
     } 
-    const accessToken = generateAccessToken(userInfo.toJSON());
+    const accessToken = generateAccessToken(isValidUser.json());
     return res.status(200).send({
       "message"    : "access token 발급이 성공했습니다.",
       "result"     : true,
-      "userinfo"   : userInfo.json(),
+      "userinfo"   : isValidUser.json(),
       "accessToken": accessToken
     });
   }
