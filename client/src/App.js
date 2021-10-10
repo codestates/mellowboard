@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
-import { Cookies } from 'react-cookie';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
@@ -8,6 +7,7 @@ import axios from 'axios';
 import Nav from './components/Nav';
 import BoardPage from './pages/BoardPage';
 import MyPage from './pages/MyPage';
+import Auth from './components/Auth';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -60,7 +60,7 @@ const PostBtn = styled.button`
   }
 `;
 
-const cookies = new Cookies();
+axios.defaults.withCredentials = true;
 
 export default function App() {
   // const [isLogin, setIsLogin] = useState(false);
@@ -74,24 +74,20 @@ export default function App() {
   };
   useEffect(() => {
     /**
-     * 리액트가 처음 렌더링 될 때 브라우저로 쿠키에 있는 리프레쉬 토큰이 있는지 검사한다.
-     * 있을 경우 accessToken을 갱신해서 로그인 상태를 true로 설정하고 토큰 상태를 등록한다.
+     * 리액트가 처음 렌더링 될 때 토큰 갱신을 시도한다.
+     * httpOnly 라서 자바스크립트에서 쿠키에 접근할 수 없어서 일단 갱신시도해보고 되면 isLogin=true 안되면 false
      */
-    const refreshToken = cookies.get('jwt');
-    if (refreshToken) {
-      // 리프레시 토큰이 있을 경우
-      axios.post(`${process.env.REACT_APP_API_URI}/auth/refresh`, { withCredentials: true })
-        .then((res) => res.json())
-        .then((res) => {
-          // API 요청이 실패되면 함수 종료
-          if (!res.data.result) return;
-          handleSession(res.data.accessToken);
-        })
-        .catch((err) => {
-          // 에러발생..! 개발모드에서만 로그를 찍는다.
-          if (process.env.NODE_ENV === 'development') console.log(err);
-        });
-    }
+
+    axios.post(`${process.env.REACT_APP_API_URL}/auth/refresh`, { withCredentials: true })
+      .then((res) => {
+        // API 요청이 실패되면 함수 종료
+        if (!res.data.result) return;
+        handleSession(res.data.accessToken);
+      })
+      .catch((err) => {
+        // 에러발생..! 개발모드에서만 로그를 찍는다.
+        if (process.env.NODE_ENV === 'development') console.log(err);
+      });
   }, []);
 
   return (
