@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
-import Nav from './components/Nav';
-import BoardPage from './pages/BoardPage';
-import MyPage from './pages/MyPage';
+import React, {useEffect, useState} from 'react';
+import styled, {createGlobalStyle} from 'styled-components';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faPencilAlt} from '@fortawesome/free-solid-svg-icons';
+import Nav from './Nav';
+import BoardPage from './components/BoardPage';
+import MyPage from './components/MyPage';
+import PostBoard from "./components/PostBoard";
+
 const GlobalStyle = createGlobalStyle`
   body {
     /* font 설정 */
     font-family: 'Gugi', 'Noto Serif KR', cursive, serif;
 
     /* 전체 배경화면 설정 */
-      background: linear-gradient(-45deg, #1B1464, #006266, #6F1E51, #cd6133);
-      background-size: 400% 400%;
-      animation: aurora 20s ease infinite;
-      height: 100vh;
+    background: linear-gradient(-45deg, #1B1464, #006266, #6F1E51, #cd6133);
+    background-size: 400% 400%;
+    animation: aurora 20s ease infinite;
+    height: 100vh;
 
     /* 레이아웃 리셋 */
     box-sizing: border-box;
@@ -60,24 +62,22 @@ const PostBtn = styled.button`
 export default function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [isOpenPostBoard, setIsOpenPostBoard] = useState(false);
+  const [accessToken, setAccessToken] = useState('');
   const openPostBoardHandler = () => {
     setIsOpenPostBoard(!isOpenPostBoard);
   };
-  console.log("app",isOpenPostBoard);
   return (
     <>
-      <GlobalStyle />
+      <GlobalStyle/>
       <Router>
-        <Nav isLogin={isLogin} />
+        <Nav isLogin={isLogin}/>
         <Switch>
           <Route exact path="/">
-            <BoardPage
-              isOpenPostBoard={isOpenPostBoard}
-              openPostBoardHandler={openPostBoardHandler}
-            />
+            <BoardPage/>
+            <PostBoard isOpenPostBoard={isOpenPostBoard} openPostBoardHandler={openPostBoardHandler} accessToken={accessToken}/>
           </Route>
           <Route path="/mypage">
-            <MyPage />
+            <MyPage/>
           </Route>
         </Switch>
         <PostBtn>

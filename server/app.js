@@ -4,9 +4,13 @@ const logger = require('morgan');
 const db = require("./models");
 
 const router = require("./routes");
-
+const cors = require('cors')
 const app = express();
-
+let corsOption = {
+  origin: 'http://localhost:3000',
+  credentials: true
+}
+app.use(cors(corsOption));
 app.use(logger('combined'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
