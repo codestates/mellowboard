@@ -92,6 +92,7 @@ export default function App() {
 
   return (
     <>
+      <Auth handleSession={handleSession} />
       <GlobalStyle />
       <Router>
         <Nav isLogin={session.isLogin} />

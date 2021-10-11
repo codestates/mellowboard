@@ -10,6 +10,7 @@ const OverlayContainer = styled.div`
   transition: transform 0.6s ease-in-out;
   width: 50%;
   z-index: 100;
+  background-color: rgba(255, 255, 255, 0);
 `;
 
 export default function Overlay({handleActive}) {

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import axios from 'axios';
 import {
   Form, FormTitle, Input, Button, ErrorMessage,
@@ -60,7 +59,6 @@ export default function SignUp({ handleSession }) {
       return;
     }
 
-
     if (!formState.email) {
       form.email.focus();
       handleErrorMsg('email', '이메일 주소를 입력해주세요.');
@@ -95,6 +93,7 @@ export default function SignUp({ handleSession }) {
       { params: { id: formState.userId } });
 
     if (!res.data.result) {
+      form.userId.focus();
       handleErrorMsg('userId', '중복된 ID 입니다.');
       return;
     }
