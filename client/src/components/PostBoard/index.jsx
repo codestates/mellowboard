@@ -1,19 +1,20 @@
 import React, {useState} from 'react';
-import Button from "./Button";
-import ButtonBackground from "./ButtonBackground";
-import TextArea from "./TextArea";
-import {ModalView, ModalBackdrop} from "./Modal";
-import Wrapper from "./Wrapper";
+import Button from './Button';
+import ButtonBackground from './ButtonBackground';
+import TextArea from './TextArea';
+import {ModalView, ModalBackdrop} from './Modal';
+import Wrapper from './Wrapper';
 import './index.css';
-import axios from "axios";
+import axios from 'axios';
 
 const imageFiles = Array(20).fill(1).map((el, idx) => {
   if (`${el + idx}`.length === 1) {
-    return 0 + `${el + idx}` + '.png';
+    return '0' + `${el + idx}` + '.png';
   } else {
-    return `${el + idx}` + '.png';
+    const string= `${el + idx}` + '.png';
+    return string;
   }
-})
+});
 
 function importAll(r) {
   let images = {};
@@ -25,19 +26,19 @@ function importAll(r) {
 
 const images = importAll(require.context('../../images/background', false, /\.(png|jpe?g|svg)$/));
 
-
-export default function PostBoard({isOpenPostBoard, openPostBoardHandler, accessToken}) {
-  const [image, setImage] = useState('01.png');
-  const [content, setContent] = useState("");
+export default function PostBoard({isOpenPostBoard, openPostBoardHandler, session}) {
+  const [image, setImage] = useState(images['01.png']);
+  const [content, setContent] = useState('');
 
   const randomInteger = () => {
     const random = Math.ceil(Math.random() * 20);
     setImage(images[imageFiles[random]]);
-  }
+  };
 
   const changeContent = (event) => {
     setContent(event.target.value);
-  }
+  };
+
   const confirm = () => {
     openPostBoardHandler();
 
@@ -48,36 +49,33 @@ export default function PostBoard({isOpenPostBoard, openPostBoardHandler, access
       hashtagList = array.map(el => el[0]);
     } catch (err) {
       console.log(err);
-    }
+    };
 
-    console.log(typeof content, typeof image, typeof hashtagList);
-    console.log(typeof "안녕하세요\n #감사합니다", typeof "01.png", typeof ["#감사합니다"]);
     const url = 'http://localhost:4000/posts';
     axios({
       method : 'post',
       url    : url,
       headers: {
-        'Authorization': 'Bearer ' + accessToken
+        'Authorization': 'Bearer ' + session.accessToken
       },
       data   : {
-        "content"   : content,
-        "background": image,
-        "tags"      : hashtagList
+        'content'   : content,
+        'background': image,
+        'tags'      : hashtagList
       }
     }).catch((err) => {
       console.log(err);
-    })
+    });
     console.log(content, image, hashtagList);
 
-    setContent("");
+    setContent('');
   }
-
   if (isOpenPostBoard === true) {
     return (
       <>
         <ModalBackdrop>
           <ModalView
-            img={images[image].default}
+            img={image.default}
           >
             <ButtonBackground onClick={randomInteger}>배경 선택</ButtonBackground>
             <TextArea placeholder="이야기를 적어주세요." value={content} onChange={changeContent}/>

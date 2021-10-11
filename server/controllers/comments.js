@@ -85,7 +85,7 @@ module.exports = {
          comment.comment = req.body.comment
          comment.save();
 
-        //  await Comment.update({comment: req.body.comment}, {
+        //  await Index.update({comment: req.body.comment}, {
         //      where: { id: req.body.commentId }
         //  })
 

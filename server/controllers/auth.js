@@ -31,7 +31,7 @@ module.exports = {
 
 // 회원가입 - 완료
   signup: async (req, res) => {
-    if (!req.body || !req.body.email || !req.body.password || !req.body.userId) {
+    if (!req.body || !req.body.email || !req.body.password || !req.body.account) {
       return res.status(400).send({
         "message": "회원가입을 실패했습니다.",
         "result" : false
@@ -41,7 +41,7 @@ module.exports = {
     const encryptedPassword = await bcrypt.hash(req.body.password, 10);
 
     const encryptedUserInfo = {
-      account : req.body.userId,
+      account : req.body.account,
       email   : req.body.email,
       password: encryptedPassword
     };
@@ -49,7 +49,7 @@ module.exports = {
 
     // create record in DB
     const [userInfo, created] = await User.findOrCreate({
-      where   : {account: req.body.userId},
+      where   : {account: req.body.account},
       defaults: encryptedUserInfo
     });
 

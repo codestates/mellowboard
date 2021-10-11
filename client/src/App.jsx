@@ -8,6 +8,7 @@ import Nav from './components/Nav';
 import BoardPage from './pages/BoardPage';
 import MyPage from './pages/MyPage';
 import Auth from './components/Auth';
+import PostBoard from './components/PostBoard';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -64,7 +65,6 @@ const PostBtn = styled.button`
 axios.defaults.withCredentials = true;
 
 export default function App() {
-  // const [isLogin, setIsLogin] = useState(false);
   const [session, setSession] = useState({ accessToken: '', isLogin: false });
   const handleSession = (token) => {
     /**
@@ -72,6 +72,11 @@ export default function App() {
      */
     if (!token) setSession({ accessToken: '', isLogin: false });
     else setSession({ accessToken: token, isLogin: true });
+  };
+
+  const [isOpenPostBoard, setIsOpenPostBoard] = useState(false);
+  const openPostBoardHandler = () => {
+    setIsOpenPostBoard(!isOpenPostBoard);
   };
   useEffect(() => {
     /**
@@ -100,13 +105,18 @@ export default function App() {
         <Switch>
           <Route exact path="/">
             <BoardPage />
+            <PostBoard
+              isOpenPostBoard={isOpenPostBoard}
+              openPostBoardHandler={openPostBoardHandler}
+              session={session}
+            />
           </Route>
           <Route path="/mypage">
             <MyPage />
           </Route>
         </Switch>
-        <PostBtn>
-          <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} />
+        <PostBtn onClick={openPostBoardHandler}>
+          <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt}/>
 
           <span>글 작성</span>
         </PostBtn>

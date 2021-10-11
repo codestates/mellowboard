@@ -117,13 +117,6 @@ export default function Comments({isOpen, openModalHandler}) {
                   <button className="comment_modify_btn">수정</button>
                   <button className="comment_modify_btn">삭제</button>
                 </span>
-                {/*<ThemeProvider theme={{ mode: 'light' }}>*/}
-                {/*  <Box>Hello World</Box>*/}
-                {/*</ThemeProvider>*/}
-                {/*<ThemeProvider theme={{ mode: "light", size: "large" }}>*/}
-                {/*  <Box>sjdpfjfpjwpo</Box>*/}
-                {/*</ThemeProvider>*/}
-                {/*/!*<TextField id="outlined-basic" label="Outlined" variant="outlined" />*!/*/}
               </div>
               <div id="comments_btns">
                 <span id="btn_container">
