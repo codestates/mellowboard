@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -34,7 +35,13 @@ const BtnContainer = styled.span`
   }
 `;
 
-export default function Nav({openAuthHandler, session}) {
+export default function Nav({openAuthHandler, session, handleSession}) {
+  const logout = () => {
+    axios.get("/auth/logout").then(res => {
+      handleSession();
+    });
+  };
+
   return (
     <>
       <NavContainer>
@@ -46,7 +53,7 @@ export default function Nav({openAuthHandler, session}) {
         </Link>
         <BtnContainer>
           {session.isLogin ? null:<button id="login_btn" onClick={openAuthHandler}>로그인</button>}
-          {session.isLogin ? <button id="logout_btn">로그아웃</button>:null}
+          {session.isLogin ? <button id="logout_btn" onClick={logout}>로그아웃</button>:null}
           <Link
             to="/mypage"
             style={{ textDecoration: 'none', color: '#f5f6fa' }}

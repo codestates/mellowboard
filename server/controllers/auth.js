@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 module.exports = {
   logout: (req, res) => {
     res.clearCookie("jwt");
-    return res.redirect("/");
+    return res.json({result: true, message: 'logout success'});
   },
 
 // ID 중복검사 - 완료

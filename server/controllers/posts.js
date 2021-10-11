@@ -24,7 +24,9 @@ module.exports = {
        const postsModel = await Post.findAll({
             offset: page * size,
             limit: size,
-            include: [Hashtag, {
+            include: [{
+                model: Hashtag, as: 'tags'
+            }, {
                 model: Comment,
                 attributes: ["id"]
             }],
@@ -34,7 +36,6 @@ module.exports = {
             group: ["Post.id"],
             order: [["id", "DESC"]]
        })
-       console.log(postsModel[3].toJSON());
         const postsCount = await Post.count();
         const total = parseInt(postsCount / size, 10) + postsCount % size ? 1 : 0
 
@@ -49,6 +50,10 @@ module.exports = {
 
                 post.commentCount = post.Comments.length;
                 delete post.Comments;
+                const tagList = [];
+                post.tags.map(tag => tagList.push(tag.tag));
+                post.tags = tagList;
+
                 return post;
     
                 /*
@@ -95,7 +100,9 @@ module.exports = {
             attributes: {
                 include: [[sequelize.fn("COUNT", "Index.id"), "commentCount"]]
             },
-            include: [Hashtag,{
+            include: [{
+                model: Hashtag,
+            },{
                 model: Comment,
                 attributes: ["id"]
             }],
@@ -137,22 +144,29 @@ module.exports = {
     post: async (req, res) => {
         // 게시물 작성
         const {userId} = res.locals;
-        const post = await Post.create({
-            userId,
-            content: req.body.content,
-            background: req.body.background
-        })
+        let post;
+        try {
+            post = await Post.create({
+                userId,
+                content: req.body.content,
+                background: req.body.background
+            })
+        } catch (err){
+            return res.status(500).json({result: false, message: "server Error"});
+        }
         // 태그 추가
         if(req.body.tags.length > 0){
             const tags = [];
             req.body.tags.forEach(async (tag) => {
-                const tagModel = await Hashtag.findOrCreate({where: {tag}});
-                tags.push({
+                const [tagModel] = await Hashtag.findOrCreate({
+                    where: {tag}, default: {tag}
+                });
+                tags.push(await PostTags.create({
                     PostId: post.id,
                     HashtagId: tagModel.id
-                });
-            })
-            PostTags.bulkCreate(tags);
+                }));
+            });
+            // await PostTags.bulkCreate(tags);
         }
         return res.json({
             message: "게시글을 작성했습니다.",

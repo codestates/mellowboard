@@ -29,18 +29,15 @@ const images = importAll(
   require.context('../../images/background', false, /\.(png|jpe?g|svg)$/)
 );
 
-export default function PostBoard({
-  isOpenPostBoard,
-  openPostBoardHandler,
-  session,
-  url,
-}) {
-  const [image, setImage] = useState(images['01.png']);
+export default function PostBoard({ isOpenPostBoard, openPostBoardHandler }) {
+  const url = `${process.env.REACT_APP_API_URL}/posts`;
+  console.log(url);
+  const [image, setImage] = useState('01.png');
   const [content, setContent] = useState('');
 
   const randomInteger = () => {
     const random = Math.ceil(Math.random() * 20);
-    setImage(images[imageFiles[random]]);
+    setImage(imageFiles[random]);
   };
 
   const changeContent = (event) => {
@@ -62,9 +59,6 @@ export default function PostBoard({
     axios({
       method: 'post',
       url,
-      headers: {
-        Authorization: `Bearer ${session.accessToken}`,
-      },
       data: {
         content,
         background: image,
@@ -81,7 +75,7 @@ export default function PostBoard({
     return (
       <>
         <ModalBackdrop>
-          <ModalView img={image.default}>
+          <ModalView img={images[image].default}>
             <ButtonBackground onClick={randomInteger}>
               배경 선택
             </ButtonBackground>

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Close } from '@styled-icons/evaicons-solid';
+import { Close } from 'styled-icons/evaicons-solid';
 
 export default styled(Close)`
   color: black;
@@ -7,7 +7,7 @@ export default styled(Close)`
   height: 30px;
   margin: 5px;
 
-  ra &:hover {
+  &:hover {
     color: #ec589b;
   }
 `;

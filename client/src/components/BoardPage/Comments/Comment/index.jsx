@@ -9,22 +9,19 @@ import {
   EditAltButton,
   DeleteButton,
 } from './Button';
-// import Avatar from "@material-ui/core/Avatar";
-export default function Comment({ isLogin }) {
-  const comment = {};
-  comment.isMine = true;
-  const [editMode, setEditMode] = useState(false);
-  comment.comment = '아무거나 써봐';
 
+export default function Comment({ comment, isMine }) {
+  const [editMode, setEditMode] = useState(false);
   const editHandler = () => {
     setEditMode(!editMode);
   };
+  // console.log(comment, isMine);
 
-  if (comment.isMine && !editMode) {
+  if (isMine && !editMode) {
     return (
       <>
         <CommentList>
-          <Label>{comment.comment}</Label>
+          <Label>{comment}</Label>
           <Wrapper>
             <EditAltButton onClick={editHandler} />
             <DeleteButton />
@@ -33,7 +30,7 @@ export default function Comment({ isLogin }) {
       </>
     );
   }
-  if (comment.isMine && editMode) {
+  if (isMine && editMode) {
     return (
       <>
         <CommentList>
@@ -50,7 +47,7 @@ export default function Comment({ isLogin }) {
   return (
     <>
       <CommentList>
-        <Label>{comment.comment}</Label>
+        <Label>{comment}</Label>
       </CommentList>
     </>
   );
