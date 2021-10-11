@@ -4,13 +4,7 @@ const logger = require('morgan');
 const cors = require('cors');
 const db = require("./models");
 const router = require("./routes");
-const cors = require('cors')
 const app = express();
-let corsOption = {
-  origin: 'http://localhost:3000',
-  credentials: true
-}
-app.use(cors(corsOption));
 app.use(logger('combined'));
 app.use(express.json());
 app.use(cors({ 
@@ -51,6 +45,6 @@ app.use(function (err, req, res, next) {
   res.send(err.message);
 });
 
-db.sequelize.sync();
+db.sequelize.sync({ force: true });
 
 module.exports = app;

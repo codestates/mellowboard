@@ -34,7 +34,7 @@ const BtnContainer = styled.span`
   }
 `;
 
-export default function Nav() {
+export default function Nav({openAuthHandler, session}) {
   return (
     <>
       <NavContainer>
@@ -45,13 +45,13 @@ export default function Nav() {
           </NavTitle>
         </Link>
         <BtnContainer>
-          <button id="login_btn">로그인</button>
-          <button id="logout_btn">로그아웃</button>
+          {session.isLogin ? null:<button id="login_btn" onClick={openAuthHandler}>로그인</button>}
+          {session.isLogin ? <button id="logout_btn">로그아웃</button>:null}
           <Link
             to="/mypage"
             style={{ textDecoration: 'none', color: '#f5f6fa' }}
           >
-            <button id="mypage_btn">마이페이지</button>
+            {session.isLogin ?<button id="mypage_btn">마이페이지</button>:null}
           </Link>
         </BtnContainer>
       </NavContainer>

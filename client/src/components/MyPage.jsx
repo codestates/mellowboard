@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import MyPosts from '../components/MyPosts';
-import MyComments from '../components/MyComments';
-import MyInfo from '../components/MyInfo';
+import MyPosts from './MyPosts';
+import MyComments from './MyComments';
+import MyInfo from './MyInfo';
 
 const TabMenu = styled.ul`
   background-color: #dcdcdc;

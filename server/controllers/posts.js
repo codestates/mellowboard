@@ -29,7 +29,7 @@ module.exports = {
                 attributes: ["id"]
             }],
             attributes: {
-                include: [[sequelize.fn("COUNT", "Comments.id"), "commentCount"]]
+                include: [[sequelize.fn("COUNT", "Index.id"), "commentCount"]]
             },
             group: ["Post.id"],
             order: [["id", "DESC"]]
@@ -53,15 +53,15 @@ module.exports = {
     
                 /*
                 // 자신이 작성한 댓글인지 체크
-                post.Comments.map(comment => {
+                post.Index.map(comment => {
                     if(comment.userId === userId) comment.isMine = true;
                     else comment.isMine = false;
                     return comment;
                 })
     
-                // Comments 모델키 소문자로 변경..
-                post.comments = post.Comments;
-                delete post.Comments
+                // Index 모델키 소문자로 변경..
+                post.comments = post.Index;
+                delete post.Index
                 */
             }),
             pages: { page, size, total }
@@ -93,7 +93,7 @@ module.exports = {
             offset: page * size,
             limit: size,
             attributes: {
-                include: [[sequelize.fn("COUNT", "Comments.id"), "commentCount"]]
+                include: [[sequelize.fn("COUNT", "Index.id"), "commentCount"]]
             },
             include: [Hashtag,{
                 model: Comment,
@@ -117,15 +117,15 @@ module.exports = {
 
             /*
             // 자신이 작성한 댓글인지 체크
-            post.Comments.map(comment => {
+            post.Index.map(comment => {
                 if(comment.userId === userId) comment.isMine = true;
                 else comment.isMine = false;
                 return comment;
             })
 
-            // Comments 모델키 소문자로 변경..
-            post.comments = post.Comments;
-            delete post.Comments
+            // Index 모델키 소문자로 변경..
+            post.comments = post.Index;
+            delete post.Index
             */
 
             return post;

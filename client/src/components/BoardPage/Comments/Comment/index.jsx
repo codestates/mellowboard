@@ -1,7 +1,11 @@
 import React from 'react';
 import CommentList from "./CommentList";
-
-export default function Comment({comment, isEditModeComment}) {
+import Button from "./Button";
+// comment, isEditModeComment
+export default function Comment({}) {
+  const comment= {};
+  comment.isMine= true;
+  const isEditModeComment=true;
   if (comment.isMine && isEditModeComment) {
     return (
       <>
@@ -9,9 +13,9 @@ export default function Comment({comment, isEditModeComment}) {
           <div className="my_comment">
             <span className="comment_content">{comment.comment}</span>
             <span className="comment_update_btns">
-            <button className="comment_modify_btn">수정</button>
-            <button className="comment_modify_btn">삭제</button>
-          </span>
+              <Button>수정</Button>
+              <Button>삭제</Button>
+            </span>
           </div>
         </CommentList>
       </>
@@ -23,9 +27,9 @@ export default function Comment({comment, isEditModeComment}) {
           <div id="input_btns_container">
             <input className="comment_modify_input">{comment.comment}</input>
             <span className="comment_update_btns">
-            <button className="comment_modify_btn">확인</button>
-            <button className="comment_modify_btn">취소</button>
-            <button className="comment_modify_btn">삭제</button>
+            <Button>확인</Button>
+            <Button>취소</Button>
+            <Button>삭제</Button>
           </span>
           </div>
         </CommentList>
