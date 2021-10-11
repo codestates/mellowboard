@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import Nav from './components/Nav';
 import setAxios, { updateToken } from './ApiController';
-import BoardPage from './components/BoardPage/index';
+import BoardPage from './components/BoardPage';
 import MyPage from './components/MyPage';
 import Auth from './components/Auth';
 import PostBoard from './components/PostBoard';
@@ -101,34 +106,34 @@ export default function App() {
     };
   }, [session]);
 
+  console.log(123123, session.accessToken);
+
   return (
     <>
+      <Auth
+        handleSession={handleSession}
+        openAuthHandler={openAuthHandler}
+        isOpenAuth={isOpenAuth}
+      />
+      <PostBoard
+        isOpenPostBoard={isOpenPostBoard}
+        openPostBoardHandler={openPostBoardHandler}
+        session={session}
+      />
       <GlobalStyle />
       <Router>
-        <Nav
-          openAuthHandler={openAuthHandler}
-          session={session}
-          handleSession={handleSession}
-        />
+        <Nav openAuthHandler={openAuthHandler} session={session} />
         <Switch>
           <Route exact path="/">
             <BoardPage isLogin={session.isLogin} />
-            <Auth
-              handleSession={handleSession}
-              openAuthHandler={openAuthHandler}
-              isOpenAuth={isOpenAuth}
-            />
-            <PostBoard
-              isOpenPostBoard={isOpenPostBoard}
-              openPostBoardHandler={openPostBoardHandler}
-              session={session}
-            />
           </Route>
           <Route path="/mypage">
-            <MyPage />
+            {session.isLogin ? <MyPage /> : <Redirect to="/" />}
           </Route>
         </Switch>
-        <PostBtn onClick={openPostBoardHandler}>
+        <PostBtn
+          onClick={session.isLogin ? openPostBoardHandler : openAuthHandler}
+        >
           <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} />
           <span>글 작성</span>
         </PostBtn>
