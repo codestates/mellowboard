@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import Nav from './components/Nav';
+import setAxios, { updateToken } from './ApiController';
 import BoardPage from './components/BoardPage';
 import MyPage from './components/MyPage';
 import Auth from './components/Auth';
@@ -62,8 +63,6 @@ const PostBtn = styled.button`
   }
 `;
 
-axios.defaults.withCredentials = true;
-
 export default function App() {
   const [session, setSession] = useState({ accessToken: '', isLogin: false });
   const handleSession = (token) => {
@@ -81,28 +80,25 @@ export default function App() {
   const openPostBoardHandler = () => {
     setIsOpenPostBoard(!isOpenPostBoard);
   };
-  const url = process.env.REACT_APP_API_URL;
-  console.log(url);
+
   useEffect(() => {
     /**
      * 리액트가 처음 렌더링 될 때 토큰 갱신을 시도한다.
      * httpOnly 라서 자바스크립트에서 쿠키에 접근할 수 없어서 일단 갱신시도해보고 되면 isLogin=true 안되면 false
      */
-
-    axios
-      .post(`${process.env.REACT_APP_API_URL}/auth/refresh`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        // API 요청이 실패되면 함수 종료
-        if (!res.data.result) return;
-        handleSession(res.data.accessToken);
-      })
-      .catch((err) => {
-        // 에러발생..! 개발모드에서만 로그를 찍는다.
-        if (process.env.NODE_ENV === 'development') console.log(err);
-      });
+    // axios global 설정
+    setAxios(handleSession);
+    handleSession(updateToken());
   }, []);
+
+  useEffect(() => {
+    /**
+     * session이 변경되면 axios의 헤더값을 수정한다.
+     */
+    axios.defaults.headers.common = {
+      Authorization: `Bearer ${session.accessToken}`,
+    };
+  }, [session]);
 
   return (
     <>
