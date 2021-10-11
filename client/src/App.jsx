@@ -5,7 +5,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPencilAlt} from '@fortawesome/free-solid-svg-icons';
 import Nav from './Nav';
 import BoardPage from './components/BoardPage';
-import Index from './components/MyPage';
+import MyPage from './components/MyPage';
 import PostBoard from "./components/PostBoard";
 
 const GlobalStyle = createGlobalStyle`
@@ -77,7 +77,7 @@ export default function App() {
             <PostBoard isOpenPostBoard={isOpenPostBoard} openPostBoardHandler={openPostBoardHandler} accessToken={accessToken}/>
           </Route>
           <Route path="/mypage">
-            <Index/>
+            <MyPage/>
           </Route>
         </Switch>
         <PostBtn>

@@ -13,7 +13,7 @@ module.exports = {
             offset: page * size, 
             limit: size, 
             include: {
-                model: Comment, 
+                model: Index,
                 limit: 2,
                 order: [["id", "DESC"]]
             },
@@ -79,7 +79,7 @@ module.exports = {
             offset: page * size, 
             limit: size, 
             include: {
-                model: Comment, 
+                model: Index,
                 limit: 2,
                 order: [["id", "DESC"]]
             },
