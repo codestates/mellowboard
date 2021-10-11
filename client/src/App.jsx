@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import Nav from './components/Nav';
@@ -125,7 +125,7 @@ export default function App() {
             <BoardPage />
           </Route>
           <Route path="/mypage">
-            <MyPage />
+            {session.isLogin ? <MyPage /> : <Redirect to="/" />}
           </Route>
         </Switch>
         <PostBtn onClick={openPostBoardHandler}>
