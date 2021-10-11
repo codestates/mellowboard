@@ -53,10 +53,10 @@ const PostBtn = styled.button`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: sticky;
+  position: fixed;
   bottom: 3rem;
   color: #5758bb;
-  margin-left: 49%;
+  margin-left: 80%;
 
   #pencil_icon {
     font-size: 2rem;
