@@ -13,6 +13,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Gugi', 'Noto Serif KR', cursive, serif;
 
     /* 전체 배경화면 설정 */
+
       background: linear-gradient(-45deg, #1B1464, #006266, #6F1E51, #cd6133);
       background-size: 400% 400%;
       animation: aurora 20s ease infinite;
@@ -76,6 +77,7 @@ export default function App() {
         </Switch>
         <PostBtn>
           <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} />
+
           <span>글 작성</span>
         </PostBtn>
       </Router>

@@ -7,7 +7,7 @@ module.exports = {
   },
   generateRefreshToken: (data) => {
     delete data.password;
-    return sign(data, process.env.REFRESH_SECRET, {expiresIn: "2h"});
+    return sign(data, process.env.REFRESH_SECRET, {expiresIn: "30d"});
   },
   sendTokenInCookie: (res, accessToken) => {
     res.cookie("jwt", accessToken, { SameSite: "Strict", httpOnly: true, secure: false });

@@ -19,13 +19,22 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userId",
         onDelete: "CASCADE"
       });
-      
+    }
+
+    json() {
+      return {
+        id: this.id,
+        account: this.account,
+        email: this.email,
+        createdAt: this.createdAt,
+        updatedAt: this.updatedAt
+      }
     }
   };
 
   // unique column: email - email로 로그인하기 때문이다.
   User.init({
-    userId: {
+    account: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true
