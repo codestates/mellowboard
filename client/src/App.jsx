@@ -6,7 +6,6 @@ import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import Nav from './components/Nav';
 import BoardPage from './pages/BoardPage';
 import MyPage from './pages/MyPage';
-
 const GlobalStyle = createGlobalStyle`
   body {
     /* font 설정 */
