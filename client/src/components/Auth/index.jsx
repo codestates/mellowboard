@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import React, {useState} from 'react';
+import styled, {keyframes} from 'styled-components';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import Overlay from './Overlay';
@@ -19,6 +19,12 @@ const showForm = keyframes`
 `;
 
 const AuthRoot = styled.div`
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
   /* COLORS */
   --white: #e9e9e9;
   --gray: #333;
@@ -34,7 +40,7 @@ const AuthRoot = styled.div`
 
   font-size: 16px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 
 
   align-items: center;
@@ -80,7 +86,7 @@ const AuthRoot = styled.div`
   .overlay {
     /* background-color: var(--lightblue); */
     /* background: url("https://res.cloudinary.com/dci1eujqw/image/upload/v1616769558/Codepen/waldemar-brandt-aThdSdgx0YM-unsplash_cnq4sb.jpg"); */
-    background-color: rgba( 255, 255, 255, 0 );
+    background-color: rgba(255, 255, 255, 0);
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
@@ -109,7 +115,7 @@ const AuthRoot = styled.div`
     transform: translateX(0);
     transition: transform 0.6s ease-in-out;
     width: 50%;
-    background-color: rgba(255, 255, 255 ,0);
+    background-color: rgba(255, 255, 255, 0);
   }
 
   .overlay--left {
@@ -140,10 +146,10 @@ const AuthRoot = styled.div`
 `;
 
 const Container = styled.div`
-  background-color: rgba( 255, 255, 255, 0 ); // 투명하게
+  background-color: rgba(255, 255, 255, 0); // 투명하게
   border-radius: var(--button-radius);
   box-shadow: 0 0.9rem 1.7rem rgba(0, 0, 0, 0.25),
-    0 0.7rem 0.7rem rgba(0, 0, 0, 0.22);
+  0 0.7rem 0.7rem rgba(0, 0, 0, 0.22);
   height: var(--max-height);
   max-width: var(--max-width);
   overflow: hidden;
@@ -163,23 +169,30 @@ const ContainerForm = styled.div`
   }
 `;
 
-export default function Auth({ handleSession }) {
+export default function Auth({handleSession, isOpenAuth, openAuthHandler}) {
   const [active, setActive] = useState(false);
 
   // 회원가입, 로그인 보기 전환
   const handleActive = (bool) => setActive(bool);
-
-  return (
-    <AuthRoot>
-      <Container className={active ? 'container right-panel-active' : 'container'}>
-        <ContainerForm className="container--signup">
-          <SignUp handleSession={handleSession} />
-        </ContainerForm>
-        <ContainerForm className="container--signin">
-          <SignIn handleSession={handleSession} />
-        </ContainerForm>
-        <Overlay handleActive={handleActive} />
-      </Container>
-    </AuthRoot>
-  );
+  if (isOpenAuth === true) {
+    return (
+      <AuthRoot>
+        <Container className={active ? 'container right-panel-active' : 'container'}>
+          <ContainerForm className="container--signup">
+            <SignUp
+              handleSession={handleSession}
+              openAuthHandler={openAuthHandler}
+            />
+          </ContainerForm>
+          <ContainerForm className="container--signin">
+            <SignIn
+              handleSession={handleSession}
+              openAuthHandler={openAuthHandler}
+            />
+          </ContainerForm>
+          <Overlay handleActive={handleActive}/>
+        </Container>
+      </AuthRoot>
+    );
+  } else return null;
 }

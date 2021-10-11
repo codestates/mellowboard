@@ -72,12 +72,16 @@ export default function App() {
     if (!token) setSession({accessToken: '', isLogin: false});
     else setSession({accessToken: token, isLogin: true});
   };
-
+  const [isOpenAuth, setIsOpenAuth] = useState(false);
   const [isOpenPostBoard, setIsOpenPostBoard] = useState(false);
+  const openAuthHandler = () => {
+    setIsOpenAuth(!isOpenAuth);
+  };
   const openPostBoardHandler = () => {
     setIsOpenPostBoard(!isOpenPostBoard);
   };
   const url = process.env.REACT_APP_API_URL;
+  console.log(url);
   useEffect(() => {
     /**
      * 리액트가 처음 렌더링 될 때 토큰 갱신을 시도한다.
@@ -110,13 +114,20 @@ export default function App() {
 
   return (
     <>
-      <Auth handleSession={handleSession}/>
       <GlobalStyle/>
       <Router>
-        <Nav isLogin={session.isLogin}/>
+        <Nav
+          openAuthHandler={openAuthHandler}
+          session={session}
+        />
         <Switch>
           <Route exact path="/">
             <BoardPage/>
+            <Auth
+              handleSession={handleSession}
+              openAuthHandler={openAuthHandler}
+              isOpenAuth={isOpenAuth}
+            />
             <PostBoard
               isOpenPostBoard={isOpenPostBoard}
               openPostBoardHandler={openPostBoardHandler}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import PostBackground from '../images/background/01.png';
-import Comments from './Comments';
+import PostBackground from '../../images/background/01.png';
+import Index from './Comments';
 
 const PostList = styled.li`
   background: url(${PostBackground}) center center / cover no-repeat;
@@ -197,7 +197,7 @@ export default function Post() {
                 <button className="close_btn" onClick={openModalHandler}>
                   &times;
                 </button>
-                <Comments />
+                <Index />
               </ModalView>
             </ModalBackdrop>
           ) : null}

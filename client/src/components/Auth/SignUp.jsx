@@ -4,7 +4,7 @@ import {
   Form, FormTitle, Input, Button, ErrorMessage,
 } from './Form';
 
-export default function SignUp({ handleSession }) {
+export default function SignUp({ handleSession, openAuthHandler }) {
   const [formState, setFormState] = useState({
     userId: '',
     password: '',
@@ -104,7 +104,8 @@ export default function SignUp({ handleSession }) {
         if (!res.data.result) return;
         handleSession(res.data.accessToken);
         // 회원가입 성공알림.. 모달에 연결하면 모달을 닫는 부분 추가해야함
-        alert("회원가입에 성공했습니다.");
+        // alert("회원가입에 성공했습니다.");
+        openAuthHandler();
       })
       .catch((err) => {
         console.log(err);
