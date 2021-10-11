@@ -128,7 +128,7 @@ export default function App() {
             {session.isLogin ? <MyPage /> : <Redirect to="/" />}
           </Route>
         </Switch>
-        <PostBtn onClick={openPostBoardHandler}>
+        <PostBtn onClick={session.isLogin ? openPostBoardHandler : openAuthHandler}>
           <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} />
           <span>글 작성</span>
         </PostBtn>
