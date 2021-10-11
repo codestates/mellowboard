@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export default styled.textarea`
   margin: 0rem 0rem;

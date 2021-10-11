@@ -3,8 +3,8 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
-import Nav from './components/Nav';
 import axios from 'axios';
+import Nav from './components/Nav';
 import setAxios, { updateToken } from './ApiController';
 import BoardPage from './components/BoardPage';
 import MyPage from './components/MyPage';
@@ -99,27 +99,22 @@ export default function App() {
       Authorization: `Bearer ${session.accessToken}`,
     };
   }, [session]);
-
+  console.log(123123, session.accessToken);
   return (
     <>
+      <Auth
+        handleSession={handleSession}
+        openAuthHandler={openAuthHandler}
+        isOpenAuth={isOpenAuth}
+      />
+      <PostBoard
+        isOpenPostBoard={isOpenPostBoard}
+        openPostBoardHandler={openPostBoardHandler}
+        session={session}
+      />
       <GlobalStyle />
       <Router>
-        <Nav
-          openAuthHandler={openAuthHandler}
-          session={session}
-          handleSession={handleSession}
-        />
-        <Auth
-          handleSession={handleSession}
-          openAuthHandler={openAuthHandler}
-          isOpenAuth={isOpenAuth}
-          setIsOpenAuth={setIsOpenAuth}
-        />
-        <PostBoard
-          isOpenPostBoard={isOpenPostBoard}
-          openPostBoardHandler={openPostBoardHandler}
-          session={session}
-        />
+        <Nav openAuthHandler={openAuthHandler} session={session} />
         <Switch>
           <Route exact path="/">
             <BoardPage />
