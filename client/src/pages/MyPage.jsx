@@ -32,6 +32,20 @@ const TabMenu = styled.ul`
   }
 `;
 
+const MyPostsContainer = styled.ul`
+  text-align: center;
+  height: 100%;
+  /* border: 3px solid red; */
+  margin: 1rem 1rem -4.5rem 1rem;
+  list-style: none;
+
+  @media screen and (min-width: 768px) {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+`;
+
 const MyContentsContainer = styled.ul`
   text-align: center;
   height: 100%;
@@ -69,7 +83,13 @@ export default function MyPage() {
           );
         })}
       </TabMenu>
-      <MyContentsContainer>{menuArr[currentTab].content}</MyContentsContainer>
+      {currentTab === 0 ? (
+        <MyPostsContainer>
+          <MyPosts />
+        </MyPostsContainer>
+      ) : (
+        <MyContentsContainer>{menuArr[currentTab].content}</MyContentsContainer>
+      )}
     </>
   );
 }

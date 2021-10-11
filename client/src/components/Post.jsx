@@ -5,14 +5,20 @@ import Comments from './Comments';
 
 const PostList = styled.li`
   background: url(${PostBackground}) center center / cover no-repeat;
-  border: 3px solid blue;
-  width: 50%;
-  margin: 1rem -2.3rem;
+  border-radius: 1rem;
+  /* border: 3px solid blue; */
+  width: 100%;
+  margin: 1rem -1.45rem;
   display: flex;
   flex-direction: column;
 
-  :nth-child(2n) {
-    margin-left: 3.6rem;
+  @media screen and (min-width: 768px) {
+    width: 50%;
+    margin: 1rem -2rem;
+
+    :nth-child(2n) {
+      margin-left: 3.6rem;
+    }
   }
 
   #top_btns {
@@ -88,7 +94,7 @@ const ModalBackdrop = styled.div`
   place-items: center;
 `;
 
-const ModalView = styled.div.attrs((props) => ({
+const ModalView = styled.div.attrs(() => ({
   role: 'dialog',
 }))`
   border-radius: 1rem;

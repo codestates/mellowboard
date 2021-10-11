@@ -16,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
       background: linear-gradient(-45deg, #1B1464, #006266, #6F1E51, #cd6133);
       background-size: 400% 400%;
       animation: aurora 20s ease infinite;
-      height: 100vh;
+      min-height: 100vh;
 
     /* 레이아웃 리셋 */
     box-sizing: border-box;

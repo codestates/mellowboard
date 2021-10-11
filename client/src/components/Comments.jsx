@@ -10,7 +10,7 @@ export default function Comments() {
   return (
     <>
       <CommentsContainer>
-        <Comment></Comment>
+        <Comment />
       </CommentsContainer>
     </>
   );

@@ -34,7 +34,7 @@ const BtnContainer = styled.span`
   }
 `;
 
-export default function Nav({}) {
+export default function Nav() {
   return (
     <>
       <NavContainer>
