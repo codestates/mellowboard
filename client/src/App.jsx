@@ -8,7 +8,7 @@ import Nav from './components/Nav';
 import BoardPage from './pages/BoardPage';
 import MyPage from './pages/MyPage';
 import Auth from './components/Auth';
-import PostBoard from "./components/PostBoard";
+import PostBoard from './components/PostBoard';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -77,6 +77,7 @@ export default function App() {
   const [isOpenPostBoard, setIsOpenPostBoard] = useState(false);
   const openPostBoardHandler = () => {
     setIsOpenPostBoard(!isOpenPostBoard);
+  };
   useEffect(() => {
     /**
      * 리액트가 처음 렌더링 될 때 토큰 갱신을 시도한다.
@@ -114,8 +115,8 @@ export default function App() {
             <MyPage />
           </Route>
         </Switch>
-        <PostBtn>
-          <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} />
+        <PostBtn onClick={openPostBoardHandler}>
+          <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt}/>
 
           <span>글 작성</span>
         </PostBtn>
