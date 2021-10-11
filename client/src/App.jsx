@@ -99,7 +99,7 @@ export default function App() {
       Authorization: `Bearer ${session.accessToken}`,
     };
   }, [session]);
-
+  console.log(123123, session.accessToken);
   return (
     <>
       <Auth
@@ -111,7 +111,6 @@ export default function App() {
         isOpenPostBoard={isOpenPostBoard}
         openPostBoardHandler={openPostBoardHandler}
         session={session}
-        url={url}
       />
       <GlobalStyle />
       <Router>
