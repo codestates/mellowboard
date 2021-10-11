@@ -26,7 +26,7 @@ function importAll(r) {
 
 const images = importAll(require.context('../../images/background', false, /\.(png|jpe?g|svg)$/));
 
-export default function PostBoard({isOpenPostBoard, openPostBoardHandler, session}) {
+export default function PostBoard({isOpenPostBoard, openPostBoardHandler, session, url}) {
   const [image, setImage] = useState(images['01.png']);
   const [content, setContent] = useState('');
 
@@ -51,7 +51,6 @@ export default function PostBoard({isOpenPostBoard, openPostBoardHandler, sessio
       console.log(err);
     };
 
-    const url = 'http://localhost:4000/posts';
     axios({
       method : 'post',
       url    : url,
