@@ -88,7 +88,7 @@ export default function App() {
      */
     // axios global 설정
     setAxios(handleSession);
-    handleSession(updateToken());
+    updateToken().then((token) => handleSession(token));
   }, []);
 
   useEffect(() => {
@@ -107,6 +107,7 @@ export default function App() {
         <Nav
           openAuthHandler={openAuthHandler}
           session={session}
+          handleSession={handleSession}
         />
         <Switch>
           <Route exact path="/">

@@ -191,7 +191,7 @@ export default function Auth({handleSession, isOpenAuth, openAuthHandler}) {
               openAuthHandler={openAuthHandler}
             />
           </ContainerForm>
-          <Overlay handleActive={handleActive}/>
+          <Overlay handleActive={handleActive} />
         </Container>
       </AuthRoot>
     );
