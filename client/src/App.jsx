@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import styled, {createGlobalStyle} from 'styled-components';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faPencilAlt} from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect, useState } from 'react';
+import styled, { createGlobalStyle } from 'styled-components';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import Nav from './components/Nav';
 import axios from 'axios';
-import setAxios from './ApiController';
-import BoardPage from './pages/BoardPage';
-import MyPage from './pages/MyPage';
+import setAxios, { updateToken } from './ApiController';
+import BoardPage from './components/BoardPage';
+import MyPage from './components/MyPage';
 import Auth from './components/Auth';
 import PostBoard from './components/PostBoard';
 
@@ -64,13 +64,13 @@ const PostBtn = styled.button`
 `;
 
 export default function App() {
-  const [session, setSession] = useState({accessToken: '', isLogin: false});
+  const [session, setSession] = useState({ accessToken: '', isLogin: false });
   const handleSession = (token) => {
     /**
      * 세션관리 핸들러
      */
-    if (!token) setSession({accessToken: '', isLogin: false});
-    else setSession({accessToken: token, isLogin: true});
+    if (!token) setSession({ accessToken: '', isLogin: false });
+    else setSession({ accessToken: token, isLogin: true });
   };
   const [isOpenAuth, setIsOpenAuth] = useState(false);
   const [isOpenPostBoard, setIsOpenPostBoard] = useState(false);
@@ -80,24 +80,15 @@ export default function App() {
   const openPostBoardHandler = () => {
     setIsOpenPostBoard(!isOpenPostBoard);
   };
-  const url = process.env.REACT_APP_API_URL;
-  console.log(url);
+
   useEffect(() => {
     /**
      * 리액트가 처음 렌더링 될 때 토큰 갱신을 시도한다.
      * httpOnly 라서 자바스크립트에서 쿠키에 접근할 수 없어서 일단 갱신시도해보고 되면 isLogin=true 안되면 false
      */
-
-    axios.post('/auth/refresh', {withCredentials: true})
-      .then((res) => {
-        // API 요청이 실패되면 함수 종료
-        if (!res.data.result) return;
-        handleSession(res.data.accessToken);
-      })
-      .catch((err) => {
-        // 에러발생..! 개발모드에서만 로그를 찍는다.
-        if (process.env.NODE_ENV === 'development') console.log(err);
-      });
+    // axios global 설정
+    setAxios(handleSession);
+    handleSession(updateToken());
   }, []);
 
   useEffect(() => {
@@ -109,12 +100,9 @@ export default function App() {
     };
   }, [session]);
 
-  // axios global 설정
-  setAxios(handleSession);
-
   return (
     <>
-      <GlobalStyle/>
+      <GlobalStyle />
       <Router>
         <Nav
           openAuthHandler={openAuthHandler}
@@ -122,7 +110,7 @@ export default function App() {
         />
         <Switch>
           <Route exact path="/">
-            <BoardPage/>
+            <BoardPage />
             <Auth
               handleSession={handleSession}
               openAuthHandler={openAuthHandler}
@@ -132,11 +120,10 @@ export default function App() {
               isOpenPostBoard={isOpenPostBoard}
               openPostBoardHandler={openPostBoardHandler}
               session={session}
-              url={url}
             />
           </Route>
           <Route path="/mypage">
-            <MyPage/>
+            <MyPage />
           </Route>
         </Switch>
         <PostBtn onClick={openPostBoardHandler}>

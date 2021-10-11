@@ -44,8 +44,9 @@ const AuthRoot = styled.div`
 
 
   align-items: center;
-  background-color: var(--white);
-  background: url("https://res.cloudinary.com/dci1eujqw/image/upload/v1616769558/Codepen/waldemar-brandt-aThdSdgx0YM-unsplash_cnq4sb.jpg");
+  /* background-color: var(--white); */
+  background-color: rgba(255, 255, 255, 0);
+  /* background: url("https://res.cloudinary.com/dci1eujqw/image/upload/v1616769558/Codepen/waldemar-brandt-aThdSdgx0YM-unsplash_cnq4sb.jpg"); */
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
@@ -84,9 +85,9 @@ const AuthRoot = styled.div`
 
 
   .overlay {
-    /* background-color: var(--lightblue); */
+    background-color: var(--white);
     /* background: url("https://res.cloudinary.com/dci1eujqw/image/upload/v1616769558/Codepen/waldemar-brandt-aThdSdgx0YM-unsplash_cnq4sb.jpg"); */
-    background-color: rgba(255, 255, 255, 0);
+    /* background-color: #263343; */
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
