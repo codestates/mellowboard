@@ -6,7 +6,7 @@ import XButton from './XButton';
 import WritingComment from './WritingComment';
 
 export default function Comments({ openModalHandler, comments }) {
-  consoleg.log(comments);
+  console.log(comments);
   return (
     <>
       <ModalBackdrop>
