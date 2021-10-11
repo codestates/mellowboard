@@ -26,7 +26,7 @@ function importAll(r) {
 
 const images = importAll(require.context('../../images/background', false, /\.(png|jpe?g|svg)$/));
 
-export default function PostBoard({isOpenPostBoard, openPostBoardHandler, accessToken}) {
+export default function PostBoard({isOpenPostBoard, openPostBoardHandler, session}) {
   const [image, setImage] = useState(images['01.png']);
   const [content, setContent] = useState('');
 
@@ -56,7 +56,7 @@ export default function PostBoard({isOpenPostBoard, openPostBoardHandler, access
       method : 'post',
       url    : url,
       headers: {
-        'Authorization': 'Bearer ' + accessToken
+        'Authorization': 'Bearer ' + session.accessToken
       },
       data   : {
         'content'   : content,
