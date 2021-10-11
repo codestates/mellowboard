@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import Nav from './components/Nav';
@@ -53,10 +53,10 @@ const PostBtn = styled.button`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: sticky;
+  position: fixed;
   bottom: 3rem;
   color: #5758bb;
-  margin-left: 49%;
+  margin-left: 80%;
 
   #pencil_icon {
     font-size: 2rem;
@@ -125,10 +125,10 @@ export default function App() {
             <BoardPage />
           </Route>
           <Route path="/mypage">
-            <MyPage />
+            {session.isLogin ? <MyPage /> : <Redirect to="/" />}
           </Route>
         </Switch>
-        <PostBtn onClick={openPostBoardHandler}>
+        <PostBtn onClick={session.isLogin ? openPostBoardHandler : openAuthHandler}>
           <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} />
           <span>글 작성</span>
         </PostBtn>
