@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+// import {axios} from '../../App';
 import {
   Form, FormTitle, Input, Button, ErrorMessage,
 } from './Form';
@@ -21,7 +22,7 @@ export default function SignIn({ handleSession }) {
 
   const handleSignIn = (e) => {
     e.preventDefault();
-    axios.post(`${process.env.REACT_APP_API_URL}/auth/signin`, formState)
+    axios.post('/auth/signin', formState)
       .then((res) => {
         handleSession(res.data.accessToken);
         // 로그인 성공 이후 모달을 닫는 등의 추가가 필요함
