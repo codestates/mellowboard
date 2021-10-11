@@ -25,9 +25,8 @@ function importAll(r) {
 
 const images = importAll(require.context('../../images/background', false, /\.(png|jpe?g|svg)$/));
 
-
 export default function PostBoard({isOpenPostBoard, openPostBoardHandler, accessToken}) {
-  const [image, setImage] = useState('01.png');
+  const [image, setImage] = useState(images['01.png']);
   const [content, setContent] = useState("");
 
   const randomInteger = () => {
@@ -50,8 +49,6 @@ export default function PostBoard({isOpenPostBoard, openPostBoardHandler, access
       console.log(err);
     }
 
-    console.log(typeof content, typeof image, typeof hashtagList);
-    console.log(typeof "안녕하세요\n #감사합니다", typeof "01.png", typeof ["#감사합니다"]);
     const url = 'http://localhost:4000/posts';
     axios({
       method : 'post',
@@ -71,13 +68,12 @@ export default function PostBoard({isOpenPostBoard, openPostBoardHandler, access
 
     setContent("");
   }
-
   if (isOpenPostBoard === true) {
     return (
       <>
         <ModalBackdrop>
           <ModalView
-            img={images[image].default}
+            img={image.default}
           >
             <ButtonBackground onClick={randomInteger}>배경 선택</ButtonBackground>
             <TextArea placeholder="이야기를 적어주세요." value={content} onChange={changeContent}/>
