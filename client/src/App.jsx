@@ -88,7 +88,7 @@ export default function App() {
      */
     // axios global 설정
     setAxios(handleSession);
-    handleSession(updateToken());
+    updateToken().then((token) => handleSession(token));
   }, []);
 
   useEffect(() => {
@@ -107,20 +107,22 @@ export default function App() {
         <Nav
           openAuthHandler={openAuthHandler}
           session={session}
+          handleSession={handleSession}
+        />
+        <Auth
+          handleSession={handleSession}
+          openAuthHandler={openAuthHandler}
+          isOpenAuth={isOpenAuth}
+          setIsOpenAuth={setIsOpenAuth}
+        />
+        <PostBoard
+          isOpenPostBoard={isOpenPostBoard}
+          openPostBoardHandler={openPostBoardHandler}
+          session={session}
         />
         <Switch>
           <Route exact path="/">
             <BoardPage />
-            <Auth
-              handleSession={handleSession}
-              openAuthHandler={openAuthHandler}
-              isOpenAuth={isOpenAuth}
-            />
-            <PostBoard
-              isOpenPostBoard={isOpenPostBoard}
-              openPostBoardHandler={openPostBoardHandler}
-              session={session}
-            />
           </Route>
           <Route path="/mypage">
             <MyPage />
@@ -128,7 +130,6 @@ export default function App() {
         </Switch>
         <PostBtn onClick={openPostBoardHandler}>
           <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} />
-
           <span>글 작성</span>
         </PostBtn>
       </Router>

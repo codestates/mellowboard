@@ -10,13 +10,14 @@ export const updateToken = async () => {
    * 리프레쉬토큰을 이용해 억세스 토큰을 다시 발급받는다.
    */
   let res;
+  let result;
   try {
     res = await refreshInstance.post('/auth/refresh');
   } catch (err) {
     return false;
   }
-  if (!res.data.result) return false;
-  return res.data?.accessToken;
+  if (res.data?.result) result = res.data.accessToken;
+  return Promise.resolve(result);
 };
 
 export default function setAxios(handleSession) {
@@ -29,7 +30,7 @@ export default function setAxios(handleSession) {
      */
     (config) => config,
     async (err) => {
-      if (err.response.status === 401) {
+      if (err.response?.status === 401) {
         /**
          * 토큰이 더 이상 유효하지 않음..
          * 토큰 갱신을 시도해서 성공하면 요청을 재전송한다.
