@@ -177,8 +177,8 @@ export default function Auth({handleSession, isOpenAuth, openAuthHandler}) {
   const handleActive = (bool) => setActive(bool);
   if (isOpenAuth === true) {
     return (
-      <AuthRoot>
-        <Container className={active ? 'container right-panel-active' : 'container'}>
+      <AuthRoot onClick={()=>openAuthHandler()}>
+        <Container className={active ? 'container right-panel-active' : 'container'} onClick={(e) => e.stopPropagation()}>
           <ContainerForm className="container--signup">
             <SignUp
               handleSession={handleSession}
@@ -195,5 +195,5 @@ export default function Auth({handleSession, isOpenAuth, openAuthHandler}) {
         </Container>
       </AuthRoot>
     );
-  } else return null;
+  } else return '';
 }

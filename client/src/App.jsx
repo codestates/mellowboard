@@ -109,19 +109,20 @@ export default function App() {
           session={session}
           handleSession={handleSession}
         />
+        <Auth
+          handleSession={handleSession}
+          openAuthHandler={openAuthHandler}
+          isOpenAuth={isOpenAuth}
+          setIsOpenAuth={setIsOpenAuth}
+        />
+        <PostBoard
+          isOpenPostBoard={isOpenPostBoard}
+          openPostBoardHandler={openPostBoardHandler}
+          session={session}
+        />
         <Switch>
           <Route exact path="/">
             <BoardPage />
-            <Auth
-              handleSession={handleSession}
-              openAuthHandler={openAuthHandler}
-              isOpenAuth={isOpenAuth}
-            />
-            <PostBoard
-              isOpenPostBoard={isOpenPostBoard}
-              openPostBoardHandler={openPostBoardHandler}
-              session={session}
-            />
           </Route>
           <Route path="/mypage">
             <MyPage />
@@ -129,7 +130,6 @@ export default function App() {
         </Switch>
         <PostBtn onClick={openPostBoardHandler}>
           <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} />
-
           <span>글 작성</span>
         </PostBtn>
       </Router>
