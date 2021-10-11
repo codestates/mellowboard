@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import PostBackground from '../images/post_background/joy_1.png';
+import PostBackground from './images/background/01.png';
 import Comments from './Comments';
 
 const PostList = styled.li`
