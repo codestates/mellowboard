@@ -5,22 +5,8 @@ import { ModalView, ModalBackdrop } from './Modal';
 import XButton from './XButton';
 import WritingComment from './WritingComment';
 
-export default function Comments({ openModalHandler }) {
-  const url = `${process.env.REACT_APP_API_URL}/comments`;
-  const [comments, setComments] = useState([]);
-  axios({
-    method: 'get',
-    url,
-    params: {
-      postId: 1,
-    },
-  })
-    .then((res) => {
-      setComments(res.data.comments);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+export default function Comments({ openModalHandler, comments }) {
+  consoleg.log(comments);
   return (
     <>
       <ModalBackdrop>

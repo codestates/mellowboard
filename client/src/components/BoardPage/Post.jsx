@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 import PostBackground from '../../images/background/01.png';
 import Comments from './Comments';
 
@@ -109,8 +110,23 @@ const ModalView = styled.div.attrs(() => ({
 
 export default function Post() {
   const [isOpen, setIsOpen] = useState(false);
+  const [comments, setComments] = useState([]);
   const openModalHandler = () => {
     setIsOpen(!isOpen);
+    const url = `${process.env.REACT_APP_API_URL}/comments`;
+    axios({
+      method: 'get',
+      url,
+      params: {
+        postId: 1,
+      },
+    })
+      .then((res) => {
+        setComments(res.data.comments);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -192,7 +208,7 @@ export default function Post() {
             댓글 n개
           </span>
           {isOpen === true ? (
-            <Comments openModalHandler={openModalHandler} />
+            <Comments openModalHandler={openModalHandler} comments={comments} />
           ) : null}
           <span id="btn_container">
             <button id="modify_btn">확인</button>
