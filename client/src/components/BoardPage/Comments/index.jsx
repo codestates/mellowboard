@@ -1,17 +1,23 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react';
+import axios from 'axios';
 import Comment from './Comment';
+import { ModalView, ModalBackdrop } from './Modal';
+import XButton from './XButton';
+import WritingComment from './WritingComment';
 
-const CommentsContainer = styled.ul`
-  border: 2px solid red;
-`;
-
-export default function Comments({}) {
+export default function Comments({ openModalHandler, comments }) {
+  console.log(comments);
   return (
     <>
-      <CommentsContainer>
-        <Comment />
-      </CommentsContainer>
+      <ModalBackdrop>
+        <ModalView>
+          <XButton onClick={openModalHandler} />
+          <WritingComment />
+          {comments.map((el) => (
+            <Comment comment={el.comment} isMine={el.isMine} />
+          ))}
+        </ModalView>
+      </ModalBackdrop>
     </>
   );
 }
