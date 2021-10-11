@@ -1,19 +1,20 @@
 import React, {useState} from 'react';
-import Button from "./Button";
-import ButtonBackground from "./ButtonBackground";
-import TextArea from "./TextArea";
-import {ModalView, ModalBackdrop} from "./Modal";
-import Wrapper from "./Wrapper";
+import Button from './Button';
+import ButtonBackground from './ButtonBackground';
+import TextArea from './TextArea';
+import {ModalView, ModalBackdrop} from './Modal';
+import Wrapper from './Wrapper';
 import './index.css';
-import axios from "axios";
+import axios from 'axios';
 
 const imageFiles = Array(20).fill(1).map((el, idx) => {
   if (`${el + idx}`.length === 1) {
-    return 0 + `${el + idx}` + '.png';
+    return '0' + `${el + idx}` + '.png';
   } else {
-    return `${el + idx}` + '.png';
+    const string= `${el + idx}` + '.png';
+    return string;
   }
-})
+});
 
 function importAll(r) {
   let images = {};
@@ -27,16 +28,17 @@ const images = importAll(require.context('../../images/background', false, /\.(p
 
 export default function PostBoard({isOpenPostBoard, openPostBoardHandler, accessToken}) {
   const [image, setImage] = useState(images['01.png']);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState('');
 
   const randomInteger = () => {
     const random = Math.ceil(Math.random() * 20);
     setImage(images[imageFiles[random]]);
-  }
+  };
 
   const changeContent = (event) => {
     setContent(event.target.value);
-  }
+  };
+
   const confirm = () => {
     openPostBoardHandler();
 
@@ -47,7 +49,7 @@ export default function PostBoard({isOpenPostBoard, openPostBoardHandler, access
       hashtagList = array.map(el => el[0]);
     } catch (err) {
       console.log(err);
-    }
+    };
 
     const url = 'http://localhost:4000/posts';
     axios({
@@ -57,16 +59,16 @@ export default function PostBoard({isOpenPostBoard, openPostBoardHandler, access
         'Authorization': 'Bearer ' + accessToken
       },
       data   : {
-        "content"   : content,
-        "background": image,
-        "tags"      : hashtagList
+        'content'   : content,
+        'background': image,
+        'tags'      : hashtagList
       }
     }).catch((err) => {
       console.log(err);
-    })
+    });
     console.log(content, image, hashtagList);
 
-    setContent("");
+    setContent('');
   }
   if (isOpenPostBoard === true) {
     return (
