@@ -1,17 +1,17 @@
 import React from 'react';
-import styled from 'styled-components';
 import Comment from './Comment';
+import { ModalView, ModalBackdrop } from './Modal';
+import XButton from './XButton';
 
-const CommentsContainer = styled.ul`
-  border: 2px solid red;
-`;
-
-export default function Comments({}) {
+export default function Comments({ openModalHandler }) {
   return (
     <>
-      <CommentsContainer>
-        <Comment />
-      </CommentsContainer>
+      <ModalBackdrop>
+        <ModalView>
+          <XButton onClick={openModalHandler} />
+          <Comment />
+        </ModalView>
+      </ModalBackdrop>
     </>
   );
 }

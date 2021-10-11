@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import PostBackground from '../../images/background/01.png';
-import Index from './Comments';
+import Comments from './Comments';
 
 const PostList = styled.li`
   background: url(${PostBackground}) center center / cover no-repeat;
@@ -182,24 +182,17 @@ export default function Post() {
           <button id="background_btn">배경 선택</button>
           <button id="close_btn">&times;</button>
         </div>
-        <TextArea></TextArea>
+        <TextArea />
         <div id="hash_tags">
-          <input className="input_hash_tag" value="#" placeholder="#"></input>
-          <input className="input_hash_tag" placeholder="#"></input>
+          <input className="input_hash_tag" value="#" placeholder="#" />
+          <input className="input_hash_tag" placeholder="#" />
         </div>
         <div id="comments_btns">
           <span id="comments_cnt" onClick={openModalHandler}>
             댓글 n개
           </span>
           {isOpen === true ? (
-            <ModalBackdrop>
-              <ModalView>
-                <button className="close_btn" onClick={openModalHandler}>
-                  &times;
-                </button>
-                <Index />
-              </ModalView>
-            </ModalBackdrop>
+            <Comments openModalHandler={openModalHandler} />
           ) : null}
           <span id="btn_container">
             <button id="modify_btn">확인</button>

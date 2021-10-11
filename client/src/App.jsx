@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import styled, {createGlobalStyle} from 'styled-components';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faPencilAlt} from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect, useState } from 'react';
+import styled, { createGlobalStyle } from 'styled-components';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import Nav from './components/Nav';
 import BoardPage from './components/BoardPage';
@@ -65,13 +65,13 @@ const PostBtn = styled.button`
 axios.defaults.withCredentials = true;
 
 export default function App() {
-  const [session, setSession] = useState({accessToken: '', isLogin: false});
+  const [session, setSession] = useState({ accessToken: '', isLogin: false });
   const handleSession = (token) => {
     /**
      * 세션관리 핸들러
      */
-    if (!token) setSession({accessToken: '', isLogin: false});
-    else setSession({accessToken: token, isLogin: true});
+    if (!token) setSession({ accessToken: '', isLogin: false });
+    else setSession({ accessToken: token, isLogin: true });
   };
   const [isOpenAuth, setIsOpenAuth] = useState(false);
   const [isOpenPostBoard, setIsOpenPostBoard] = useState(false);
@@ -89,7 +89,10 @@ export default function App() {
      * httpOnly 라서 자바스크립트에서 쿠키에 접근할 수 없어서 일단 갱신시도해보고 되면 isLogin=true 안되면 false
      */
 
-    axios.post(`${process.env.REACT_APP_API_URL}/auth/refresh`, {withCredentials: true})
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/auth/refresh`, {
+        withCredentials: true,
+      })
       .then((res) => {
         // API 요청이 실패되면 함수 종료
         if (!res.data.result) return;
@@ -103,33 +106,30 @@ export default function App() {
 
   return (
     <>
-      <GlobalStyle/>
+      <Auth
+        handleSession={handleSession}
+        openAuthHandler={openAuthHandler}
+        isOpenAuth={isOpenAuth}
+      />
+      <PostBoard
+        isOpenPostBoard={isOpenPostBoard}
+        openPostBoardHandler={openPostBoardHandler}
+        session={session}
+        url={url}
+      />
+      <GlobalStyle />
       <Router>
-        <Nav
-          openAuthHandler={openAuthHandler}
-          session={session}
-        />
+        <Nav openAuthHandler={openAuthHandler} session={session} />
         <Switch>
           <Route exact path="/">
-            <BoardPage/>
-            <Auth
-              handleSession={handleSession}
-              openAuthHandler={openAuthHandler}
-              isOpenAuth={isOpenAuth}
-            />
-            <PostBoard
-              isOpenPostBoard={isOpenPostBoard}
-              openPostBoardHandler={openPostBoardHandler}
-              session={session}
-              url={url}
-            />
+            <BoardPage />
           </Route>
           <Route path="/mypage">
-            <MyPage/>
+            <MyPage />
           </Route>
         </Switch>
         <PostBtn onClick={openPostBoardHandler}>
-          <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt}/>
+          <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} />
 
           <span>글 작성</span>
         </PostBtn>
