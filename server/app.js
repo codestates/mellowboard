@@ -1,14 +1,20 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
 const db = require("./models");
-
 const router = require("./routes");
-
 const app = express();
-
 app.use(logger('combined'));
 app.use(express.json());
+app.use(cors({ 
+  origin: [
+    'https://www.mellowboard.xyz',
+    'https://test.doldolma.com',
+    'http://localhost:3000'
+  ],
+  credentials: true,
+}));
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
