@@ -24,24 +24,24 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Gugi', 'Noto Serif KR', cursive, serif;
 
     @font-face {
-    font-family: 'Bazzi';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/Bazzi.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+      font-family: 'Bazzi';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/Bazzi.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
     }
 
     @font-face {
-    font-family: 'SDSamliphopangche_Outline';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+      font-family: 'SDSamliphopangche_Outline';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
     }
 
     @font-face {
-    font-family: 'KyoboHand';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/KyoboHand.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+      font-family: 'KyoboHand';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/KyoboHand.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
     }
 
     /* 전체 배경화면 설정 */
@@ -169,6 +169,18 @@ export default function App() {
     };
   }, [session]);
 
+  function importAll(r) {
+    const images = {};
+    r.keys().forEach((item) => {
+      images[item.replace('./', '')] = r(item);
+    });
+    return images;
+  }
+
+  const images = importAll(
+    require.context('./images/background', false, /\.(png|jpe?g|svg)$/)
+  );
+
   return (
     <>
       <Auth
@@ -181,6 +193,7 @@ export default function App() {
         openPostBoardHandler={openPostBoardHandler}
         session={session}
         addPostHandler={addPostHandler}
+        images={images}
       />
       <GlobalStyle />
       <Router>
@@ -195,7 +208,11 @@ export default function App() {
               isLogin={session.isLogin}
               accessToken={session.accessToken}
               posts={posts}
+<<<<<<< HEAD
               openAuthHandler={openAuthHandler}
+=======
+              images={images}
+>>>>>>> 7925911027fa12d7d72725cf6a78c1eca578237e
             />
           </Route>
           <Route path="/mypage">
