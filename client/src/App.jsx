@@ -6,8 +6,6 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import Nav from './components/Nav';
 import setAxios, { updateToken } from './ApiController';
@@ -193,6 +191,7 @@ export default function App() {
               isLogin={session.isLogin}
               accessToken={session.accessToken}
               posts={posts}
+              modifyPostHandler={modifyPostHandler}
             />
           </Route>
           <Route path="/mypage">
@@ -202,7 +201,7 @@ export default function App() {
         <PostBtn
           onClick={session.isLogin ? openPostBoardHandler : openAuthHandler}
         >
-          <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} />
+          {/* <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} /> */}
           <span>글 작성</span>
         </PostBtn>
       </Router>

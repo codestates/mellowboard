@@ -125,9 +125,8 @@ const images = importAll(
 export default function Post({
   isLogin,
   post,
-  handlePostModify,
+  modifyPostHandler,
   handlePostDelete,
-  addPostHandler,
 }) {
   const { isMine, content, background, tags, commentCount, id } = post;
   const [isModify, setIsModify] = useState(false);
@@ -155,7 +154,7 @@ export default function Post({
       console.log(err);
     }
 
-    handlePostModify(id, text, image, hashtagList);
+    modifyPostHandler(id, text, image, hashtagList);
   };
 
   const openModalHandler = () => {
