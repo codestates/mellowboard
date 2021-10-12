@@ -1,15 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
-import PostBackground from './images/background/03.png';
+import PostBackground from '../../images/background/03.png';
 
 const MyPostList = styled.li`
   background: url(${PostBackground}) center center / cover no-repeat;
-  border: 3px solid blue;
-  width: 97%;
+  /* border: 3px solid blue; */
+  width: 100%;
   display: flex;
   flex-direction: column;
-  margin: 1rem;
+  margin: 1rem -1.4rem;
+  border-radius: 0.5rem;
   color: white;
+
+  @media screen and (min-width: 768px) {
+    width: 50%;
+    margin: 1rem -2rem;
+
+    :nth-child(2n) {
+      margin-left: 3.5rem;
+    }
+  }
 
   #hash_btn_container {
     display: flex;
@@ -97,11 +107,11 @@ export default function MyPosts() {
           <button id="background_btn">배경 선택</button>
           <button id="close_btn">&times;</button>
         </div>
-        <TextArea></TextArea>
+        <TextArea />
         <div id="hash_btn_container">
           <div id="hash_tags">
-            <input className="input_hash_tag" value="#" placeholder="#"></input>
-            <input className="input_hash_tag" placeholder="#"></input>
+            <input className="input_hash_tag" value="#" placeholder="#" />
+            <input className="input_hash_tag" placeholder="#" />
           </div>
           <span id="btn_container">
             <button id="modify_btn">확인</button>
@@ -139,11 +149,11 @@ export default function MyPosts() {
           <button id="background_btn">배경 선택</button>
           <button id="close_btn">&times;</button>
         </div>
-        <TextArea></TextArea>
+        <TextArea />
         <div id="hash_btn_container">
           <div id="hash_tags">
-            <input className="input_hash_tag" value="#" placeholder="#"></input>
-            <input className="input_hash_tag" placeholder="#"></input>
+            <input className="input_hash_tag" value="#" placeholder="#" />
+            <input className="input_hash_tag" placeholder="#" />
           </div>
           <span id="btn_container">
             <button id="modify_btn">확인</button>
@@ -173,11 +183,11 @@ export default function MyPosts() {
           <button id="background_btn">배경 선택</button>
           <button id="close_btn">&times;</button>
         </div>
-        <TextArea></TextArea>
+        <TextArea />
         <div id="hash_btn_container">
           <div id="hash_tags">
-            <input className="input_hash_tag" value="#" placeholder="#"></input>
-            <input className="input_hash_tag" placeholder="#"></input>
+            <input className="input_hash_tag" value="#" placeholder="#" />
+            <input className="input_hash_tag" placeholder="#" />
           </div>
           <span id="btn_container">
             <button id="modify_btn">확인</button>

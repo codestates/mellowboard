@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import MyPosts from '../../MyPosts';
-import MyComments from '../../MyComments';
-import MyInfo from '../../MyInfo';
+import axios from 'axios';
+import MyPosts from './MyPosts';
+import MyComments from './MyComments';
+import MyInfo from './MyInfo';
+import Wrapper from './Wrapper';
 
 const TabMenu = styled.ul`
   background-color: #dcdcdc;
@@ -43,10 +45,17 @@ const MyContentsContainer = styled.ul`
 
 export default function MyPage() {
   const [currentTab, setCurrentTab] = useState(0);
+  // const [isOpen, setIsOpen] = useState(false);
+  // const openModalHandler = () => {
+  //   setIsOpen(!isOpen);
+  // };
 
   const menuArr = [
     { name: '내가 작성한 글', content: <MyPosts /> },
-    { name: '내가 작성한 댓글', content: <MyComments /> },
+    {
+      name: '내가 작성한 댓글',
+      content: <MyComments />,
+    },
     { name: '내 정보 보기', content: <MyInfo /> },
   ];
 
@@ -57,19 +66,21 @@ export default function MyPage() {
   return (
     <>
       <TabMenu>
-        {menuArr.map((el, index) => {
-          return (
-            <li
-              key={index}
-              className={currentTab === index ? 'submenu focused' : 'submenu'}
-              onClick={() => selectMenuHandler(index)}
-            >
-              {el.name}
-            </li>
-          );
-        })}
+        {menuArr.map((el, index) => (
+          <li
+            key={index}
+            className={currentTab === index ? 'submenu focused' : 'submenu'}
+            onClick={() => selectMenuHandler(index)}
+          >
+            {el.name}
+          </li>
+        ))}
       </TabMenu>
-      <MyContentsContainer>{menuArr[currentTab].content}</MyContentsContainer>
+      {menuArr[currentTab].name !== '내가 작성한 댓글' ? (
+        <MyContentsContainer>{menuArr[currentTab].content}</MyContentsContainer>
+      ) : (
+        <Wrapper>{menuArr[currentTab].content}</Wrapper>
+      )}
     </>
   );
 }

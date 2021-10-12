@@ -20,6 +20,7 @@ export default function Comments({
           <Wrapper>
             {comments.map((el) => (
               <Comment
+                key={el.id}
                 comment={el.comment}
                 isMine={el.isMine}
                 commentId={el.id}

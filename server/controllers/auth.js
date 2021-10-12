@@ -12,8 +12,8 @@ const {
 // 로그아웃 - 완료
 module.exports = {
   logout: (req, res) => {
-    res.clearCookie("jwt");
     console.log("123123123");
+    res.clearCookie("jwt");
     return res.json({ result: true, message: "logout success" });
   },
 

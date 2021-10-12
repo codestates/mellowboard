@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import Post from './BoardPage/Post';
-import XButton from './BoardPage/Comments/XButton';
 
 const BoardContainer = styled.ul`
   list-style: none;
