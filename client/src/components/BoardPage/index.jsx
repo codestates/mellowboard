@@ -10,22 +10,7 @@ export default function BoardPage({
   addPostHandler,
 }) {
   const handlePostModify = (postId, content, background, tags) => {
-    axios.patch('/posts', {
-      postId,
-      content,
-      background,
-      tags,
-    });
 
-    setPosts([
-      ...posts.splice(postId, 1, {
-        id: postId,
-        isMine: true,
-        content,
-        background,
-        tags,
-      }),
-    ]);
   };
 
   const handlePostDelete = (postId) => {
@@ -36,8 +21,6 @@ export default function BoardPage({
       .catch((err) => {
         console.log(err);
       });
-
-    setPosts([...posts.splice(postId, 1)]);
   };
 
   return (
