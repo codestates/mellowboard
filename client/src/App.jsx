@@ -93,6 +93,7 @@ export default function App() {
      */
 
     // axios global 설정
+    console.log(`awerawerawe ${process.env.REACT_APP_API_URL}`);
     setAxios(handleSession);
     updateToken().then((token) => handleSession(token));
   }, []);
@@ -125,7 +126,10 @@ export default function App() {
         <Nav openAuthHandler={openAuthHandler} session={session} />
         <Switch>
           <Route exact path="/">
-            <BoardPage isLogin={session.isLogin} />
+            <BoardPage
+              isLogin={session.isLogin}
+              accessToken={session.accessToken}
+            />
           </Route>
           <Route path="/mypage">
             {session.isLogin ? <MyPage /> : <Redirect to="/" />}

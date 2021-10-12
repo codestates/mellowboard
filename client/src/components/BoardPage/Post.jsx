@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import Comments from './Comments';
 
@@ -113,10 +114,12 @@ export default function Post({
   handlePostModify,
   handlePostDelete,
 }) {
-  const { isMine, content, background, tags, comments, id } = post;
+  const { isMine, content, background, tags, commentCount, id } = post;
   const [isModify, setIsModify] = useState(false);
   const [image, setImage] = useState(background);
   const [text, setText] = useState(content);
+  const [isOpen, setIsOpen] = useState(false);
+  const [commentsState, setCommentsState] = useState([]);
 
   const randomInteger = () => {
     const random = Math.ceil(Math.random() * 20);
@@ -138,6 +141,27 @@ export default function Post({
     }
 
     handlePostModify(id, text, image, hashtagList);
+  };
+
+  const openModalHandler = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const refreshHandler = () => {
+    axios({
+      method: 'get',
+      url: '/comments',
+      params: {
+        postId: 1,
+      },
+    })
+      .then((res) => {
+        setCommentsState(res.data.comments);
+        !isOpen ? setIsOpen(!isOpen) : null;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   if (!post) return null;
@@ -177,9 +201,16 @@ export default function Post({
             ))}
           </HashtagContainer>
           <CommentsBtns>
-            <CommentsCnt onClick={() => <Comments />}>
-              {`댓글 ${comments.length}개`}
+            <CommentsCnt onClick={refreshHandler}>
+              {`댓글 ${commentCount}개`}
             </CommentsCnt>
+            {isOpen === true ? (
+              <Comments
+                openModalHandler={openModalHandler}
+                comments={commentsState}
+                refreshHandler={refreshHandler}
+              />
+            ) : null}
             <BottomBtnsContainer>
               <ModifyBtn onClick={setIsModify(true)}>수정</ModifyBtn>
               <DeleteBtn onClick={() => handlePostDelete(id)}>삭제</DeleteBtn>
@@ -200,9 +231,16 @@ export default function Post({
             <HashtagSpan>{tag}</HashtagSpan>
           ))}
         </HashtagContainer>
-        <CommentsCnt onClick={() => <Comments />}>
-          {`댓글 ${comments.length}개`}
+        <CommentsCnt onClick={refreshHandler}>
+          {`댓글 ${commentCount}개`}
         </CommentsCnt>
+        {isOpen === true ? (
+          <Comments
+            openModalHandler={openModalHandler}
+            comments={commentsState}
+            refreshHandler={refreshHandler}
+          />
+        ) : null}
       </PostList>
     </>
   );
