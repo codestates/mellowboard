@@ -107,11 +107,13 @@ export default function MyPosts() {
           <button id="background_btn">배경 선택</button>
           <button id="close_btn">&times;</button>
         </div>
-        <TextArea></TextArea>
+
+        <TextArea />
         <div id="hash_btn_container">
           <div id="hash_tags">
-            <input className="input_hash_tag" value="#" placeholder="#"></input>
-            <input className="input_hash_tag" placeholder="#"></input>
+            <input className="input_hash_tag" value="#" placeholder="#" />
+            <input className="input_hash_tag" placeholder="#" />
+
           </div>
           <span id="btn_container">
             <button id="modify_btn">확인</button>
@@ -149,11 +151,13 @@ export default function MyPosts() {
           <button id="background_btn">배경 선택</button>
           <button id="close_btn">&times;</button>
         </div>
-        <TextArea></TextArea>
+
+        <TextArea />
         <div id="hash_btn_container">
           <div id="hash_tags">
-            <input className="input_hash_tag" value="#" placeholder="#"></input>
-            <input className="input_hash_tag" placeholder="#"></input>
+            <input className="input_hash_tag" value="#" placeholder="#" />
+            <input className="input_hash_tag" placeholder="#" />
+
           </div>
           <span id="btn_container">
             <button id="modify_btn">확인</button>
@@ -183,11 +187,13 @@ export default function MyPosts() {
           <button id="background_btn">배경 선택</button>
           <button id="close_btn">&times;</button>
         </div>
-        <TextArea></TextArea>
+
+        <TextArea />
         <div id="hash_btn_container">
           <div id="hash_tags">
-            <input className="input_hash_tag" value="#" placeholder="#"></input>
-            <input className="input_hash_tag" placeholder="#"></input>
+            <input className="input_hash_tag" value="#" placeholder="#" />
+            <input className="input_hash_tag" placeholder="#" />
+
           </div>
           <span id="btn_container">
             <button id="modify_btn">확인</button>

@@ -41,6 +41,7 @@ const BtnContainer = styled.span`
 
 export default function Nav({ openAuthHandler, session, handleSession }) {
   const logout = () => {
+
     axios.get('/auth/logout').then(() => {
       handleSession();
     });
