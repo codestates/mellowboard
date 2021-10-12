@@ -30,10 +30,10 @@ const images = importAll(
 );
 
 export default function PostBoard({ isOpenPostBoard, openPostBoardHandler }) {
-  const url = `${process.env.REACT_APP_API_URL}/posts`;
-  console.log(url);
   const [image, setImage] = useState('01.png');
   const [content, setContent] = useState('');
+  const [textLength, setTextLength] = useState(0);
+  const maxLength = 200;
 
   const randomInteger = () => {
     const random = Math.ceil(Math.random() * 20);
@@ -41,7 +41,10 @@ export default function PostBoard({ isOpenPostBoard, openPostBoardHandler }) {
   };
 
   const changeContent = (event) => {
-    setContent(event.target.value);
+    const text = event.target.value;
+    if (text.length > maxLength) return;
+    setTextLength(text.length);
+    setContent(text);
   };
 
   const confirm = () => {
@@ -58,7 +61,7 @@ export default function PostBoard({ isOpenPostBoard, openPostBoardHandler }) {
 
     axios({
       method: 'post',
-      url,
+      url: '/posts',
       data: {
         content,
         background: image,
@@ -67,15 +70,14 @@ export default function PostBoard({ isOpenPostBoard, openPostBoardHandler }) {
     }).catch((err) => {
       console.log(err);
     });
-    console.log(content, image, hashtagList);
 
     setContent('');
   };
   if (isOpenPostBoard === true) {
     return (
       <>
-        <ModalBackdrop>
-          <ModalView img={images[image].default}>
+        <ModalBackdrop onClick={() => openPostBoardHandler()}>
+          <ModalView img={images[image].default} onClick={(e) => e.stopPropagation()}>
             <ButtonBackground onClick={randomInteger}>
               배경 선택
             </ButtonBackground>
@@ -87,6 +89,9 @@ export default function PostBoard({ isOpenPostBoard, openPostBoardHandler }) {
             <Wrapper>
               <Button onClick={confirm}>확인</Button>
               <Button onClick={openPostBoardHandler}>취소</Button>
+              {textLength}
+              /
+              {maxLength}
             </Wrapper>
           </ModalView>
         </ModalBackdrop>
