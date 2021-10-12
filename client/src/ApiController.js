@@ -30,9 +30,6 @@ export default function setAxios(handleSession) {
      */
     (config) => config,
     async (err) => {
-      console.log("a : ", axios.defaults);
-      console.log("catch");
-      console.log("err : ", err);
       if (err.response?.status === 401) {
         /**
          * 토큰이 더 이상 유효하지 않음..
