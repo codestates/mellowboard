@@ -149,8 +149,8 @@ const AuthRoot = styled.div`
 const Container = styled.div`
   background-color: rgba(255, 255, 255, 0); // 투명하게
   border-radius: var(--button-radius);
-  box-shadow: 0 0.9rem 1.7rem rgba(0, 0, 0, 0.25),
-  0 0.7rem 0.7rem rgba(0, 0, 0, 0.22);
+  /* box-shadow: 0 0.9rem 1.7rem rgba(0, 0, 0, 0),
+  0 0.7rem 0.7rem rgba(0, 0, 0, 0.22); */
   height: var(--max-height);
   max-width: var(--max-width);
   overflow: hidden;

@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
@@ -10,6 +15,8 @@ import BoardPage from './components/BoardPage';
 import MyPage from './components/MyPage';
 import Auth from './components/Auth';
 import PostBoard from './components/PostBoard';
+
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -86,6 +93,7 @@ export default function App() {
      * 리액트가 처음 렌더링 될 때 토큰 갱신을 시도한다.
      * httpOnly 라서 자바스크립트에서 쿠키에 접근할 수 없어서 일단 갱신시도해보고 되면 isLogin=true 안되면 false
      */
+
     // axios global 설정
     setAxios(handleSession);
     updateToken().then((token) => handleSession(token));
@@ -117,13 +125,18 @@ export default function App() {
         <Nav openAuthHandler={openAuthHandler} session={session} handleSession={handleSession} />
         <Switch>
           <Route exact path="/">
-            <BoardPage />
+            <BoardPage
+              isLogin={session.isLogin}
+              accessToken={session.accessToken}
+            />
           </Route>
           <Route path="/mypage">
             {session.isLogin ? <MyPage /> : <Redirect to="/" />}
           </Route>
         </Switch>
-        <PostBtn onClick={session.isLogin ? openPostBoardHandler : openAuthHandler}>
+        <PostBtn
+          onClick={session.isLogin ? openPostBoardHandler : openAuthHandler}
+        >
           <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} />
           <span>글 작성</span>
         </PostBtn>

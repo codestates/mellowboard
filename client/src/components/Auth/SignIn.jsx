@@ -1,13 +1,11 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 // import {axios} from '../../App';
-import {
-  Form, FormTitle, Input, Button, ErrorMessage,
-} from './Form';
+import { Form, FormTitle, Input, Button, ErrorMessage } from './Form';
 
-export default function SignIn({handleSession, openAuthHandler}) {
+export default function SignIn({ handleSession, openAuthHandler }) {
   const [formState, setFormState] = useState({
-    userId  : '',
+    userId: '',
     password: '',
   });
   const [errorMsg, setErrorMsg] = useState('');
@@ -22,7 +20,8 @@ export default function SignIn({handleSession, openAuthHandler}) {
 
   const handleSignIn = (e) => {
     e.preventDefault();
-    axios.post('/auth/signin', formState)
+    axios
+      .post('/auth/signin', formState)
       .then((res) => {
         handleSession(res.data.accessToken);
         // 로그인 성공 이후 모달을 닫는 등의 추가가 필요함
@@ -31,7 +30,7 @@ export default function SignIn({handleSession, openAuthHandler}) {
       })
       .catch((err) => {
         try {
-          const {status} = err.response;
+          const { status } = err.response;
           if (status >= 400 && status < 500) {
             setErrorMsg('아이디와 비밀번호를 확인해주세요.');
             setTimeout(() => setErrorMsg(''), 5000);
@@ -48,11 +47,24 @@ export default function SignIn({handleSession, openAuthHandler}) {
   return (
     <Form>
       <FormTitle>Sign In</FormTitle>
-      <Input type="ID" placeholder="ID" name="userId" value={formState.userId} onChange={handleFormChange}/>
-      <Input type="password" placeholder="password" name="password" value={formState.password}
-             onChange={handleFormChange}/>
+      <Input
+        type="ID"
+        placeholder="ID"
+        name="userId"
+        value={formState.userId}
+        onChange={handleFormChange}
+      />
+      <Input
+        type="password"
+        placeholder="password"
+        name="password"
+        value={formState.password}
+        onChange={handleFormChange}
+      />
       <ErrorMessage>{errorMsg}</ErrorMessage>
-      <Button className="btn" onClick={handleSignIn}>Sign in</Button>
+      <Button className="btn" onClick={handleSignIn}>
+        Sign in
+      </Button>
     </Form>
   );
 }

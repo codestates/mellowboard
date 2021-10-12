@@ -79,7 +79,7 @@ module.exports = {
 
     // 본인의 댓글인지 확인
     if (comment.userId !== res.locals.userId)
-      return res.status(401).json({
+      return res.status(403).json({
         message: "타인의 댓글은 수정할 수 없습니다.",
         result: false,
       });
@@ -100,20 +100,21 @@ module.exports = {
   },
   delete: async (req, res) => {
     // 댓글 삭제
-    console.log(req.body.commentId);
     const comment = await Comment.findByPk(req.body.commentId);
-    if (!comment)
+    if (!comment){
       return res.status(400).json({
         message: "존재하지 않는 게시글입니다.",
         result: false,
       });
+    }
 
     // 본인 글인지 확인
-    if (comment.userId !== res.locals.userId)
-      return res.status(401).json({
+    if (comment.userId !== res.locals.userId){
+      return res.status(403).json({
         message: "자신의 댓글만 삭제할 수 있습니다.",
         result: false,
       });
+    }
 
     await Comment.destroy({
       where: { id: req.body.commentId },
@@ -121,6 +122,7 @@ module.exports = {
     return res.json({
       message: "댓글을 삭제했습니다.",
       result: true,
+      commentId: req.body.commentId
     });
   },
 };

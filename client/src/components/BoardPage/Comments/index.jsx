@@ -13,8 +13,8 @@ export default function Comments({
 }) {
   return (
     <>
-      <ModalBackdrop>
-        <ModalView>
+      <ModalBackdrop onClick={openModalHandler}>
+        <ModalView onClick={(e) => e.stopPropagation()}>
           <XButton onClick={openModalHandler} />
           <WritingComment refreshHandler={refreshHandler} />
           <Wrapper>
