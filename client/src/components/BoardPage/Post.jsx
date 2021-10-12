@@ -81,16 +81,19 @@ const CommentsBtns = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 `;
 
 const CommentsCnt = styled.span`
   margin: 1rem;
-  width: 4rem;
+  width: 5rem;
   cursor: pointer;
 `;
 
 const BottomContainer = styled.div`
   position: absolute;
+  width: 100%;
+
   bottom: 1rem;
 `;
 
@@ -185,24 +188,7 @@ export default function Post({
   };
 
   if (!post) return null;
-  // <EditingStatePost />
-  // <PostList
-  //   style={{
-  //     background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
-  //   }}
-  // >
-  //   <TopBtns>
-  //     <BackgroundBtn onClick={randomInteger}>배경 선택</BackgroundBtn>
-  //     <CloseBtn onclick={() => setIsModify(false)}>&times;</CloseBtn>
-  //   </TopBtns>
-  //   <TextArea value={text} onChange={changeContent} />
-  //   <BottomContainer>
-  //     <BottomBtnsContainer>
-  //       <ConfirmBtn onClick={confirm(id)}>확인</ConfirmBtn>
-  //       <DeleteBtn onClick={() => handlePostDelete(id)}>삭제</DeleteBtn>
-  //     </BottomBtnsContainer>
-  //   </BottomContainer>
-  // </PostList>
+
   // 내가 쓴 게시물 수정 상태
   if (isModify) {
     return (
@@ -214,12 +200,12 @@ export default function Post({
         >
           <TopBtns>
             <BackgroundBtn onClick={randomInteger}>배경 선택</BackgroundBtn>
-            <CloseBtn onclick={() => setIsModify(false)}>&times;</CloseBtn>
+            <CloseBtn onclick={() => setIsModify(!isModify)}>&times;</CloseBtn>
           </TopBtns>
           <TextArea value={text} onChange={changeContent} />
           <BottomContainer>
             <BottomBtnsContainer>
-              <ConfirmBtn onClick={confirm(id)}>확인</ConfirmBtn>
+              <ConfirmBtn onClick={() => confirm(id)}>확인</ConfirmBtn>
               <DeleteBtn onClick={() => deletePostHandler(id)}>삭제</DeleteBtn>
             </BottomBtnsContainer>
           </BottomContainer>

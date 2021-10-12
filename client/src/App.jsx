@@ -9,7 +9,7 @@ import {
 import axios from 'axios';
 import Nav from './components/Nav';
 import setAxios, { updateToken } from './ApiController';
-import BoardPage from './componets/BoardPage';
+import BoardPage from './components/BoardPage';
 import MyPage from './components/MyPage';
 import Auth from './components/Auth';
 import PostBoard from './components/PostBoard';
@@ -141,10 +141,10 @@ export default function App() {
     console.log(`포스트아이디 ${postId}`);
     axios
       .delete('/posts', {
-        postId,
+        data: { postId },
       })
       .then(() => {
-        setPosts([...posts.splice(postId, 1)]);
+        setPosts(posts.filter((post) => post.id !== postId));
       })
       .catch((err) => {
         console.log(err.response.data);
@@ -242,7 +242,17 @@ export default function App() {
             />
           </Route>
           <Route path="/mypage">
-            {session.isLogin ? <MyPage /> : <Redirect to="/" />}
+            {session.isLogin ? (
+              <MyPage
+                isLogin={session.isLogin}
+                modifyPostHandler={modifyPostHandler}
+                deletePostHandler={deletePostHandler}
+                openAuthHandler={openAuthHandler}
+                images={images}
+              />
+            ) : (
+              <Redirect to="/" />
+            )}
           </Route>
         </Switch>
         <PostBtnContainer>

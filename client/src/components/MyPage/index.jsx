@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
 import axios from 'axios';
 import MyPosts from './MyPosts';
 import MyComments from './MyComments/index';
 import MyInfo from './MyInfo';
-import Wrapper from './Wrapper';
 
 const TabMenu = styled.ul`
   background-color: #dcdcdc;
@@ -19,6 +17,8 @@ const TabMenu = styled.ul`
   list-style: none;
   -webkit-padding-start: 0;
   text-align: center;
+  position: sticky;
+  top: 3rem;
 
   .submenu {
     width: 100%;
@@ -35,13 +35,13 @@ const TabMenu = styled.ul`
 `;
 
 const MyPostsContainer = styled.ul`
-  text-align: center;
-  height: 100%;
-  margin: 1rem 1rem -4.5rem 1rem;
   list-style: none;
+  max-width: 55rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
   @media screen and (min-width: 768px) {
-    display: flex;
     flex-direction: row;
     flex-wrap: wrap;
   }
@@ -56,12 +56,22 @@ const MyContentsContainer = styled.ul`
   list-style: none;
 `;
 
-export default function MyPage() {
+export default function MyPage({
+  isLogin,
+  modifyPostHandler,
+  deletePostHandler,
+  images,
+  openAuthHandler,
+}) {
   const [currentTab, setCurrentTab] = useState(0);
-  // const [isOpen, setIsOpen] = useState(false);
-  // const openModalHandler = () => {
-  //   setIsOpen(!isOpen);
-  // };
+  const [myPosts, setMyPosts] = useState([]);
+
+  useEffect(() => {
+    axios.get('/posts/mypage').then((res) => {
+      setMyPosts(res.data.posts);
+      console.log(myPosts);
+    });
+  }, []);
 
   const menuArr = [
     { name: '내가 작성한 글', content: <MyPosts /> },
@@ -92,7 +102,17 @@ export default function MyPage() {
 
       {currentTab === 0 ? (
         <MyPostsContainer>
-          <MyPosts />
+          {myPosts.map((myPost) => (
+            <MyPosts
+              key={myPost.id}
+              isLogin={isLogin}
+              modifyPostHandler={modifyPostHandler}
+              deletePostHandler={deletePostHandler}
+              images={images}
+              openAuthHandler={openAuthHandler}
+              myPost={myPost}
+            />
+          ))}
         </MyPostsContainer>
       ) : (
         <MyContentsContainer>{menuArr[currentTab].content}</MyContentsContainer>
