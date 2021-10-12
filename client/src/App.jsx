@@ -6,8 +6,6 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import Nav from './components/Nav';
 import setAxios, { updateToken } from './ApiController';
@@ -48,14 +46,13 @@ const GlobalStyle = createGlobalStyle`
 
     background: linear-gradient(-45deg, #1B1464, #006266, #6F1E51, #cd6133);
     background-size: 400% 400%;
-    animation: aurora 20s ease infinite;
+    animation: aurora 15s ease infinite;
     min-height: 100vh;
 
     /* 레이아웃 리셋 */
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -74,6 +71,11 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const PostBtnContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 const PostBtn = styled.button`
   all: unset;
   cursor: pointer;
@@ -89,7 +91,7 @@ const PostBtn = styled.button`
   bottom: 3rem;
   color: #5758bb;
   background-color: #6d214f;
-  margin-left: 70%;
+  /* margin-left: 50%; */
 
   #pencil_icon {
     font-size: 2rem;
@@ -101,28 +103,58 @@ export default function App() {
   const [posts, setPosts] = useState([]);
 
   const addPostHandler = () => {
-    axios.get('/posts').then((res) => {
-      setPosts(res.data.posts);
-    });
+    axios
+      .get('/posts')
+      .then((res) => {
+        setPosts(res.data.posts);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  const modifyPostHandler = (postId, content, background, tags) => {
-    axios.patch('/posts', {
-      postId,
+  const modifyPostHandler = async (post, content, background, tags) => {
+    /**
+     * 게시글을 수정하는 함수. 비동기로 작성
+     * 서버에 요청을 보내고 state를 변경하고 결과를 Promise타입으로 리턴한다.
+     * @return <Promise>
+     */
+    try {
+      await axios
+        .patch('/posts', {
+          postId: post.id,
+          content,
+          background,
+          tags,
+        });
+    } catch (err) {
+      return Promise.reject(err);
+    }
+
+    const newPosts = posts.slice();
+    const changedPostIndex = newPosts.findIndex((e) => e.id === post.id);
+    newPosts[changedPostIndex] = {
+      ...post,
       content,
       background,
       tags,
-    });
+    };
+    setPosts(newPosts);
+    return Promise.resolve(true);
+  };
 
-    setPosts([
-      ...posts.splice(postId, 1, {
-        id: postId,
-        isMine: true,
-        content,
-        background,
-        tags,
-      }),
-    ]);
+  const deletePostHandler = (postId) => {
+    axios
+      .delete('/posts', {
+        data: { postId },
+      })
+      .then(() => {
+        // setPosts([...posts.splice(postId, 1)]);
+        setPosts(posts.filter((post) => post.id !== postId));
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+      });
   };
 
   const handleSession = (token) => {
@@ -155,9 +187,11 @@ export default function App() {
     } catch {}
 
     handleSession(newToken);
-    axios.get('/posts', { headers: { Authorization: `Bearer ${newToken}` } }).then((res) => {
-      setPosts(res.data.posts);
-    });
+    axios
+      .get('/posts', { headers: { Authorization: `Bearer ${newToken}` } })
+      .then((res) => {
+        setPosts(res.data.posts);
+      });
   }, []);
 
   useEffect(() => {
@@ -206,8 +240,9 @@ export default function App() {
           <Route exact path="/">
             <BoardPage
               isLogin={session.isLogin}
-              accessToken={session.accessToken}
               posts={posts}
+              modifyPostHandler={modifyPostHandler}
+              deletePostHandler={deletePostHandler}
               openAuthHandler={openAuthHandler}
               images={images}
             />
@@ -216,12 +251,14 @@ export default function App() {
             {session.isLogin ? <MyPage /> : <Redirect to="/" />}
           </Route>
         </Switch>
-        <PostBtn
-          onClick={session.isLogin ? openPostBoardHandler : openAuthHandler}
-        >
-          <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} />
-          <span>글 작성</span>
-        </PostBtn>
+        <PostBtnContainer>
+          <PostBtn
+            onClick={session.isLogin ? openPostBoardHandler : openAuthHandler}
+          >
+            {/* <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} /> */}
+            <span>글 작성</span>
+          </PostBtn>
+        </PostBtnContainer>
       </Router>
     </>
   );

@@ -13,6 +13,9 @@ const NavContainer = styled.header`
   justify-content: space-between;
   color: #f5f6fa;
   font-size: 0.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 
   @media screen and (min-width: 768px) {
     font-size: 1rem;
@@ -41,7 +44,6 @@ const BtnContainer = styled.span`
 
 export default function Nav({ openAuthHandler, session, handleSession }) {
   const logout = () => {
-
     axios.get('/auth/logout').then(() => {
       handleSession();
     });

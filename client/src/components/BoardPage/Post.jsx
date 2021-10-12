@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Comments from './Comments';
-import EditingStatePost from './EditingStatePost';
 
 export const PostList = styled.li`
   border-radius: 1rem;
   width: 100%;
   min-height: 30rem;
-  margin: 1rem -1.2rem;
+  margin: 0rem -1.2rem 1rem -1.2rem;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -20,7 +19,7 @@ export const PostList = styled.li`
     min-width: 21.5rem;
     height: auto;
     min-height: 35rem;
-    margin: 1rem -3rem 1rem -1rem;
+    margin: 0rem -3rem 1rem -1rem;
 
     :nth-child(2n) {
       margin-left: 4rem;
@@ -127,10 +126,9 @@ export default function Post({
   images,
   isLogin,
   post,
-  handlePostModify,
-  handlePostDelete,
-  addPostHandler,
-  openAuthHandler
+  modifyPostHandler,
+  deletePostHandler,
+  openAuthHandler,
 }) {
   const { isMine, content, background, tags, commentCount, id } = post;
   const [isModify, setIsModify] = useState(false);
@@ -144,11 +142,7 @@ export default function Post({
     setImage(images[imageFiles[random]]);
   };
 
-  const changeContent = (event) => {
-    setText(event.target.value);
-  };
-
-  const confirm = (id) => {
+  const confirm = async () => {
     const hashtagRule = /(\#[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]+)(?!;)/g;
     let hashtagList = '';
     try {
@@ -157,8 +151,12 @@ export default function Post({
     } catch (err) {
       console.log(err);
     }
-
-    handlePostModify(id, text, image, hashtagList);
+    const result = await modifyPostHandler(post, text, image, hashtagList);
+    if (result) {
+      setIsModify(false);
+    } else {
+      alert("서버와의 통신에 실패하였습니다.");
+    }
   };
 
   const openModalHandler = () => {
@@ -209,7 +207,23 @@ export default function Post({
   if (isModify) {
     return (
       <>
-        <EditingStatePost images={images} />
+        <PostList
+          style={{
+            background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
+          }}
+        >
+          <TopBtns>
+            <BackgroundBtn onClick={randomInteger}>배경 선택</BackgroundBtn>
+            <CloseBtn onclick={() => setIsModify(false)}>&times;</CloseBtn>
+          </TopBtns>
+          <TextArea value={text} onChange={(event) => setText(event.target.value)} />
+          <BottomContainer>
+            <BottomBtnsContainer>
+              <ConfirmBtn onClick={confirm}>확인</ConfirmBtn>
+              <DeleteBtn onClick={() => deletePostHandler(id)}>삭제</DeleteBtn>
+            </BottomBtnsContainer>
+          </BottomContainer>
+        </PostList>
       </>
     );
   }
@@ -241,8 +255,10 @@ export default function Post({
                 />
               ) : null}
               <BottomBtnsContainer>
-                <ModifyBtn onClick={setIsModify(true)}>수정</ModifyBtn>
-                <DeleteBtn onClick={() => handlePostDelete(id)}>삭제</DeleteBtn>
+                <ModifyBtn onClick={() => setIsModify(true)}>수정</ModifyBtn>
+                <DeleteBtn onClick={() => deletePostHandler(id)}>
+                  삭제
+                </DeleteBtn>
               </BottomBtnsContainer>
             </CommentsBtns>
           </BottomContainer>
@@ -277,7 +293,9 @@ export default function Post({
             refreshHandler={refreshHandler}
             postId={id}
           />
-        ) : ''}
+        ) : (
+          ''
+        )}
       </PostList>
     </>
   );

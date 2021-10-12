@@ -1,21 +1,16 @@
 import React from 'react';
-import axios from 'axios';
 import BoardContainer from './BoardContainer';
 import Post from './Post';
 
-export default function BoardPage({ isLogin, posts, addPostHandler, images, openAuthHandler }) {
-  const handlePostModify = (postId, content, background, tags) => {};
-
-  const handlePostDelete = (postId) => {
-    axios
-      .delete('/posts', {
-        postId,
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
+export default function BoardPage({
+  isLogin,
+  posts,
+  addPostHandler,
+  modifyPostHandler,
+  deletePostHandler,
+  images,
+  openAuthHandler
+}) {
   return (
     <>
       <BoardContainer>
@@ -25,8 +20,8 @@ export default function BoardPage({ isLogin, posts, addPostHandler, images, open
             isLogin={isLogin}
             post={post}
             addPostHandler={addPostHandler}
-            handlePostModify={handlePostModify}
-            handlePostDelete={handlePostDelete}
+            modifyPostHandler={modifyPostHandler}
+            deletePostHandler={deletePostHandler}
             images={images}
             openAuthHandler={openAuthHandler}
           />

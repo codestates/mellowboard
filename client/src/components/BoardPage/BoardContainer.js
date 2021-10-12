@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export default styled.ul`
   list-style: none;
-  max-width: 80rem;
+  max-width: 55rem;
   display: flex;
   flex-direction: column;
   height: 100%;
