@@ -149,9 +149,12 @@ export default function App() {
 
     // axios global 설정
     setAxios(handleSession);
-    const newToken = await updateToken();
-    handleSession(newToken);
+    let newToken;
+    try {
+      newToken = await updateToken();
+    } catch {}
 
+    handleSession(newToken);
     axios.get('/posts', { headers: { Authorization: `Bearer ${newToken}` } }).then((res) => {
       setPosts(res.data.posts);
     });
@@ -192,6 +195,7 @@ export default function App() {
               isLogin={session.isLogin}
               accessToken={session.accessToken}
               posts={posts}
+              openAuthHandler={openAuthHandler}
             />
           </Route>
           <Route path="/mypage">
