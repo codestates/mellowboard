@@ -6,31 +6,43 @@ import Comments from './Comments';
 export const PostList = styled.li`
   border-radius: 1rem;
   width: 100%;
-  margin: 1rem -1.45rem;
+  min-height: 30rem;
+  margin: 1rem -1.2rem;
   display: flex;
   flex-direction: column;
+  position: relative;
+  font-size: 1rem;
+  color: #95a5a6;
 
   @media screen and (min-width: 768px) {
-    width: 50%;
-    margin: 1rem -2rem;
+    width: 49%;
+    min-width: 21.5rem;
+    height: auto;
+    min-height: 35rem;
+    margin: 1rem -3rem 1rem -1rem;
 
     :nth-child(2n) {
-      margin-left: 3.6rem;
+      margin-left: 4rem;
     }
   }
 `;
 
 const PostText = styled.p`
-  margin: 3rem 5rem;
-  border: 3px solid green;
-  font-family: 'Noto Serif KR';
+  margin: 1rem;
+  font-family: 'KyoboHand';
+  color: white;
+  text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
   font-size: 1.5rem;
+  word-break: break-all;
+
+  @media screen and (min-width: 768px) {
+    font-size: 2rem;
+  }
 `;
 
 const TextArea = styled.textarea`
   margin: 3rem 5rem;
-  border: 3px solid green;
-  font-family: 'Noto Serif KR';
+  font-family: 'KyoboHand';
   font-size: 1.5rem;
   height: 9rem;
   opacity: 0.4;
@@ -54,12 +66,10 @@ const CloseBtn = styled.button`
 `;
 
 const HashtagContainer = styled.div`
-  border: 3px solid black;
   margin: 1rem;
 `;
 
 const HashtagSpan = styled.span`
-  border: 3px solid purple;
   margin-left: 0.5rem;
 `;
 
@@ -75,9 +85,13 @@ const CommentsBtns = styled.div`
 
 const CommentsCnt = styled.span`
   margin: 1rem;
-  border: 3px solid red;
   width: 4rem;
   cursor: pointer;
+`;
+
+const BottomContainer = styled.div`
+  position: absolute;
+  bottom: 1rem;
 `;
 
 const ConfirmBtn = styled.button``;
@@ -172,7 +186,7 @@ export default function Post({
       <>
         <PostList
           style={{
-            background: `url(${image.default}) center center / cover no-repeat`,
+            background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
           }}
         >
           <TopBtns>
@@ -180,10 +194,12 @@ export default function Post({
             <CloseBtn onclick={() => setIsModify(false)}>&times;</CloseBtn>
           </TopBtns>
           <TextArea value={text} onChange={changeContent} />
-          <BottomBtnsContainer>
-            <ConfirmBtn onClick={confirm(id)}>확인</ConfirmBtn>
-            <DeleteBtn onClick={() => handlePostDelete(id)}>삭제</DeleteBtn>
-          </BottomBtnsContainer>
+          <BottomContainer>
+            <BottomBtnsContainer>
+              <ConfirmBtn onClick={confirm(id)}>확인</ConfirmBtn>
+              <DeleteBtn onClick={() => handlePostDelete(id)}>삭제</DeleteBtn>
+            </BottomBtnsContainer>
+          </BottomContainer>
         </PostList>
       </>
     );
@@ -193,29 +209,35 @@ export default function Post({
   if (isMine) {
     return (
       <>
-        <PostList>
+        <PostList
+          style={{
+            background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
+          }}
+        >
           <PostText>{content}</PostText>
-          <HashtagContainer>
-            {tags.map((tag) => (
-              <HashtagSpan>{tag}</HashtagSpan>
-            ))}
-          </HashtagContainer>
-          <CommentsBtns>
-            <CommentsCnt onClick={refreshHandler}>
-              {`댓글 ${commentCount}개`}
-            </CommentsCnt>
-            {isOpen === true ? (
-              <Comments
-                openModalHandler={openModalHandler}
-                comments={commentsState}
-                refreshHandler={refreshHandler}
-              />
-            ) : null}
-            <BottomBtnsContainer>
-              <ModifyBtn onClick={setIsModify(true)}>수정</ModifyBtn>
-              <DeleteBtn onClick={() => handlePostDelete(id)}>삭제</DeleteBtn>
-            </BottomBtnsContainer>
-          </CommentsBtns>
+          <BottomContainer>
+            <HashtagContainer>
+              {tags.map((tag) => (
+                <HashtagSpan>{tag}</HashtagSpan>
+              ))}
+            </HashtagContainer>
+            <CommentsBtns>
+              <CommentsCnt onClick={refreshHandler}>
+                {`댓글 ${commentCount}개`}
+              </CommentsCnt>
+              {isOpen === true ? (
+                <Comments
+                  openModalHandler={openModalHandler}
+                  comments={commentsState}
+                  refreshHandler={refreshHandler}
+                />
+              ) : null}
+              <BottomBtnsContainer>
+                <ModifyBtn onClick={setIsModify(true)}>수정</ModifyBtn>
+                <DeleteBtn onClick={() => handlePostDelete(id)}>삭제</DeleteBtn>
+              </BottomBtnsContainer>
+            </CommentsBtns>
+          </BottomContainer>
         </PostList>
       </>
     );
@@ -224,16 +246,22 @@ export default function Post({
   // 남이 쓴 게시물
   return (
     <>
-      <PostList>
+      <PostList
+        style={{
+          background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
+        }}
+      >
         <PostText>{content}</PostText>
-        <HashtagContainer>
-          {tags.map((tag) => (
-            <HashtagSpan>{tag}</HashtagSpan>
-          ))}
-        </HashtagContainer>
-        <CommentsCnt onClick={refreshHandler}>
-          {`댓글 ${commentCount}개`}
-        </CommentsCnt>
+        <BottomContainer>
+          <HashtagContainer>
+            {tags.map((tag) => (
+              <HashtagSpan>{tag}</HashtagSpan>
+            ))}
+          </HashtagContainer>
+          <CommentsCnt onClick={refreshHandler}>
+            {`댓글 ${commentCount}개`}
+          </CommentsCnt>
+        </BottomContainer>
         {isOpen === true ? (
           <Comments
             openModalHandler={openModalHandler}

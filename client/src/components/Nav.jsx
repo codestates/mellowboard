@@ -12,6 +12,11 @@ const NavContainer = styled.header`
   align-items: center;
   justify-content: space-between;
   color: #f5f6fa;
+  font-size: 0.5rem;
+
+  @media screen and (min-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const NavTitle = styled.span`
@@ -31,13 +36,12 @@ const BtnContainer = styled.span`
     all: unset;
     cursor: pointer;
     margin-right: 2rem;
-    font-size: 1.3rem;
   }
 `;
 
 export default function Nav({ openAuthHandler, session, handleSession }) {
   const logout = () => {
-    axios.get("/auth/logout").then(() => {
+    axios.get('/auth/logout').then(() => {
       handleSession();
     });
   };

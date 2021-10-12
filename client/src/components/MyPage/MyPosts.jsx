@@ -1,15 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
-import PostBackground from './images/background/03.png';
+import PostBackground from '../../images/background/03.png';
 
 const MyPostList = styled.li`
   background: url(${PostBackground}) center center / cover no-repeat;
-  border: 3px solid blue;
-  width: 97%;
+  /* border: 3px solid blue; */
+  width: 100%;
   display: flex;
   flex-direction: column;
-  margin: 1rem;
+  margin: 1rem -1.4rem;
+  border-radius: 0.5rem;
   color: white;
+
+  @media screen and (min-width: 768px) {
+    width: 50%;
+    margin: 1rem -2rem;
+
+    :nth-child(2n) {
+      margin-left: 3.5rem;
+    }
+  }
 
   #hash_btn_container {
     display: flex;
