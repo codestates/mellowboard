@@ -6,10 +6,23 @@ const post = require("../controllers/posts");
 const validationError = require("../middleware/error");
 const {isValidToken} = require("../middleware")
 
-// router.use(isValidToken);
+const {verify} = require('jsonwebtoken');
+
+async function getUserId (req, res, next) {
+  const {authorization} = req.headers;
+  let userId;
+  try{
+  const accessToken = authorization.split(' ')[1];
+    userId = await verify(accessToken, process.env.ACCESS_SECRET).id;
+  }catch(e) {}
+
+  res.locals.userId = parseInt(userId);
+  next();
+}
 
 // 게시글 조회 - 전체 게시글
 router.get("/", 
+  getUserId,
   query("page").default(1).isInt({min: 1}),
   query("size").default(100).isInt(),
   validationError,
