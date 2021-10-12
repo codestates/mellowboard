@@ -99,7 +99,7 @@ export default function App() {
       Authorization: `Bearer ${session.accessToken}`,
     };
   }, [session]);
-  console.log(123123, session.accessToken);
+
   return (
     <>
       <Auth
@@ -114,7 +114,7 @@ export default function App() {
       />
       <GlobalStyle />
       <Router>
-        <Nav openAuthHandler={openAuthHandler} session={session} />
+        <Nav openAuthHandler={openAuthHandler} session={session} handleSession={handleSession} />
         <Switch>
           <Route exact path="/">
             <BoardPage />
