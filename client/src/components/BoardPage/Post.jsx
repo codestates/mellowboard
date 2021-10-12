@@ -110,18 +110,6 @@ const imageFiles = Array(20)
     return string;
   });
 
-function importAll(r) {
-  const images = {};
-  r.keys().forEach((item) => {
-    images[item.replace('./', '')] = r(item);
-  });
-  return images;
-}
-
-const images = importAll(
-  require.context('../../images/background', false, /\.(png|jpe?g|svg)$/)
-);
-
 export default function Post({
   images,
   isLogin,
@@ -139,7 +127,8 @@ export default function Post({
 
   const randomInteger = () => {
     const random = Math.ceil(Math.random() * 20);
-    setImage(images[imageFiles[random]]);
+    const a = imageFiles[random];
+    setImage(a);
   };
 
   const confirm = async () => {
@@ -214,7 +203,7 @@ export default function Post({
         >
           <TopBtns>
             <BackgroundBtn onClick={randomInteger}>배경 선택</BackgroundBtn>
-            <CloseBtn onclick={() => setIsModify(false)}>&times;</CloseBtn>
+            <CloseBtn onClick={() => setIsModify(false)}>&times;</CloseBtn>
           </TopBtns>
           <TextArea value={text} onChange={(event) => setText(event.target.value)} />
           <BottomContainer>
