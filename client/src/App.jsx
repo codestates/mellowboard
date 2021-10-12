@@ -9,7 +9,7 @@ import {
 import axios from 'axios';
 import Nav from './components/Nav';
 import setAxios, { updateToken } from './ApiController';
-import BoardPage from './componets/BoardPage';
+import BoardPage from './components/BoardPage';
 import MyPage from './components/MyPage';
 import Auth from './components/Auth';
 import PostBoard from './components/PostBoard';
@@ -238,6 +238,7 @@ export default function App() {
               modifyPostHandler={modifyPostHandler}
               deletePostHandler={deletePostHandler}
               openAuthHandler={openAuthHandler}
+              addPostHandler={addPostHandler}
               images={images}
             />
           </Route>

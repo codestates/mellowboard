@@ -7,9 +7,7 @@ const ModalView = styled.div`
   align-items: center;
   border-radius: 1rem;
   background: url(${(props) => props.img}) center center / cover no-repeat;
-  width: 650px;
-  height: 800px;
-  margin: 80px;
+  height: 100%;
   //width: 0rem;
   //margin: rem;
 `;

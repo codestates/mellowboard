@@ -38,7 +38,7 @@ export default function SignIn({ handleSession, openAuthHandler }) {
             setErrorMsg('통신에 문제가 발생했습니다. 잠시 후 시도해주세요.');
           }
         } catch (err) {
-          setErrorMsg("통신에 문제가 발생했습니다. 잠시 후 시도해주세요.");
+          setErrorMsg('통신에 문제가 발생했습니다. 잠시 후 시도해주세요.');
           console.log(err);
         }
       });
