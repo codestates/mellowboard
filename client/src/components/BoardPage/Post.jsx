@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Comments from './Comments';
+import EditingStatePost from './EditingStatePost';
 
 export const PostList = styled.li`
   border-radius: 1rem;
@@ -123,13 +124,13 @@ const images = importAll(
 );
 
 export default function Post({
+  images,
   isLogin,
   post,
   handlePostModify,
   handlePostDelete,
   addPostHandler,
 }) {
-  console.log(123, post);
   const { isMine, content, background, tags, commentCount, id } = post;
   const [isModify, setIsModify] = useState(false);
   const [image, setImage] = useState(background);
@@ -181,28 +182,29 @@ export default function Post({
   };
 
   if (!post) return null;
-
+  // <EditingStatePost />
+  // <PostList
+  //   style={{
+  //     background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
+  //   }}
+  // >
+  //   <TopBtns>
+  //     <BackgroundBtn onClick={randomInteger}>배경 선택</BackgroundBtn>
+  //     <CloseBtn onclick={() => setIsModify(false)}>&times;</CloseBtn>
+  //   </TopBtns>
+  //   <TextArea value={text} onChange={changeContent} />
+  //   <BottomContainer>
+  //     <BottomBtnsContainer>
+  //       <ConfirmBtn onClick={confirm(id)}>확인</ConfirmBtn>
+  //       <DeleteBtn onClick={() => handlePostDelete(id)}>삭제</DeleteBtn>
+  //     </BottomBtnsContainer>
+  //   </BottomContainer>
+  // </PostList>
   // 내가 쓴 게시물 수정 상태
   if (isModify) {
     return (
       <>
-        <PostList
-          style={{
-            background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
-          }}
-        >
-          <TopBtns>
-            <BackgroundBtn onClick={randomInteger}>배경 선택</BackgroundBtn>
-            <CloseBtn onclick={() => setIsModify(false)}>&times;</CloseBtn>
-          </TopBtns>
-          <TextArea value={text} onChange={changeContent} />
-          <BottomContainer>
-            <BottomBtnsContainer>
-              <ConfirmBtn onClick={confirm(id)}>확인</ConfirmBtn>
-              <DeleteBtn onClick={() => handlePostDelete(id)}>삭제</DeleteBtn>
-            </BottomBtnsContainer>
-          </BottomContainer>
-        </PostList>
+        <EditingStatePost images={images} />
       </>
     );
   }
