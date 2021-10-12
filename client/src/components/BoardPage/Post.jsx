@@ -144,11 +144,7 @@ export default function Post({ images, isLogin, post, addPostHandler }) {
     setIsModify(!isModify);
   };
 
-  const changeContent = (event) => {
-    setText(event.target.value);
-  };
-
-  const confirm = (id) => {
+  const confirm = async () => {
     const hashtagRule = /(\#[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]+)(?!;)/g;
     let hashtagList = '';
     try {
@@ -157,8 +153,12 @@ export default function Post({ images, isLogin, post, addPostHandler }) {
     } catch (err) {
       console.log(err);
     }
-
-    modifyPostHandler(id, text, image, hashtagList);
+    const result = await modifyPostHandler(post, text, image, hashtagList);
+    if (result) {
+      setIsModify(false);
+    } else {
+      alert('서버와의 통신에 실패하였습니다.');
+    }
   };
 
   const openModalHandler = () => {
