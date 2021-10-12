@@ -122,6 +122,11 @@ module.exports = {
             post.isMine = true
             post.commentCount = post.Comments.length;
             delete post.Comments;
+            const tagList = [];
+            post.tags.map(tag => tagList.push(tag.tag));
+            post.tags = tagList;
+
+            return post;
 
             /*
             // 자신이 작성한 댓글인지 체크
@@ -135,8 +140,6 @@ module.exports = {
             post.comments = post.Index;
             delete post.Index
             */
-
-            return post;
         }),
         pages: {page, size, total}
     });
