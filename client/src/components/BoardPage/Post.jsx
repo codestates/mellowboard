@@ -128,6 +128,7 @@ export default function Post({
   handlePostModify,
   handlePostDelete,
   addPostHandler,
+  openAuthHandler
 }) {
   const { isMine, content, background, tags, commentCount, id } = post;
   const [isModify, setIsModify] = useState(false);
@@ -163,20 +164,24 @@ export default function Post({
   };
 
   const refreshHandler = () => {
-    axios({
-      method: 'get',
-      url: '/comments',
-      params: {
-        postId: id,
-      },
-    })
-      .then((res) => {
-        setComments(res.data.comments);
-        !isOpen ? setIsOpen(!isOpen) : null;
+    if (isLogin) {
+      axios({
+        method: 'get',
+        url: '/comments',
+        params: {
+          postId: id,
+        },
       })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((res) => {
+          setComments(res.data.comments);
+          !isOpen ? setIsOpen(!isOpen) : null;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      openAuthHandler();
+    }
   };
 
   if (!post) return null;
@@ -269,7 +274,7 @@ export default function Post({
             refreshHandler={refreshHandler}
             postId={id}
           />
-        ) : null}
+        ) : ''}
       </PostList>
     </>
   );

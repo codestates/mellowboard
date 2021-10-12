@@ -195,6 +195,7 @@ export default function App() {
               isLogin={session.isLogin}
               accessToken={session.accessToken}
               posts={posts}
+              openAuthHandler={openAuthHandler}
             />
           </Route>
           <Route path="/mypage">
