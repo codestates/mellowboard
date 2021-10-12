@@ -11,12 +11,26 @@ export default function EditingStatePost({
   images,
   isOpenPostBoard,
   openPostBoardHandler,
+  editHandler,
+  postImage,
+  postContent,
+  postId,
   addPostHandler,
 }) {
-  const [image, setImage] = useState('01.png');
-  const [content, setContent] = useState('');
+  const [image, setImage] = useState(postImage);
+  const [content, setContent] = useState(postContent);
   const [textLength, setTextLength] = useState(0);
   const maxLength = 200;
+
+  const imageFiles = Array(20)
+    .fill(1)
+    .map((el, idx) => {
+      if (`${el + idx}`.length === 1) {
+        return `0${el + idx}.png`;
+      }
+      const string = `${el + idx}.png`;
+      return string;
+    });
 
   const randomInteger = () => {
     const random = Math.ceil(Math.random() * 20);
@@ -31,8 +45,6 @@ export default function EditingStatePost({
   };
 
   const confirm = () => {
-    openPostBoardHandler();
-
     const hashtagRule = /(\#[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]+)(?!;)/g;
     let hashtagList = '';
     try {
@@ -43,27 +55,32 @@ export default function EditingStatePost({
     }
 
     axios({
-      method: 'post',
+      method: 'patch',
       url: '/posts',
       data: {
+        postId,
         content,
         background: image,
         tags: hashtagList,
       },
     })
-      .then(() => addPostHandler())
+      .then(() => {
+        // editHandler(content);
+        addPostHandler();
+        openPostBoardHandler();
+      })
       .catch((err) => {
         console.log(err);
       });
-
-    setContent('');
   };
 
   if (isOpenPostBoard === true) {
     return (
       <>
         <ModalView
-          img={images[image].default}
+          style={{
+            background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
+          }}
           onClick={(e) => e.stopPropagation()}
         >
           <ButtonBackground onClick={randomInteger}>배경 선택</ButtonBackground>

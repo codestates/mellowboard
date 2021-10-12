@@ -244,6 +244,7 @@ export default function App() {
               modifyPostHandler={modifyPostHandler}
               deletePostHandler={deletePostHandler}
               openAuthHandler={openAuthHandler}
+              addPostHandler={addPostHandler}
               images={images}
             />
           </Route>
