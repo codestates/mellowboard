@@ -123,10 +123,12 @@ const images = importAll(
 );
 
 export default function Post({
+  images,
   isLogin,
   post,
   modifyPostHandler,
   deletePostHandler,
+  openAuthHandler,
 }) {
   const { isMine, content, background, tags, commentCount, id } = post;
   const [isModify, setIsModify] = useState(false);
@@ -162,24 +164,45 @@ export default function Post({
   };
 
   const refreshHandler = () => {
-    axios({
-      method: 'get',
-      url: '/comments',
-      params: {
-        postId: id,
-      },
-    })
-      .then((res) => {
-        setComments(res.data.comments);
-        !isOpen ? setIsOpen(!isOpen) : null;
+    if (isLogin) {
+      axios({
+        method: 'get',
+        url: '/comments',
+        params: {
+          postId: id,
+        },
       })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((res) => {
+          setComments(res.data.comments);
+          !isOpen ? setIsOpen(!isOpen) : null;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      openAuthHandler();
+    }
   };
 
   if (!post) return null;
-
+  // <EditingStatePost />
+  // <PostList
+  //   style={{
+  //     background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
+  //   }}
+  // >
+  //   <TopBtns>
+  //     <BackgroundBtn onClick={randomInteger}>배경 선택</BackgroundBtn>
+  //     <CloseBtn onclick={() => setIsModify(false)}>&times;</CloseBtn>
+  //   </TopBtns>
+  //   <TextArea value={text} onChange={changeContent} />
+  //   <BottomContainer>
+  //     <BottomBtnsContainer>
+  //       <ConfirmBtn onClick={confirm(id)}>확인</ConfirmBtn>
+  //       <DeleteBtn onClick={() => handlePostDelete(id)}>삭제</DeleteBtn>
+  //     </BottomBtnsContainer>
+  //   </BottomContainer>
+  // </PostList>
   // 내가 쓴 게시물 수정 상태
   if (isModify) {
     return (
@@ -270,7 +293,9 @@ export default function Post({
             refreshHandler={refreshHandler}
             postId={id}
           />
-        ) : null}
+        ) : (
+          ''
+        )}
       </PostList>
     </>
   );

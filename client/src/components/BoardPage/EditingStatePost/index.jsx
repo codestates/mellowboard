@@ -3,25 +3,15 @@ import axios from 'axios';
 import Button from './Button';
 import ButtonBackground from './ButtonBackground';
 import TextArea from './TextArea';
-import { ModalView, ModalBackdrop } from './Modal';
+import { ModalView } from './Modal';
 import Wrapper from './Wrapper';
 import './index.css';
 
-const imageFiles = Array(20)
-  .fill(1)
-  .map((el, idx) => {
-    if (`${el + idx}`.length === 1) {
-      return '0' + `${el + idx}` + '.png';
-    }
-    const string = `${el + idx}` + '.png';
-    return string;
-  });
-
-export default function PostBoard({
+export default function EditingStatePost({
+  images,
   isOpenPostBoard,
   openPostBoardHandler,
   addPostHandler,
-  images,
 }) {
   const [image, setImage] = useState('01.png');
   const [content, setContent] = useState('');
@@ -68,29 +58,25 @@ export default function PostBoard({
 
     setContent('');
   };
+
   if (isOpenPostBoard === true) {
     return (
       <>
-        <ModalBackdrop onClick={() => openPostBoardHandler()}>
-          <ModalView
-            img={images[image].default}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <ButtonBackground onClick={randomInteger}>
-              배경 선택
-            </ButtonBackground>
-            <TextArea
-              placeholder="이야기를 적어주세요."
-              value={content}
-              onChange={changeContent}
-            />
-            <Wrapper>
-              <Button onClick={confirm}>확인</Button>
-              <Button onClick={openPostBoardHandler}>취소</Button>
-              {textLength}/{maxLength}
-            </Wrapper>
-          </ModalView>
-        </ModalBackdrop>
+        <ModalView
+          img={images[image].default}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <ButtonBackground onClick={randomInteger}>배경 선택</ButtonBackground>
+          <TextArea
+            placeholder="이야기를 적어주세요."
+            value={content}
+            onChange={changeContent}
+          />
+          <Wrapper>
+            <Button onClick={confirm}>확인</Button>
+            <Button onClick={openPostBoardHandler}>취소</Button>
+          </Wrapper>
+        </ModalView>
       </>
     );
   }

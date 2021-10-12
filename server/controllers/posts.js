@@ -177,7 +177,7 @@ module.exports = {
     },
     patch: async (req, res) => {
         // 게시물 수정
-        const post = await Post.findByPk(req.body.post_id);
+        const post = await Post.findByPk(req.body.postId);
         if(!post){
             return res.status(400).json({
                 message: "존재하지 않는 게시글ID 입니다.",
@@ -204,7 +204,7 @@ module.exports = {
     },
     delete: async (req, res) => {
         // 게시물 삭제
-        const post = await Post.findByPk(req.body.post_id);
+        const post = await Post.findByPk(req.body.postId);
         if(!post) return res.status(400).json({
             message: "존재하지 않는 게시글입니다.",
             result: false
@@ -217,7 +217,7 @@ module.exports = {
         })
 
         await Post.destroy({
-            where: {id: req.body.post_id}
+            where: {id: req.body.postId}
         })
         return res.json({
             message: "게시글을 삭제했습니다.",

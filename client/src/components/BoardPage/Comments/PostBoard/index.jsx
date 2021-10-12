@@ -17,11 +17,22 @@ const imageFiles = Array(20)
     return string;
   });
 
+function importAll(r) {
+  const images = {};
+  r.keys().forEach((item) => {
+    images[item.replace('./', '')] = r(item);
+  });
+  return images;
+}
+
+const images = importAll(
+  require.context('../../images/background', false, /\.(png|jpe?g|svg)$/)
+);
+
 export default function PostBoard({
   isOpenPostBoard,
   openPostBoardHandler,
   addPostHandler,
-  images,
 }) {
   const [image, setImage] = useState('01.png');
   const [content, setContent] = useState('');

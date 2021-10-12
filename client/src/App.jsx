@@ -9,7 +9,7 @@ import {
 import axios from 'axios';
 import Nav from './components/Nav';
 import setAxios, { updateToken } from './ApiController';
-import BoardPage from './components/BoardPage';
+import BoardPage from './componets/BoardPage';
 import MyPage from './components/MyPage';
 import Auth from './components/Auth';
 import PostBoard from './components/PostBoard';
@@ -22,24 +22,24 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Gugi', 'Noto Serif KR', cursive, serif;
 
     @font-face {
-    font-family: 'Bazzi';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/Bazzi.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+      font-family: 'Bazzi';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/Bazzi.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
     }
 
     @font-face {
-    font-family: 'SDSamliphopangche_Outline';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+      font-family: 'SDSamliphopangche_Outline';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
     }
 
     @font-face {
-    font-family: 'KyoboHand';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/KyoboHand.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+      font-family: 'KyoboHand';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/KyoboHand.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
     }
 
     /* 전체 배경화면 설정 */
@@ -179,8 +179,8 @@ export default function App() {
     try {
       newToken = await updateToken();
     } catch {}
-    handleSession(newToken);
 
+    handleSession(newToken);
     axios
       .get('/posts', { headers: { Authorization: `Bearer ${newToken}` } })
       .then((res) => {
@@ -197,6 +197,18 @@ export default function App() {
     };
   }, [session]);
 
+  function importAll(r) {
+    const images = {};
+    r.keys().forEach((item) => {
+      images[item.replace('./', '')] = r(item);
+    });
+    return images;
+  }
+
+  const images = importAll(
+    require.context('./images/background', false, /\.(png|jpe?g|svg)$/)
+  );
+
   return (
     <>
       <Auth
@@ -209,6 +221,7 @@ export default function App() {
         openPostBoardHandler={openPostBoardHandler}
         session={session}
         addPostHandler={addPostHandler}
+        images={images}
       />
       <GlobalStyle />
       <Router>
@@ -224,6 +237,8 @@ export default function App() {
               posts={posts}
               modifyPostHandler={modifyPostHandler}
               deletePostHandler={deletePostHandler}
+              openAuthHandler={openAuthHandler}
+              images={images}
             />
           </Route>
           <Route path="/mypage">

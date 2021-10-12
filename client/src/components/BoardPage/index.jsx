@@ -1,4 +1,4 @@
-import axios from 'axios';
+import React from 'react';
 import BoardContainer from './BoardContainer';
 import Post from './Post';
 
@@ -8,6 +8,7 @@ export default function BoardPage({
   addPostHandler,
   modifyPostHandler,
   deletePostHandler,
+  images,
 }) {
   return (
     <>
@@ -20,6 +21,7 @@ export default function BoardPage({
             addPostHandler={addPostHandler}
             modifyPostHandler={modifyPostHandler}
             deletePostHandler={deletePostHandler}
+            images={images}
           />
         ))}
       </BoardContainer>
