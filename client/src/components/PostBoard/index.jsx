@@ -29,7 +29,11 @@ const images = importAll(
   require.context('../../images/background', false, /\.(png|jpe?g|svg)$/)
 );
 
-export default function PostBoard({ isOpenPostBoard, openPostBoardHandler }) {
+export default function PostBoard({
+  isOpenPostBoard,
+  openPostBoardHandler,
+  addPostHandler,
+}) {
   const [image, setImage] = useState('01.png');
   const [content, setContent] = useState('');
   const [textLength, setTextLength] = useState(0);
@@ -71,13 +75,18 @@ export default function PostBoard({ isOpenPostBoard, openPostBoardHandler }) {
       console.log(err);
     });
 
+    addPostHandler();
+
     setContent('');
   };
   if (isOpenPostBoard === true) {
     return (
       <>
         <ModalBackdrop onClick={() => openPostBoardHandler()}>
-          <ModalView img={images[image].default} onClick={(e) => e.stopPropagation()}>
+          <ModalView
+            img={images[image].default}
+            onClick={(e) => e.stopPropagation()}
+          >
             <ButtonBackground onClick={randomInteger}>
               배경 선택
             </ButtonBackground>
@@ -89,9 +98,7 @@ export default function PostBoard({ isOpenPostBoard, openPostBoardHandler }) {
             <Wrapper>
               <Button onClick={confirm}>확인</Button>
               <Button onClick={openPostBoardHandler}>취소</Button>
-              {textLength}
-              /
-              {maxLength}
+              {textLength}/{maxLength}
             </Wrapper>
           </ModalView>
         </ModalBackdrop>

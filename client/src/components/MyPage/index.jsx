@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+
 import axios from 'axios';
 import MyPosts from './MyPosts';
 import MyComments from './MyComments';
@@ -27,10 +28,22 @@ const TabMenu = styled.ul`
 
   .focused {
     width: 100%;
-
     background-color: navy;
     color: rgba(255, 255, 255, 1);
     transition: 0.5s ease;
+  }
+`;
+
+const MyPostsContainer = styled.ul`
+  text-align: center;
+  height: 100%;
+  margin: 1rem 1rem -4.5rem 1rem;
+  list-style: none;
+
+  @media screen and (min-width: 768px) {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 `;
 
@@ -76,10 +89,14 @@ export default function MyPage() {
           </li>
         ))}
       </TabMenu>
-      {menuArr[currentTab].name !== '내가 작성한 댓글' ? (
-        <MyContentsContainer>{menuArr[currentTab].content}</MyContentsContainer>
+
+      {currentTab === 0 ? (
+        <MyPostsContainer>
+          <MyPosts />
+        </MyPostsContainer>
       ) : (
-        <Wrapper>{menuArr[currentTab].content}</Wrapper>
+        <MyContentsContainer>{menuArr[currentTab].content}</MyContentsContainer>
+
       )}
     </>
   );

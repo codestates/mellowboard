@@ -3,25 +3,15 @@ import axios from 'axios';
 import BoardContainer from './BoardContainer';
 import Post from './Post';
 
-export default function BoardPage({ isLogin, accessToken }) {
-  const [posts, setPosts] = useState([]);
-  useEffect(() => {
-    axios
-      .get('/posts')
-      .then((res) => {
-        setPosts(res.data.posts);
-      });
-  }, []);
-
+export default function BoardPage({ isLogin, accessToken, posts }) {
   const handlePostModify = (postId, content, background, tags) => {
-    axios
-      .patch('/posts',
-        {
-          postId,
-          content,
-          background,
-          tags,
-        });
+    axios.patch('/posts', {
+      postId,
+      content,
+      background,
+      tags,
+    });
+
     setPosts([
       ...posts.splice(postId, 1, {
         id: postId,

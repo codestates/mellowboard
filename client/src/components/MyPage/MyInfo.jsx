@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 
 const MyInfoForm = styled.form`
+
   font-family: 'Noto Serif KR';
   font-size: 1.5rem;
   background-color: #cb883c63;
@@ -38,6 +39,7 @@ const Button = styled.button`
 export const ErrorMessage = styled.div`
   color: #8e2305;
   background-color: #9370478f;
+
   font-size: big;
   width: 100%;
 `;
@@ -105,6 +107,7 @@ export default function MyInfo() {
     }
 
     axios.patch('/users', userForm).then((res) => {
+
       const msg = document.getElementById('errorMsg');
       msg.style.color = 'green';
       setErrorMsg('회원정보가 수정되었습니다.');
@@ -114,6 +117,7 @@ export default function MyInfo() {
       setTimeout(() => {
         setErrorMsg('');
         msg.style.color = '#8e2305';
+
       }, 4000);
     });
   };
@@ -121,34 +125,44 @@ export default function MyInfo() {
   return (
     <>
       <MyInfoForm id="infoForm">
+
         <h3>{userInfo.account}님의 정보</h3>
         <div className="change_password">
           <label>
+
             변경하실 비밀번호
           </label>
           <input type="password" name="password" value={userForm.password} onChange={handleForm} />
         </div>
+
         <div className="change_password">
+
           <label htmlFor="" id="change_password_check">
             변경하실 비밀번호 확인
           </label>
           <input type="password" name="password2" value={userForm.password2} onChange={handleForm} />
         </div>
+
         <div className="change_email">
+
           <label htmlFor="" id="change_email">
             변경하실 이메일
           </label>
           <input type="text" name="email" value={userForm.email} onChange={handleForm} />
         </div>
+
         <div className="change_email">
+
           <label htmlFor="" id="change_email_check">
             변경하실 이메일 확인
           </label>
           <input type="text" name='email2' value={userForm.email2} onChange={handleForm} />
         </div>
         <div id="btn_container">
+
           <Button id="withdrawal_btn" onClick={deleteUser}>회원 탈퇴</Button>
           <Button id="modify_info_btn" onClick={changeUserInfo}>정보 수정</Button>
+
           <ErrorMessage id="errorMsg">{errorMsg}</ErrorMessage>
         </div>
       </MyInfoForm>

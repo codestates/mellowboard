@@ -23,6 +23,27 @@ const GlobalStyle = createGlobalStyle`
     /* font 설정 */
     font-family: 'Gugi', 'Noto Serif KR', cursive, serif;
 
+    @font-face {
+    font-family: 'Bazzi';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/Bazzi.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    }
+
+    @font-face {
+    font-family: 'SDSamliphopangche_Outline';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    }
+
+    @font-face {
+    font-family: 'KyoboHand';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/KyoboHand.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    }
+
     /* 전체 배경화면 설정 */
 
     background: linear-gradient(-45deg, #1B1464, #006266, #6F1E51, #cd6133);
@@ -34,6 +55,10 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   @keyframes aurora {
@@ -63,7 +88,8 @@ const PostBtn = styled.button`
   position: fixed;
   bottom: 3rem;
   color: #5758bb;
-  margin-left: 80%;
+  background-color: #6d214f;
+  margin-left: 70%;
 
   #pencil_icon {
     font-size: 2rem;
@@ -72,6 +98,44 @@ const PostBtn = styled.button`
 
 export default function App() {
   const [session, setSession] = useState({ accessToken: '', isLogin: false });
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    axios.get('/posts').then((res) => {
+      setPosts(res.data.posts);
+    });
+  }, []);
+
+  const addPostHandler = () => {
+    axios.get('/posts').then((res) => {
+      setPosts(res.data.posts);
+    });
+  };
+
+  const modifyPostHandler = () => {
+    axios.get('/posts').then((res) => {
+      setPosts(res.data.posts);
+    });
+  };
+
+  const handlePostModify = (postId, content, background, tags) => {
+    axios.patch('/posts', {
+      postId,
+      content,
+      background,
+      tags,
+    });
+
+    setPosts([
+      ...posts.splice(postId, 1, {
+        id: postId,
+        isMine: true,
+        content,
+        background,
+        tags,
+      }),
+    ]);
+
   const handleSession = (token) => {
     /**
      * 세션관리 핸들러
@@ -119,15 +183,21 @@ export default function App() {
         isOpenPostBoard={isOpenPostBoard}
         openPostBoardHandler={openPostBoardHandler}
         session={session}
+        addPostHandler={addPostHandler}
       />
       <GlobalStyle />
       <Router>
-        <Nav openAuthHandler={openAuthHandler} session={session} handleSession={handleSession} />
+        <Nav
+          openAuthHandler={openAuthHandler}
+          session={session}
+          handleSession={handleSession}
+        />
         <Switch>
           <Route exact path="/">
             <BoardPage
               isLogin={session.isLogin}
               accessToken={session.accessToken}
+              posts={posts}
             />
           </Route>
           <Route path="/mypage">
