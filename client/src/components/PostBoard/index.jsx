@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import Button from './Button';
 import ButtonBackground from './ButtonBackground';
 import TextArea from './TextArea';
 import { ModalView, ModalBackdrop } from './Modal';
 import Wrapper from './Wrapper';
 import './index.css';
-import axios from 'axios';
 
 const imageFiles = Array(20)
   .fill(1)
