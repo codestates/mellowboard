@@ -16,6 +16,7 @@ const ModalBackdrop = styled.div`
 `;
 
 const ModalView = styled.div`
+  color: black;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

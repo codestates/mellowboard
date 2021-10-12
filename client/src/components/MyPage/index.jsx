@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import axios from 'axios';
 import MyPosts from './MyPosts';
-import MyComments from './MyComments';
+import MyComments from './MyComments/index';
 import MyInfo from './MyInfo';
 import Wrapper from './Wrapper';
 
@@ -96,7 +96,6 @@ export default function MyPage() {
         </MyPostsContainer>
       ) : (
         <MyContentsContainer>{menuArr[currentTab].content}</MyContentsContainer>
-
       )}
     </>
   );

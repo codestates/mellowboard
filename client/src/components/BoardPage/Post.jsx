@@ -111,7 +111,7 @@ const imageFiles = Array(20)
   });
 
 function importAll(r) {
-  let images = {};
+  const images = {};
   r.keys().forEach((item) => {
     images[item.replace('./', '')] = r(item);
   });
@@ -129,6 +129,7 @@ export default function Post({
   handlePostDelete,
   addPostHandler,
 }) {
+  console.log(123, post);
   const { isMine, content, background, tags, commentCount, id } = post;
   const [isModify, setIsModify] = useState(false);
   const [image, setImage] = useState(background);
@@ -167,11 +168,11 @@ export default function Post({
       method: 'get',
       url: '/comments',
       params: {
-        postId: 1,
+        postId: id,
       },
     })
       .then((res) => {
-        setCommentsState(res.data.comments);
+        setComments(res.data.comments);
         !isOpen ? setIsOpen(!isOpen) : null;
       })
       .catch((err) => {
@@ -267,6 +268,7 @@ export default function Post({
             openModalHandler={openModalHandler}
             comments={comments}
             refreshHandler={refreshHandler}
+            postId={id}
           />
         ) : null}
       </PostList>
