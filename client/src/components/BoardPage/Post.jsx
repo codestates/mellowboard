@@ -129,7 +129,6 @@ export default function Post({
   handlePostDelete,
   addPostHandler,
 }) {
-  console.log(123, post);
   const { isMine, content, background, tags, commentCount, id } = post;
   const [isModify, setIsModify] = useState(false);
   const [image, setImage] = useState(background);

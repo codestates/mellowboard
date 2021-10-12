@@ -149,7 +149,10 @@ export default function App() {
 
     // axios global 설정
     setAxios(handleSession);
-    const newToken = await updateToken();
+    let newToken;
+    try {
+      newToken = await updateToken();
+    } catch {}
     handleSession(newToken);
 
     axios.get('/posts', { headers: { Authorization: `Bearer ${newToken}` } }).then((res) => {
