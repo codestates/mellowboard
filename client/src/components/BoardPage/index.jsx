@@ -3,7 +3,7 @@ import axios from 'axios';
 import BoardContainer from './BoardContainer';
 import Post from './Post';
 
-export default function BoardPage({ isLogin, posts, addPostHandler, images }) {
+export default function BoardPage({ isLogin, posts, addPostHandler, images, openAuthHandler }) {
   const handlePostModify = (postId, content, background, tags) => {};
 
   const handlePostDelete = (postId) => {
@@ -28,6 +28,7 @@ export default function BoardPage({ isLogin, posts, addPostHandler, images }) {
             handlePostModify={handlePostModify}
             handlePostDelete={handlePostDelete}
             images={images}
+            openAuthHandler={openAuthHandler}
           />
         ))}
       </BoardContainer>
