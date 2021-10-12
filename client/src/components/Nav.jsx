@@ -66,7 +66,9 @@ export default function Nav({ openAuthHandler, session, handleSession }) {
             to="/mypage"
             style={{ textDecoration: 'none', color: '#f5f6fa' }}
           >
-            {isLogin ? <button id="mypage_btn">마이페이지</button> : null}
+            {session.isLogin ? (
+              <button id="mypage_btn">마이페이지</button>
+            ) : null}
           </Link>
         </BtnContainer>
       </NavContainer>

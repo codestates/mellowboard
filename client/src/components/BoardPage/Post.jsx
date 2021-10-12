@@ -140,6 +140,8 @@ export default function Post({
     handlePostModify(id, text, image, hashtagList);
   };
 
+  if (!post) return null;
+
   // 내가 쓴 게시물 수정 상태
   if (isModify) {
     return (
