@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import CommentList from './CommentList';
 import Wrapper from './Wrapper';
 import TextArea from './TextBox';
@@ -10,21 +11,66 @@ import {
   DeleteButton,
 } from './Button';
 
-export default function Comment({ comment, isMine }) {
+export default function Comment({
+  comment,
+  isMine,
+  commentId,
+  refreshHandler,
+}) {
   const [editMode, setEditMode] = useState(false);
   const editHandler = () => {
     setEditMode(!editMode);
   };
-  // console.log(comment, isMine);
+
+  const [editedComment, setEditedComment] = useState(comment);
+
+  const onChangeHandler = (event) => {
+    setEditedComment(event.target.value);
+  };
+  const checkHandler = () => {
+    axios({
+      method: 'patch',
+      url: '/comments',
+      data: {
+        commentId,
+        comment: editedComment,
+      },
+    })
+      .then((res) => {
+        console.log(res.data.message);
+        refreshHandler();
+        setEditMode(!editMode);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const deleteHandler = () => {
+    axios({
+      method: 'delete',
+      url: '/comments',
+      data: {
+        commentId,
+      },
+    })
+      .then((res) => {
+        console.log(res.data.message);
+        refreshHandler();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   if (isMine && !editMode) {
     return (
       <>
         <CommentList>
-          <Label>{comment}</Label>
+          <Label>{editedComment}</Label>
           <Wrapper>
             <EditAltButton onClick={editHandler} />
-            <DeleteButton />
+            <DeleteButton onClick={deleteHandler} />
           </Wrapper>
         </CommentList>
       </>
@@ -34,11 +80,11 @@ export default function Comment({ comment, isMine }) {
     return (
       <>
         <CommentList>
-          <TextArea />
+          <TextArea value={editedComment} onChange={onChangeHandler} />
           <Wrapper>
-            <CheckButton />
-            <CancelButton />
-            <DeleteButton />
+            <CheckButton onClick={checkHandler} />
+            <CancelButton onClick={editHandler} />
+            <DeleteButton onClick={deleteHandler} />
           </Wrapper>
         </CommentList>
       </>
@@ -47,7 +93,7 @@ export default function Comment({ comment, isMine }) {
   return (
     <>
       <CommentList>
-        <Label>{comment}</Label>
+        <Label>{editedComment}</Label>
       </CommentList>
     </>
   );

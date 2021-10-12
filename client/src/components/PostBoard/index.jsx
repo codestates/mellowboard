@@ -47,7 +47,7 @@ export default function PostBoard({ isOpenPostBoard, openPostBoardHandler }) {
   const confirm = () => {
     openPostBoardHandler();
 
-    const hashtagRule = /(\#[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]+\b)(?!;)/g;
+    const hashtagRule = /(\#[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]+)(?!;)/g;
     let hashtagList = '';
     try {
       const array = [...content.matchAll(hashtagRule)].slice(0);

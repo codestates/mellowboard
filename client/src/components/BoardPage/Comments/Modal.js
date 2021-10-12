@@ -23,8 +23,8 @@ const ModalView = styled.div`
   border-radius: 1rem;
   background: wheat center center / cover no-repeat;
   width: 650px;
-  margin: 80px;
-  overflow: scroll;
+  height: 100%;
+  //margin: 80px;
 `;
 
 export { ModalView, ModalBackdrop };
