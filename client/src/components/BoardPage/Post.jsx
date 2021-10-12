@@ -7,7 +7,7 @@ export const PostList = styled.li`
   border-radius: 1rem;
   width: 100%;
   min-height: 30rem;
-  margin: 1rem -1.2rem;
+  margin: 0rem -1.2rem 1rem -1.2rem;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -19,7 +19,7 @@ export const PostList = styled.li`
     min-width: 21.5rem;
     height: auto;
     min-height: 35rem;
-    margin: 1rem -3rem 1rem -1rem;
+    margin: 0rem -3rem 1rem -1rem;
 
     :nth-child(2n) {
       margin-left: 4rem;
@@ -177,6 +177,8 @@ export default function Post({
         console.log(err);
       });
   };
+
+  console.log(isMine);
 
   if (!post) return null;
 

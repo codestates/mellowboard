@@ -17,8 +17,6 @@ export default function BoardPage({
       .catch((err) => {
         console.log(err);
       });
-
-    setPosts([...posts.splice(postId, 1)]);
   };
 
   return (

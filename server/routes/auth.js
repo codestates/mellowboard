@@ -1,10 +1,8 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const auth = require('../controllers/auth');
-const isValidToken = require('../middleware/isValidToken')
 
 // routes
-// router.get('/logout', 'middleware', auth.logout);
 router.get('/logout', auth.logout);
 router.get('/overlap', auth.dup);
 router.post('/signup', auth.signup);

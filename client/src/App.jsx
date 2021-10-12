@@ -46,14 +46,13 @@ const GlobalStyle = createGlobalStyle`
 
     background: linear-gradient(-45deg, #1B1464, #006266, #6F1E51, #cd6133);
     background-size: 400% 400%;
-    animation: aurora 20s ease infinite;
+    animation: aurora 15s ease infinite;
     min-height: 100vh;
 
     /* 레이아웃 리셋 */
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -72,6 +71,11 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const PostBtnContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 const PostBtn = styled.button`
   all: unset;
   cursor: pointer;
@@ -87,7 +91,7 @@ const PostBtn = styled.button`
   bottom: 3rem;
   color: #5758bb;
   background-color: #6d214f;
-  margin-left: 70%;
+  /* margin-left: 50%; */
 
   #pencil_icon {
     font-size: 2rem;
@@ -97,12 +101,6 @@ const PostBtn = styled.button`
 export default function App() {
   const [session, setSession] = useState({ accessToken: '', isLogin: false });
   const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    axios.get('/posts').then((res) => {
-      setPosts(res.data.posts);
-    });
-  }, []);
 
   const addPostHandler = () => {
     axios.get('/posts').then((res) => {
@@ -145,7 +143,7 @@ export default function App() {
     setIsOpenPostBoard(!isOpenPostBoard);
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     /**
      * 리액트가 처음 렌더링 될 때 토큰 갱신을 시도한다.
      * httpOnly 라서 자바스크립트에서 쿠키에 접근할 수 없어서 일단 갱신시도해보고 되면 isLogin=true 안되면 false
@@ -153,7 +151,12 @@ export default function App() {
 
     // axios global 설정
     setAxios(handleSession);
-    updateToken().then((token) => handleSession(token));
+    const newToken = await updateToken();
+    handleSession(newToken);
+
+    axios.get('/posts').then((res) => {
+      setPosts(res.data.posts);
+    });
   }, []);
 
   useEffect(() => {
@@ -198,12 +201,14 @@ export default function App() {
             {session.isLogin ? <MyPage /> : <Redirect to="/" />}
           </Route>
         </Switch>
-        <PostBtn
-          onClick={session.isLogin ? openPostBoardHandler : openAuthHandler}
-        >
-          {/* <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} /> */}
-          <span>글 작성</span>
-        </PostBtn>
+        <PostBtnContainer>
+          <PostBtn
+            onClick={session.isLogin ? openPostBoardHandler : openAuthHandler}
+          >
+            {/* <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} /> */}
+            <span>글 작성</span>
+          </PostBtn>
+        </PostBtnContainer>
       </Router>
     </>
   );
