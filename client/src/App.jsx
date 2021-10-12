@@ -16,6 +16,8 @@ import MyPage from './components/MyPage';
 import Auth from './components/Auth';
 import PostBoard from './components/PostBoard';
 
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+
 const GlobalStyle = createGlobalStyle`
   body {
     /* font 설정 */

@@ -14,14 +14,14 @@ export const updateToken = async () => {
   try {
     res = await refreshInstance.post('/auth/refresh');
   } catch (err) {
-    return false;
+    return Promise.reject(err);
   }
   if (res.data?.result) result = res.data.accessToken;
   return Promise.resolve(result);
 };
 
 export default function setAxios(handleSession) {
-  axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+  // axios.defaults.baseURL = process.env.REACT_APP_API_URL;
   axios.defaults.withCredentials = true;
   axios.interceptors.response.use(
     /**
@@ -30,6 +30,9 @@ export default function setAxios(handleSession) {
      */
     (config) => config,
     async (err) => {
+      console.log("a : ", axios.defaults);
+      console.log("catch");
+      console.log("err : ", err);
       if (err.response?.status === 401) {
         /**
          * 토큰이 더 이상 유효하지 않음..
@@ -47,6 +50,6 @@ export default function setAxios(handleSession) {
         }
       }
       return Promise.reject(err);
-    }
+    },
   );
 }

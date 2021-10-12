@@ -6,14 +6,14 @@ import Post from './Post';
 export default function BoardPage({ isLogin, accessToken }) {
   const [posts, setPosts] = useState([]);
   console.log(`Bearer ${accessToken}`);
+  console.log("B : ", axios.defaults);
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/posts`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
+      .get('/posts')
       .then((res) => {
+        console.log(res.data);
         setPosts(res.data.posts);
-      });
+      }).catch(err => console.log("board error", err.request));
   }, []);
 
   const handlePostModify = (postId, content, background, tags) => {
