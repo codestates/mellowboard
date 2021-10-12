@@ -112,13 +112,7 @@ export default function App() {
     });
   };
 
-  const modifyPostHandler = () => {
-    axios.get('/posts').then((res) => {
-      setPosts(res.data.posts);
-    });
-  };
-
-  const handlePostModify = (postId, content, background, tags) => {
+  const modifyPostHandler = (postId, content, background, tags) => {
     axios.patch('/posts', {
       postId,
       content,
@@ -135,6 +129,7 @@ export default function App() {
         tags,
       }),
     ]);
+  };
 
   const handleSession = (token) => {
     /**

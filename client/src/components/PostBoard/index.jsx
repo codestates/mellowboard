@@ -71,11 +71,11 @@ export default function PostBoard({
         background: image,
         tags: hashtagList,
       },
-    }).catch((err) => {
-      console.log(err);
-    });
-
-    addPostHandler();
+    })
+      .then(() => addPostHandler())
+      .catch((err) => {
+        console.log(err);
+      });
 
     setContent('');
   };

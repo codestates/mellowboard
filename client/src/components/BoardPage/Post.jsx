@@ -127,13 +127,14 @@ export default function Post({
   post,
   handlePostModify,
   handlePostDelete,
+  addPostHandler,
 }) {
   const { isMine, content, background, tags, commentCount, id } = post;
   const [isModify, setIsModify] = useState(false);
   const [image, setImage] = useState(background);
   const [text, setText] = useState(content);
   const [isOpen, setIsOpen] = useState(false);
-  const [commentsState, setCommentsState] = useState([]);
+  const [comments, setComments] = useState([]);
 
   const randomInteger = () => {
     const random = Math.ceil(Math.random() * 20);
@@ -204,7 +205,6 @@ export default function Post({
       </>
     );
   }
-
   // 내가 쓴 게시물 보통 상태
   if (isMine) {
     return (
@@ -228,7 +228,7 @@ export default function Post({
               {isOpen === true ? (
                 <Comments
                   openModalHandler={openModalHandler}
-                  comments={commentsState}
+                  comments={comments}
                   refreshHandler={refreshHandler}
                 />
               ) : null}
@@ -265,7 +265,7 @@ export default function Post({
         {isOpen === true ? (
           <Comments
             openModalHandler={openModalHandler}
-            comments={commentsState}
+            comments={comments}
             refreshHandler={refreshHandler}
           />
         ) : null}

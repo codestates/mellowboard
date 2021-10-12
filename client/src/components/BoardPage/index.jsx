@@ -3,7 +3,12 @@ import axios from 'axios';
 import BoardContainer from './BoardContainer';
 import Post from './Post';
 
-export default function BoardPage({ isLogin, accessToken, posts }) {
+export default function BoardPage({
+  isLogin,
+  accessToken,
+  posts,
+  addPostHandler,
+}) {
   const handlePostModify = (postId, content, background, tags) => {
     axios.patch('/posts', {
       postId,
@@ -43,6 +48,7 @@ export default function BoardPage({ isLogin, accessToken, posts }) {
             key={post.id}
             isLogin={isLogin}
             post={post}
+            addPostHandler={addPostHandler}
             handlePostModify={handlePostModify}
             handlePostDelete={handlePostDelete}
           />
