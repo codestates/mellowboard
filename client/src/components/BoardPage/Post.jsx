@@ -111,7 +111,7 @@ const imageFiles = Array(20)
   });
 
 function importAll(r) {
-  let images = {};
+  const images = {};
   r.keys().forEach((item) => {
     images[item.replace('./', '')] = r(item);
   });
@@ -126,7 +126,7 @@ export default function Post({
   isLogin,
   post,
   modifyPostHandler,
-  handlePostDelete,
+  deletePostHandler,
 }) {
   const { isMine, content, background, tags, commentCount, id } = post;
   const [isModify, setIsModify] = useState(false);
@@ -166,19 +166,17 @@ export default function Post({
       method: 'get',
       url: '/comments',
       params: {
-        postId: 1,
+        postId: id,
       },
     })
       .then((res) => {
-        setCommentsState(res.data.comments);
+        setComments(res.data.comments);
         !isOpen ? setIsOpen(!isOpen) : null;
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
-  console.log(isMine);
 
   if (!post) return null;
 
@@ -199,7 +197,7 @@ export default function Post({
           <BottomContainer>
             <BottomBtnsContainer>
               <ConfirmBtn onClick={confirm(id)}>확인</ConfirmBtn>
-              <DeleteBtn onClick={() => handlePostDelete(id)}>삭제</DeleteBtn>
+              <DeleteBtn onClick={() => deletePostHandler(id)}>삭제</DeleteBtn>
             </BottomBtnsContainer>
           </BottomContainer>
         </PostList>
@@ -234,8 +232,10 @@ export default function Post({
                 />
               ) : null}
               <BottomBtnsContainer>
-                <ModifyBtn onClick={setIsModify(true)}>수정</ModifyBtn>
-                <DeleteBtn onClick={() => handlePostDelete(id)}>삭제</DeleteBtn>
+                <ModifyBtn onClick={() => setIsModify(true)}>수정</ModifyBtn>
+                <DeleteBtn onClick={() => deletePostHandler(id)}>
+                  삭제
+                </DeleteBtn>
               </BottomBtnsContainer>
             </CommentsBtns>
           </BottomContainer>
@@ -268,6 +268,7 @@ export default function Post({
             openModalHandler={openModalHandler}
             comments={comments}
             refreshHandler={refreshHandler}
+            postId={id}
           />
         ) : null}
       </PostList>

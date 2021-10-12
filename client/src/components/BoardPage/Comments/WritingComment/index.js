@@ -4,7 +4,7 @@ import TextBox from './TextBox';
 import Wrapper from './Wrapper';
 import { CheckButton } from '../Comment/Button';
 
-export default function WritingComment({ refreshHandler }) {
+export default function WritingComment({ refreshHandler, postId }) {
   const [comment, setComment] = useState('');
   const onChangeHandler = (event) => {
     setComment(event.target.value);
@@ -14,7 +14,7 @@ export default function WritingComment({ refreshHandler }) {
       method: 'post',
       url: '/comments',
       data: {
-        postId: 1,
+        postId,
         comment,
       },
     })
@@ -36,7 +36,11 @@ export default function WritingComment({ refreshHandler }) {
   };
   return (
     <Wrapper>
-      <TextBox value={comment} onChange={onChangeHandler} onKeyUp={enterHandler} />
+      <TextBox
+        value={comment}
+        onChange={onChangeHandler}
+        onKeyUp={enterHandler}
+      />
       <CheckButton onClick={writingCommentHandler} />
     </Wrapper>
   );

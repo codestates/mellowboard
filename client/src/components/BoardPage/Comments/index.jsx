@@ -10,13 +10,14 @@ export default function Comments({
   openModalHandler,
   refreshHandler,
   comments,
+  postId,
 }) {
   return (
     <>
       <ModalBackdrop onClick={openModalHandler}>
         <ModalView onClick={(e) => e.stopPropagation()}>
           <XButton onClick={openModalHandler} />
-          <WritingComment refreshHandler={refreshHandler} />
+          <WritingComment refreshHandler={refreshHandler} postId={postId} />
           <Wrapper>
             {comments.map((el) => (
               <Comment
@@ -25,6 +26,7 @@ export default function Comments({
                 isMine={el.isMine}
                 commentId={el.id}
                 refreshHandler={refreshHandler}
+                postId={postId}
               />
             ))}
           </Wrapper>

@@ -103,28 +103,52 @@ export default function App() {
   const [posts, setPosts] = useState([]);
 
   const addPostHandler = () => {
-    axios.get('/posts').then((res) => {
-      setPosts(res.data.posts);
-    });
+    axios
+      .get('/posts')
+      .then((res) => {
+        setPosts(res.data.posts);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const modifyPostHandler = (postId, content, background, tags) => {
-    axios.patch('/posts', {
-      postId,
-      content,
-      background,
-      tags,
-    });
-
-    setPosts([
-      ...posts.splice(postId, 1, {
-        id: postId,
-        isMine: true,
+    axios
+      .patch('/posts', {
+        postId,
         content,
         background,
         tags,
-      }),
-    ]);
+      })
+      .then(() => {
+        setPosts([
+          ...posts.splice(postId, 1, {
+            id: postId,
+            isMine: true,
+            content,
+            background,
+            tags,
+          }),
+        ]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const deletePostHandler = (postId) => {
+    console.log(`포스트아이디 ${postId}`);
+    axios
+      .delete('/posts', {
+        postId,
+      })
+      .then(() => {
+        setPosts([...posts.splice(postId, 1)]);
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+      });
   };
 
   const handleSession = (token) => {
@@ -151,12 +175,17 @@ export default function App() {
 
     // axios global 설정
     setAxios(handleSession);
-    const newToken = await updateToken();
+    let newToken;
+    try {
+      newToken = await updateToken();
+    } catch {}
     handleSession(newToken);
 
-    axios.get('/posts').then((res) => {
-      setPosts(res.data.posts);
-    });
+    axios
+      .get('/posts', { headers: { Authorization: `Bearer ${newToken}` } })
+      .then((res) => {
+        setPosts(res.data.posts);
+      });
   }, []);
 
   useEffect(() => {
@@ -192,9 +221,9 @@ export default function App() {
           <Route exact path="/">
             <BoardPage
               isLogin={session.isLogin}
-              accessToken={session.accessToken}
               posts={posts}
               modifyPostHandler={modifyPostHandler}
+              deletePostHandler={deletePostHandler}
             />
           </Route>
           <Route path="/mypage">

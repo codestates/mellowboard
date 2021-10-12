@@ -4,21 +4,11 @@ import Post from './Post';
 
 export default function BoardPage({
   isLogin,
-  accessToken,
   posts,
   addPostHandler,
   modifyPostHandler,
+  deletePostHandler,
 }) {
-  const handlePostDelete = (postId) => {
-    axios
-      .delete('/posts', {
-        postId,
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   return (
     <>
       <BoardContainer>
@@ -29,7 +19,7 @@ export default function BoardPage({
             post={post}
             addPostHandler={addPostHandler}
             modifyPostHandler={modifyPostHandler}
-            handlePostDelete={handlePostDelete}
+            deletePostHandler={deletePostHandler}
           />
         ))}
       </BoardContainer>

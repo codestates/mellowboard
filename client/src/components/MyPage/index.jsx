@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import axios from 'axios';
 import MyPosts from './MyPosts';
-import MyComments from './MyComments';
+import MyComments from './MyComments/index';
 import MyInfo from './MyInfo';
 import Wrapper from './Wrapper';
 
@@ -50,7 +50,7 @@ const MyPostsContainer = styled.ul`
 const MyContentsContainer = styled.ul`
   text-align: center;
   height: 100%;
-  border: 3px solid red;
+  /* border: 3px solid red; */
   margin: 1rem 1rem -4.5rem 1rem;
   -webkit-padding-start: 0;
   list-style: none;
@@ -96,7 +96,6 @@ export default function MyPage() {
         </MyPostsContainer>
       ) : (
         <MyContentsContainer>{menuArr[currentTab].content}</MyContentsContainer>
-
       )}
     </>
   );

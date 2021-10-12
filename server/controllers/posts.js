@@ -45,6 +45,7 @@ module.exports = {
             posts:  postsModel.map(el => {
                 const post = el.toJSON();
                 // 자신이 작성한 글인지 체크
+                
                 if(post.userId === userId) post.isMine = true;
                 else post.isMine=false;
 
