@@ -159,7 +159,6 @@ export default function App() {
      */
 
     // axios global 설정
-    console.log(`awerawerawe ${process.env.REACT_APP_API_URL}`);
     setAxios(handleSession);
     updateToken().then((token) => handleSession(token));
   }, []);

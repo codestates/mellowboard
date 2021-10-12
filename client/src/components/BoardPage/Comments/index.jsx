@@ -13,13 +13,14 @@ export default function Comments({
 }) {
   return (
     <>
-      <ModalBackdrop>
-        <ModalView>
+      <ModalBackdrop onClick={openModalHandler}>
+        <ModalView onClick={(e) => e.stopPropagation()}>
           <XButton onClick={openModalHandler} />
           <WritingComment refreshHandler={refreshHandler} />
           <Wrapper>
             {comments.map((el) => (
               <Comment
+                key={el.id}
                 comment={el.comment}
                 isMine={el.isMine}
                 commentId={el.id}
