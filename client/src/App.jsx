@@ -208,11 +208,8 @@ export default function App() {
               isLogin={session.isLogin}
               accessToken={session.accessToken}
               posts={posts}
-<<<<<<< HEAD
               openAuthHandler={openAuthHandler}
-=======
               images={images}
->>>>>>> 7925911027fa12d7d72725cf6a78c1eca578237e
             />
           </Route>
           <Route path="/mypage">
