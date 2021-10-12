@@ -111,7 +111,6 @@ const imageFiles = Array(20)
   });
 
 export default function Post({
-  images,
   isLogin,
   post,
   modifyPostHandler,
@@ -241,6 +240,7 @@ export default function Post({
                   openModalHandler={openModalHandler}
                   comments={comments}
                   refreshHandler={refreshHandler}
+                  postId={post.id}
                 />
               ) : null}
               <BottomBtnsContainer>

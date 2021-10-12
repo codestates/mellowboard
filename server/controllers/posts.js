@@ -102,7 +102,7 @@ module.exports = {
                 include: [[sequelize.fn("COUNT", "Index.id"), "commentCount"]]
             },
             include: [{
-                model: Hashtag,
+                model: Hashtag, as: 'tags',
             },{
                 model: Comment,
                 attributes: ["id"]
