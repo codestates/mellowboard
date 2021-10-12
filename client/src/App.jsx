@@ -152,7 +152,7 @@ export default function App() {
     const newToken = await updateToken();
     handleSession(newToken);
 
-    axios.get('/posts').then((res) => {
+    axios.get('/posts', { headers: { Authorization: `Bearer ${newToken}` } }).then((res) => {
       setPosts(res.data.posts);
     });
   }, []);
