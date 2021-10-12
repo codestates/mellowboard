@@ -130,7 +130,6 @@ export default function App() {
     } catch (err) {
       return Promise.reject(err);
     }
-
     const newPosts = posts.slice();
     const changedPostIndex = newPosts.findIndex((e) => e.id === post.id);
     newPosts[changedPostIndex] = {
