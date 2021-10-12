@@ -13,6 +13,7 @@ const {
 module.exports = {
   logout: (req, res) => {
     res.clearCookie("jwt");
+    console.log("123123123");
     return res.json({ result: true, message: "logout success" });
   },
 
@@ -75,7 +76,7 @@ module.exports = {
       message: "회원가입을 성공했습니다.",
       result: true,
       userInfo: userInfo.json(),
-      accessToken: accessToken,
+      accessToken,
     });
   },
 
@@ -110,7 +111,7 @@ module.exports = {
       message: "로그인을 성공했습니다.",
       result: true,
       userinfo: userInfo.json(),
-      accessToken: accessToken,
+      accessToken,
     });
   },
 
@@ -139,7 +140,7 @@ module.exports = {
       message: "access token 발급이 성공했습니다.",
       result: true,
       userinfo: isValidUser.json(),
-      accessToken: accessToken,
+      accessToken,
     });
   },
 };
