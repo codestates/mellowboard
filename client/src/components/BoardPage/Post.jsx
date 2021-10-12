@@ -110,19 +110,22 @@ const ModalView = styled.div.attrs(() => ({
 
 export default function Post() {
   const [isOpen, setIsOpen] = useState(false);
-  const [comments, setComments] = useState([]);
   const openModalHandler = () => {
     setIsOpen(!isOpen);
-    const url = `${process.env.REACT_APP_API_URL}/comments`;
+  };
+
+  const [comments, setComments] = useState([]);
+  const refreshHandler = () => {
     axios({
       method: 'get',
-      url,
+      url: '/comments',
       params: {
         postId: 1,
       },
     })
       .then((res) => {
         setComments(res.data.comments);
+        !isOpen ? setIsOpen(!isOpen) : null;
       })
       .catch((err) => {
         console.log(err);
@@ -204,11 +207,15 @@ export default function Post() {
           <input className="input_hash_tag" placeholder="#" />
         </div>
         <div id="comments_btns">
-          <span id="comments_cnt" onClick={openModalHandler}>
+          <span id="comments_cnt" onClick={refreshHandler}>
             댓글 n개
           </span>
           {isOpen === true ? (
-            <Comments openModalHandler={openModalHandler} comments={comments} />
+            <Comments
+              openModalHandler={openModalHandler}
+              comments={comments}
+              refreshHandler={refreshHandler}
+            />
           ) : null}
           <span id="btn_container">
             <button id="modify_btn">확인</button>

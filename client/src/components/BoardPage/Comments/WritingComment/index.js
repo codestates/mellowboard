@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import TextBox from '../Comment/TextBox';
-import Wrapper from '../Comment/Wrapper';
+import TextBox from './TextBox';
+import Wrapper from './Wrapper';
 import { CheckButton } from '../Comment/Button';
 
-export default function WritingComment() {
-  const url = `${process.env.REACT_APP_API_URL}/comments`;
+export default function WritingComment({ refreshHandler }) {
   const [comment, setComment] = useState('');
   const onChangeHandler = (event) => {
     setComment(event.target.value);
@@ -14,7 +13,7 @@ export default function WritingComment() {
   const writingCommentHandler = () => {
     axios({
       method: 'post',
-      url,
+      url: '/comments',
       data: {
         postId: 1,
         comment,
@@ -22,6 +21,7 @@ export default function WritingComment() {
     })
       .then((res) => {
         console.log(res.data.message);
+        refreshHandler();
       })
       .catch((err) => {
         console.log(err);

@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components';
-import { Delete } from 'styled-icons/fluentui-system-filled';
-import { EditAlt } from 'styled-icons/boxicons-regular';
-import { Check } from 'styled-icons/bootstrap';
-import { Cancel } from 'styled-icons/material';
+import { ReactComponent as Delete } from '../../../../images/icon/trash-can-solid.svg';
+import { ReactComponent as EditAlt } from '../../../../images/icon/pen-to-square-solid.svg';
+import { ReactComponent as Check } from '../../../../images/icon/circle-check-solid.svg';
+import { ReactComponent as Cancel } from '../../../../images/icon/xmark-solid.svg';
 
 const sharedIconStyle = css`
   color: #23221e;
