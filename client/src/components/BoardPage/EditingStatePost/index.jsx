@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import Button from './Button';
 import ButtonBackground from './ButtonBackground';
 import TextArea from './TextArea';
@@ -8,70 +7,39 @@ import Wrapper from './Wrapper';
 import './index.css';
 
 export default function EditingStatePost({
-  images,
   isOpenPostBoard,
   openPostBoardHandler,
-  editHandler,
-  postImage,
-  postContent,
-  postId,
-  addPostHandler,
+  post,
+  modifyPostHandler,
+  setIsModify,
+  image,
+  randomInteger
 }) {
-  const [image, setImage] = useState(postImage);
-  const [content, setContent] = useState(postContent);
-  const [textLength, setTextLength] = useState(0);
+  const [text, setText] = useState(post.content);
   const maxLength = 200;
 
-  const imageFiles = Array(20)
-    .fill(1)
-    .map((el, idx) => {
-      if (`${el + idx}`.length === 1) {
-        return `0${el + idx}.png`;
-      }
-      const string = `${el + idx}.png`;
-      return string;
-    });
-
-  const randomInteger = () => {
-    const random = Math.ceil(Math.random() * 20);
-    setImage(imageFiles[random]);
-  };
-
   const changeContent = (event) => {
-    const text = event.target.value;
-    if (text.length > maxLength) return;
-    setTextLength(text.length);
-    setContent(text);
+    const content = event.target.value;
+    if (content.length > maxLength) return;
+    // setTextLength(content.length);
+    setText(content);
   };
 
-  const confirm = () => {
+  const confirm = async () => {
     const hashtagRule = /(\#[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]+)(?!;)/g;
     let hashtagList = '';
     try {
-      const array = [...content.matchAll(hashtagRule)].slice(0);
+      const array = [...text.matchAll(hashtagRule)].slice(0);
       hashtagList = array.map((el) => el[0]);
     } catch (err) {
       console.log(err);
     }
-
-    axios({
-      method: 'patch',
-      url: '/posts',
-      data: {
-        postId,
-        content,
-        background: image,
-        tags: hashtagList,
-      },
-    })
-      .then(() => {
-        // editHandler(content);
-        addPostHandler();
-        openPostBoardHandler();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const result = await modifyPostHandler(post, text, image, hashtagList);
+    if (result) {
+      setIsModify(false);
+    } else {
+      alert('서버와의 통신에 실패하였습니다.');
+    }
   };
 
   if (isOpenPostBoard === true) {
@@ -81,12 +49,11 @@ export default function EditingStatePost({
           style={{
             background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
           }}
-          onClick={(e) => e.stopPropagation()}
         >
           <ButtonBackground onClick={randomInteger}>배경 선택</ButtonBackground>
           <TextArea
             placeholder="이야기를 적어주세요."
-            value={content}
+            value={text}
             onChange={changeContent}
           />
           <Wrapper>

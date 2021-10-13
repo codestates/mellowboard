@@ -114,38 +114,43 @@ export default function App() {
       });
   };
 
-  const modifyPostHandler = (postId, content, background, tags) => {
-    axios
-      .patch('/posts', {
-        postId,
-        content,
-        background,
-        tags,
-      })
-      .then(() => {
-        setPosts([
-          ...posts.splice(postId, 1, {
-            id: postId,
-            isMine: true,
-            content,
-            background,
-            tags,
-          }),
-        ]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const modifyPostHandler = async (post, content, background, tags) => {
+    /**
+     * 게시글을 수정하는 함수. 비동기로 작성
+     * 서버에 요청을 보내고 state를 변경하고 결과를 Promise타입으로 리턴한다.
+     * @return <Promise>
+     */
+    try {
+      await axios
+        .patch('/posts', {
+          postId: post.id,
+          content,
+          background,
+          tags,
+        });
+    } catch (err) {
+      return Promise.reject(err);
+    }
+    const newPosts = posts.slice();
+    const changedPostIndex = newPosts.findIndex((e) => e.id === post.id);
+    newPosts[changedPostIndex] = {
+      ...post,
+      content,
+      background,
+      tags,
+    };
+    setPosts(newPosts);
+    return Promise.resolve(true);
   };
 
   const deletePostHandler = (postId) => {
-    console.log(`포스트아이디 ${postId}`);
     axios
       .delete('/posts', {
-        postId,
+        data: { postId },
       })
       .then(() => {
-        setPosts([...posts.splice(postId, 1)]);
+        // setPosts([...posts.splice(postId, 1)]);
+        setPosts(posts.filter((post) => post.id !== postId));
       })
       .catch((err) => {
         console.log(err.response.data);

@@ -100,8 +100,6 @@ const BottomContainer = styled.div`
   bottom: 1rem;
 `;
 
-const ConfirmBtn = styled.button``;
-
 const DeleteBtn = styled.button``;
 
 const ModifyBtn = styled.button``;
@@ -115,52 +113,25 @@ const imageFiles = Array(20)
     const string = `${el + idx}.png`;
     return string;
   });
-//
-// function importAll(r) {
-//   const images = {};
-//   r.keys().forEach((item) => {
-//     images[item.replace('./', '')] = r(item);
-//   });
-//   return images;
-// }
-//
-// const images = importAll(
-//   require.context('../../images/background', false, /\.(png|jpe?g|svg)$/)
-// );
 
-export default function Post({ images, isLogin, post, addPostHandler }) {
+export default function Post({
+  isLogin,
+  post,
+  modifyPostHandler,
+  deletePostHandler,
+  openAuthHandler,
+}) {
   const { isMine, content, background, tags, commentCount, id } = post;
   const [isModify, setIsModify] = useState(false);
   const [image, setImage] = useState(background);
-  const [text, setText] = useState(content);
   const [isOpen, setIsOpen] = useState(false);
   const [comments, setComments] = useState([]);
   // const [postContent, setPostContent] = useState(content);
 
-  //
-  // const randomInteger = () => {
-  //   const random = Math.ceil(Math.random() * 20);
-  //   setImage(images[imageFiles[random]]);
-  // };
-  const isOpenPostBoard = () => {
-    setIsModify(!isModify);
-  };
-
-  const changeContent = (event) => {
-    setText(event.target.value);
-  };
-
-  const confirm = (id) => {
-    const hashtagRule = /(\#[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]+)(?!;)/g;
-    let hashtagList = '';
-    try {
-      const array = [...text.matchAll(hashtagRule)].slice(0);
-      hashtagList = array.map((el) => el[0]);
-    } catch (err) {
-      console.log(err);
-    }
-
-    modifyPostHandler(id, text, image, hashtagList);
+  const randomInteger = () => {
+    const random = Math.ceil(Math.random() * 20);
+    const a = imageFiles[random];
+    setImage(a);
   };
 
   const openModalHandler = () => {
@@ -190,22 +161,6 @@ export default function Post({ images, isLogin, post, addPostHandler }) {
   const modifyHandler = () => {
     setIsModify(!isModify);
   };
-  const handlePostDelete = () => {
-    axios({
-      method: 'delete',
-      url: '/posts',
-      data: {
-        postId: id,
-      },
-    })
-      .then(() => {
-        // editHandler(content);
-        addPostHandler();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
   if (!post) return null;
   // 내가 쓴 게시물 수정 상태
@@ -216,11 +171,11 @@ export default function Post({ images, isLogin, post, addPostHandler }) {
           <EditingStatePost
             isOpenPostBoard={isModify}
             openPostBoardHandler={modifyHandler}
-            postImage={image}
-            images={images}
-            postContent={content}
-            postId={id}
-            addPostHandler={addPostHandler}
+            post={post}
+            modifyPostHandler={modifyPostHandler}
+            setIsModify={setIsModify}
+            image={image}
+            randomInteger={randomInteger}
           />
         </PostList>
       </>

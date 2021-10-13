@@ -37,7 +37,6 @@ export default function Comment({
       },
     })
       .then((res) => {
-        console.log(res.data.message);
         refreshHandler();
         setEditMode(!editMode);
       })
@@ -55,7 +54,6 @@ export default function Comment({
       },
     })
       .then((res) => {
-        console.log(res.data.message);
         refreshHandler();
       })
       .catch((err) => {
