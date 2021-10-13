@@ -32,7 +32,7 @@ export const PostList = styled.li`
   }
 `;
 
-const PostText = styled.p`
+const PostText = styled.pre`
   margin: 1rem;
   font-family: 'KyoboHand';
   color: white;
@@ -43,6 +43,7 @@ const PostText = styled.p`
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
 
   @media screen and (min-width: 768px) {
     font-size: 2rem;
@@ -164,6 +165,7 @@ export default function Post({
   const modifyHandler = () => {
     setIsModify(!isModify);
   };
+  console.log('cd', content);
 
   if (!post) return null;
   // 내가 쓴 게시물 수정 상태
