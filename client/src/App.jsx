@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import {
   BrowserRouter as Router,
@@ -99,11 +99,14 @@ const PostBtn = styled.button`
 `;
 
 export default function App() {
-  const [session, setSession] = useState({ accessToken: '', isLogin: false });
+  const [session, setSession] = useState({
+    accessToken: 'init',
+    isLogin: false,
+  });
   const [posts, setPosts] = useState([]);
   const [myPosts, setMyPosts] = useState([]);
   const { scrollY } = useScroll();
-  const [curPage, setCurPage] = useState(1);
+  const [curPage, setCurPage] = useState(-1);
   const [total, setTotal] = useState(1);
 
   const addMyPostHandler = () => {
@@ -201,7 +204,6 @@ export default function App() {
     try {
       newToken = await updateToken();
     } catch {}
-
     handleSession(newToken);
     axios
       .get('/posts', { headers: { Authorization: `Bearer ${newToken}` } })
@@ -219,20 +221,30 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    // 페이지가 변경되면 실행한다.
-    const size = 30;
-
-    const config = {
-      url: '/posts',
-      params: { page: curPage, size },
+    /**
+     * session이 변경되면 axios의 헤더값을 수정한다.
+     */
+    if (session.accessToken === 'init') return;
+    console.log('token : ', session.accessToken);
+    axios.defaults.headers.common = {
+      Authorization: `Bearer ${session.accessToken}`,
     };
+    addPostHandler();
+  }, [session]);
 
-    if (curPage > total) return;
+  useEffect(() => {
+    // 페이지가 변경되면 실행한다.
+    if (curPage === -1) return;
+    const size = 100;
+    if (curPage > total && curPage !== 1) {
+      return;
+    }
 
-    axios.request(config).then((res) => {
+    axios.get('/posts', { params: { page: curPage, size } }).then((res) => {
       setTotal(res.data.pages.total);
-      if (curPage === 1) setPosts(res.data.posts);
-      else {
+      if (curPage === 1) {
+        setPosts(res.data.posts);
+      } else {
         // 글이 추가되는 등의 문제로 중복이 있을 수 있음
         // 중복 제거 시행
         const resData = res.data.posts.filter((post) => {
@@ -249,8 +261,30 @@ export default function App() {
   }, [curPage]);
 
   const addPostHandler = (more) => {
-    if (!more) setCurPage(1);
-    else if (curPage < total) {
+    if (!more) {
+      if (curPage === 1) {
+        axios.get('/posts', { params: { page: 1, size: 100 } }).then((res) => {
+          setTotal(res.data.pages.total);
+          if (curPage === 1) {
+            setPosts(res.data.posts);
+          } else {
+            // 글이 추가되는 등의 문제로 중복이 있을 수 있음
+            // 중복 제거 시행
+            const resData = res.data.posts.filter((post) => {
+              const index = posts.findIndex(
+                (originPost) => originPost.id === post.id
+              );
+              if (index === -1) return true;
+              return false;
+            });
+            const newData = [...posts, ...resData];
+            setPosts(newData);
+          }
+        });
+      } else {
+        setCurPage(1);
+      }
+    } else if (curPage < total) {
       setCurPage(curPage + 1);
     }
   };
@@ -287,14 +321,12 @@ export default function App() {
 
   function useScroll() {
     const [scrollY, setScrollY] = useState(0);
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
       let mounted = true;
       window.addEventListener('scroll', () => {
         if (mounted) {
           setScrollY(window.scrollY);
-          setLoading(false);
         }
       });
       return () => {
