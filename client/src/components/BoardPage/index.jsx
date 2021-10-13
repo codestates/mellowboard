@@ -9,6 +9,7 @@ export default function BoardPage({
   deletePostHandler,
   images,
   openAuthHandler,
+  addPostHandler,
 }) {
   return (
     <>
@@ -22,6 +23,7 @@ export default function BoardPage({
             deletePostHandler={deletePostHandler}
             images={images}
             openAuthHandler={openAuthHandler}
+            addPostHandler={addPostHandler}
           />
         ))}
       </BoardContainer>

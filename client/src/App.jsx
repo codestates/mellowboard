@@ -360,6 +360,7 @@ export default function App() {
           openAuthHandler={openAuthHandler}
           session={session}
           handleSession={handleSession}
+          addPostHandler={addPostHandler}
         />
         <Switch>
           <Route exact path="/">
@@ -370,6 +371,7 @@ export default function App() {
               deletePostHandler={deletePostHandler}
               openAuthHandler={openAuthHandler}
               images={images}
+              addPostHandler={addPostHandler}
             />
           </Route>
           <Route path="/mypage">
