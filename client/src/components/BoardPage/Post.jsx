@@ -216,12 +216,14 @@ export default function Post({
         }}
       >
         <PostText>
-          {content.split('\n').map((line) => (
-            <span>
-              {line}
-              <br />
-            </span>
-          ))}
+          {content.split('\n').map((line) => {
+            return (
+              <span>
+                {line}
+                <br />
+              </span>
+            );
+          })}
         </PostText>
         <BottomContainer>
           <HashtagContainer>
