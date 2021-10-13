@@ -201,11 +201,11 @@ export default function App() {
 
   useEffect(() => {
     // 페이지가 변경되면 실행한다.
-    if(curPage === -1) return;
-    const size = 4;
+    if (curPage === -1) return;
+    const size = 30;
     if (curPage > total) return;
     console.log(axios.defaults.headers.common);
-    axios.get("/posts", { params: { page: curPage, size } }).then((res) => {
+    axios.get('/posts', { params: { page: curPage, size } }).then((res) => {
       setTotal(res.data.pages.total);
       if (curPage === 1) setPosts(res.data.posts);
       else {
@@ -246,14 +246,12 @@ export default function App() {
 
   function useScroll() {
     const [scrollY, setScrollY] = useState(0);
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
       let mounted = true;
       window.addEventListener('scroll', () => {
         if (mounted) {
           setScrollY(window.scrollY);
-          setLoading(false);
         }
       });
       return () => {
