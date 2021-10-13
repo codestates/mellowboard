@@ -7,7 +7,5 @@ export default styled.div`
   align-items: center;
   border-radius: 1rem;
   background: wheat center center / cover no-repeat;
-  width: 650px;
   height: 100%;
-  //margin: 80px;
 `;

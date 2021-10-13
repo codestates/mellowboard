@@ -13,13 +13,13 @@ export const PostList = styled.li`
   margin: 0rem -1.2rem 1rem -1.2rem;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   position: relative;
   font-size: 1rem;
   color: #95a5a6;
 
   @media screen and (min-width: 768px) {
     width: 49%;
-    min-width: 21.5rem;
     height: auto;
     min-height: 35rem;
     margin: 0rem -3rem 1rem -1rem;

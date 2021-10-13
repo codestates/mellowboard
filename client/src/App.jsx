@@ -14,6 +14,7 @@ import MyPage from './components/MyPage';
 import Auth from './components/Auth';
 import PostBoard from './components/PostBoard';
 import WriteButton from './WriteButton';
+import LoadingPage from './components/LoadingPage';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
@@ -321,6 +322,7 @@ export default function App() {
 
   return (
     <>
+      {/* <LoadingPage /> */}
       <Auth
         handleSession={handleSession}
         openAuthHandler={openAuthHandler}

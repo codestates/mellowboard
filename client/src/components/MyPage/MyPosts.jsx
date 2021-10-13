@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import EditingStatePost from '../BoardPage/EditingStatePost';
 import Comments from '../BoardPage/Comments';
+import { EditAltButton, DeleteButton } from '../BoardPage/Button';
 
 const MyPostList = styled.li`
   border-radius: 1rem;
@@ -11,6 +12,7 @@ const MyPostList = styled.li`
   margin: 0rem -1.2rem 1rem -1.2rem;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   position: relative;
   font-size: 1rem;
   color: #95a5a6;
@@ -20,7 +22,6 @@ const MyPostList = styled.li`
     height: auto;
     min-height: 35rem;
     margin: 0rem -3rem 1rem -1rem;
-    min-width: 11rem;
 
     :nth-child(2n) {
       margin-left: 4rem;
@@ -203,15 +204,13 @@ export default function MyPosts({
               {`댓글 ${commentCount}개`}
             </CommentsCnt>
             <BottomBtnsContainer>
-              <ModifyBtn onClick={() => setIsModify(true)}>수정</ModifyBtn>
-              <DeleteBtn
+              <EditAltButton onClick={modifyHandler} />
+              <DeleteButton
                 onClick={() => {
                   deletePostHandler(id);
                   deleteMyPostHandler(id);
                 }}
-              >
-                삭제
-              </DeleteBtn>
+              />
             </BottomBtnsContainer>
           </CommentsBtns>
         </BottomContainer>

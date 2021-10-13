@@ -39,6 +39,20 @@ const BtnContainer = styled.span`
     all: unset;
     cursor: pointer;
     margin-right: 2rem;
+
+    &:hover {
+      font-size: 1.2rem;
+      transition: 0.5s;
+    }
+  }
+  #login_btn:hover {
+    color: #78e08f;
+  }
+  #logout_btn:hover {
+    color: #eb2f06;
+  }
+  #mypage_btn:hover {
+    color: #38ada9;
   }
 `;
 
