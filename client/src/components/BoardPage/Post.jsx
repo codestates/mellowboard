@@ -166,14 +166,12 @@ export default function Post({
           }}
         >
           <PostText>
-            {content.split('\n').map((line) => {
-              return (
-                <span>
-                  {line}
-                  <br />
-                </span>
-              );
-            })}
+            {content.split('\n').map((line) => (
+              <span>
+                {line}
+                <br />
+              </span>
+            ))}
           </PostText>
           <BottomContainer>
             <HashtagContainer>
@@ -215,7 +213,14 @@ export default function Post({
           background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
         }}
       >
-        <PostText>{content}</PostText>
+        <PostText>
+          {content.split('\n').map((line) => (
+            <span>
+              {line}
+              <br />
+            </span>
+          ))}
+        </PostText>
         <BottomContainer>
           <HashtagContainer>
             {tags.map((tag) => (
