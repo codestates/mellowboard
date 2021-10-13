@@ -209,9 +209,9 @@ export default function Post({
             ) : null}
             <BottomBtnsContainer>
               <ModifyBtn onClick={modifyHandler}>수정</ModifyBtn>
-              <DeleteBtn onClick={() => handlePostDelete(id)}>삭제</DeleteBtn>
+              <DeleteBtn onClick={() => deletePostHandler(id)}>삭제</DeleteBtn>
               <EditAltButton onClick={modifyHandler} />
-              <DeleteButton onClick={() => handlePostDelete(id)} />
+              <DeleteButton onClick={() => deletePostHandler(id)} />
             </BottomBtnsContainer>
           </CommentsBtns>
         </PostList>
