@@ -201,7 +201,7 @@ export default function App() {
 
   useEffect(() => {
     // 페이지가 변경되면 실행한다.
-    const size = 10;
+    const size = 30;
 
     const config = {
       url: '/posts',
