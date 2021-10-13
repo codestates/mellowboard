@@ -21,7 +21,6 @@ export const PostList = styled.li`
     width: 49%;
     min-width: 21.5rem;
     height: auto;
-    max-height: 35rem;
     min-height: 35rem;
     margin: 0rem -3rem 1rem -1rem;
 
@@ -31,15 +30,16 @@ export const PostList = styled.li`
   }
 `;
 
-const PostText = styled.pre`
+const PostText = styled.p`
   margin: 1rem;
   font-family: 'KyoboHand';
   color: white;
   text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
   font-size: 1.5rem;
   word-break: break-all;
-  height: 80%;
+  height: 90%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -47,31 +47,6 @@ const PostText = styled.pre`
   @media screen and (min-width: 768px) {
     font-size: 2rem;
   }
-`;
-
-const TextArea = styled.textarea`
-  margin: 3rem 5rem;
-  font-family: 'KyoboHand';
-  font-size: 1.5rem;
-  height: 9rem;
-  opacity: 0.4;
-`;
-
-const TopBtns = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const BackgroundBtn = styled.button`
-  margin-left: 43%;
-  margin-top: 1rem;
-  width: 5rem;
-  cursor: pointer;
-`;
-
-const CloseBtn = styled.button`
-  height: 1.5rem;
-  cursor: pointer;
 `;
 
 const HashtagContainer = styled.div`
@@ -90,22 +65,20 @@ const CommentsBtns = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 `;
 
 const CommentsCnt = styled.span`
   margin: 1rem;
-  width: 4rem;
+  width: 5rem;
   cursor: pointer;
 `;
 
 const BottomContainer = styled.div`
   position: absolute;
+  width: 100%;
   bottom: 1rem;
 `;
-
-const DeleteBtn = styled.button``;
-
-const ModifyBtn = styled.button``;
 
 const imageFiles = Array(20)
   .fill(1)
@@ -118,6 +91,7 @@ const imageFiles = Array(20)
   });
 
 export default function Post({
+  images,
   isLogin,
   post,
   modifyPostHandler,
@@ -129,7 +103,6 @@ export default function Post({
   const [image, setImage] = useState(background);
   const [isOpen, setIsOpen] = useState(false);
   const [comments, setComments] = useState([]);
-  // const [postContent, setPostContent] = useState(content);
 
   const randomInteger = () => {
     const random = Math.ceil(Math.random() * 20);
@@ -164,7 +137,6 @@ export default function Post({
   const modifyHandler = () => {
     setIsModify(!isModify);
   };
-  console.log('cd', content);
 
   if (!post) return null;
   // 내가 쓴 게시물 수정 상태
@@ -193,29 +165,32 @@ export default function Post({
             background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
           }}
         >
-          <PostText>{content}</PostText>
-          <BottomContainer />
-          <HashtagContainer>
-            {tags.map((tag) => (
-              <HashtagSpan>{tag}</HashtagSpan>
-            ))}
-          </HashtagContainer>
-          <CommentsBtns>
-            <CommentsCnt onClick={refreshHandler}>
-              {`댓글 ${commentCount}개`}
-            </CommentsCnt>
-            {isOpen === true ? (
-              <Comments
-                openModalHandler={openModalHandler}
-                comments={comments}
-                refreshHandler={refreshHandler}
-              />
-            ) : null}
-            <BottomBtnsContainer>
-              <EditAltButton onClick={modifyHandler} />
-              <DeleteButton onClick={() => deletePostHandler(id)} />
-            </BottomBtnsContainer>
-          </CommentsBtns>
+          <PostText>
+            {content.split('\n').map((line) => {
+              return (
+                <span>
+                  {line}
+                  <br />
+                </span>
+              );
+            })}
+          </PostText>
+          <BottomContainer>
+            <HashtagContainer>
+              {tags.map((tag) => (
+                <HashtagSpan>{tag}</HashtagSpan>
+              ))}
+            </HashtagContainer>
+            <CommentsBtns>
+              <CommentsCnt onClick={refreshHandler}>
+                {`댓글 ${commentCount}개`}
+              </CommentsCnt>
+              <BottomBtnsContainer>
+                <EditAltButton onClick={modifyHandler} />
+                <DeleteButton onClick={() => deletePostHandler(id)} />
+              </BottomBtnsContainer>
+            </CommentsBtns>
+          </BottomContainer>
         </PostList>
       </>
     );

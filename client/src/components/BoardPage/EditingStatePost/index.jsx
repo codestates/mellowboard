@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Button from './Button';
 import ButtonBackground from './ButtonBackground';
 import TextArea from './TextArea';
-import { ModalView } from './Modal';
+import ModalView from './Modal';
 import Wrapper from './Wrapper';
 import './index.css';
 
@@ -13,7 +13,7 @@ export default function EditingStatePost({
   modifyPostHandler,
   setIsModify,
   image,
-  randomInteger
+  randomInteger,
 }) {
   const [text, setText] = useState(post.content);
   const maxLength = 200;

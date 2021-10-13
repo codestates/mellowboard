@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const ModalView = styled.div`
+export default styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -8,8 +8,5 @@ const ModalView = styled.div`
   border-radius: 1rem;
   background: url(${(props) => props.img}) center center / cover no-repeat;
   height: 100%;
-  //width: 0rem;
-  //margin: rem;
+  min-height: 30rem;
 `;
-
-export { ModalView };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import {
   BrowserRouter as Router,
@@ -88,11 +88,10 @@ const PostBtn = styled.button`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: #6d214f;
   position: fixed;
   bottom: 3rem;
   color: #5758bb;
-  background-color: #6d214f;
-  /* margin-left: 50%; */
 
   #pencil_icon {
     font-size: 2rem;
@@ -100,14 +99,21 @@ const PostBtn = styled.button`
 `;
 
 export default function App() {
-  const [session, setSession] = useState({ accessToken: '', isLogin: false });
+  const [session, setSession] = useState({
+    accessToken: 'init',
+    isLogin: false,
+  });
   const [posts, setPosts] = useState([]);
+  const [myPosts, setMyPosts] = useState([]);
+  const { scrollY } = useScroll();
+  const [curPage, setCurPage] = useState(-1);
+  const [total, setTotal] = useState(1);
 
-  const addPostHandler = () => {
+  const addMyPostHandler = () => {
     axios
-      .get('/posts')
+      .get('/posts/mypage')
       .then((res) => {
-        setPosts(res.data.posts);
+        setMyPosts(res.data.posts);
       })
       .catch((err) => {
         console.log(err);
@@ -121,13 +127,12 @@ export default function App() {
      * @return <Promise>
      */
     try {
-      await axios
-        .patch('/posts', {
-          postId: post.id,
-          content,
-          background,
-          tags,
-        });
+      await axios.patch('/posts', {
+        postId: post.id,
+        content,
+        background,
+        tags,
+      });
     } catch (err) {
       return Promise.reject(err);
     }
@@ -140,6 +145,17 @@ export default function App() {
       tags,
     };
     setPosts(newPosts);
+
+    const myNewPosts = myPosts.slice();
+    const changedMyPostIndex = myNewPosts.findIndex((e) => e.id === post.id);
+    myNewPosts[changedMyPostIndex] = {
+      ...post,
+      content,
+      background,
+      tags,
+    };
+    setMyPosts(myNewPosts);
+
     return Promise.resolve(true);
   };
 
@@ -149,12 +165,15 @@ export default function App() {
         data: { postId },
       })
       .then(() => {
-        // setPosts([...posts.splice(postId, 1)]);
         setPosts(posts.filter((post) => post.id !== postId));
       })
       .catch((err) => {
-        console.log(err.response.data);
+        console.log(err.response.data?.message);
       });
+  };
+
+  const deleteMyPostHandler = (postId) => {
+    setMyPosts(myPosts.filter((post) => post.id !== postId));
   };
 
   const handleSession = (token) => {
@@ -185,12 +204,19 @@ export default function App() {
     try {
       newToken = await updateToken();
     } catch {}
-
     handleSession(newToken);
     axios
       .get('/posts', { headers: { Authorization: `Bearer ${newToken}` } })
       .then((res) => {
         setPosts(res.data.posts);
+      });
+
+    axios
+      .get('/posts/mypage', {
+        headers: { Authorization: `Bearer ${newToken}` },
+      })
+      .then((res) => {
+        setMyPosts(res.data.posts);
       });
   }, []);
 
@@ -198,10 +224,70 @@ export default function App() {
     /**
      * session이 변경되면 axios의 헤더값을 수정한다.
      */
+    if (session.accessToken === 'init') return;
+    console.log('token : ', session.accessToken);
     axios.defaults.headers.common = {
       Authorization: `Bearer ${session.accessToken}`,
     };
+    addPostHandler();
   }, [session]);
+
+  useEffect(() => {
+    // 페이지가 변경되면 실행한다.
+    if (curPage === -1) return;
+    const size = 100;
+    if (curPage > total && curPage !== 1) {
+      return;
+    }
+
+    axios.get('/posts', { params: { page: curPage, size } }).then((res) => {
+      setTotal(res.data.pages.total);
+      if (curPage === 1) {
+        setPosts(res.data.posts);
+      } else {
+        // 글이 추가되는 등의 문제로 중복이 있을 수 있음
+        // 중복 제거 시행
+        const resData = res.data.posts.filter((post) => {
+          const index = posts.findIndex(
+            (originPost) => originPost.id === post.id
+          );
+          if (index === -1) return true;
+          return false;
+        });
+        const newData = [...posts, ...resData];
+        setPosts(newData);
+      }
+    });
+  }, [curPage]);
+
+  const addPostHandler = (more) => {
+    if (!more) {
+      if (curPage === 1) {
+        axios.get('/posts', { params: { page: 1, size: 100 } }).then((res) => {
+          setTotal(res.data.pages.total);
+          if (curPage === 1) {
+            setPosts(res.data.posts);
+          } else {
+            // 글이 추가되는 등의 문제로 중복이 있을 수 있음
+            // 중복 제거 시행
+            const resData = res.data.posts.filter((post) => {
+              const index = posts.findIndex(
+                (originPost) => originPost.id === post.id
+              );
+              if (index === -1) return true;
+              return false;
+            });
+            const newData = [...posts, ...resData];
+            setPosts(newData);
+          }
+        });
+      } else {
+        setCurPage(1);
+      }
+    } else if (curPage < total) {
+      setCurPage(curPage + 1);
+    }
+  };
 
   function importAll(r) {
     const images = {};
@@ -211,9 +297,47 @@ export default function App() {
     return images;
   }
 
+  useEffect(() => {
+    // 스크롤 이벤트
+    if (scrollY + window.innerHeight >= document.body.offsetHeight - 200) {
+      addPostHandler(true);
+    }
+  }, [scrollY]);
+
+  useEffect(() => {
+    /**
+     * session이 변경되면 axios의 헤더값을 수정한다.
+     */
+    axios.defaults.headers.common = {
+      Authorization: `Bearer ${session.accessToken}`,
+    };
+
+    addPostHandler();
+  }, [session]);
+
   const images = importAll(
     require.context('./images/background', false, /\.(png|jpe?g|svg)$/)
   );
+
+  function useScroll() {
+    const [scrollY, setScrollY] = useState(0);
+
+    useEffect(() => {
+      let mounted = true;
+      window.addEventListener('scroll', () => {
+        if (mounted) {
+          setScrollY(window.scrollY);
+        }
+      });
+      return () => {
+        mounted = false;
+        // window.removeEventListener('scroll', scrollCallback);
+      };
+    });
+    return {
+      scrollY,
+    };
+  }
 
   return (
     <>
@@ -228,6 +352,7 @@ export default function App() {
         session={session}
         addPostHandler={addPostHandler}
         images={images}
+        addMyPostHandler={addMyPostHandler}
       />
       <GlobalStyle />
       <Router>
@@ -244,12 +369,23 @@ export default function App() {
               modifyPostHandler={modifyPostHandler}
               deletePostHandler={deletePostHandler}
               openAuthHandler={openAuthHandler}
-              addPostHandler={addPostHandler}
               images={images}
             />
           </Route>
           <Route path="/mypage">
-            {session.isLogin ? <MyPage /> : <Redirect to="/" />}
+            {session.isLogin ? (
+              <MyPage
+                isLogin={session.isLogin}
+                modifyPostHandler={modifyPostHandler}
+                deletePostHandler={deletePostHandler}
+                openAuthHandler={openAuthHandler}
+                images={images}
+                deleteMyPostHandler={deleteMyPostHandler}
+                myPosts={myPosts}
+              />
+            ) : (
+              <Redirect to="/" />
+            )}
           </Route>
         </Switch>
         <PostBtnContainer>

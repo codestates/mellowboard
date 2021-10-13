@@ -5,11 +5,10 @@ import Post from './Post';
 export default function BoardPage({
   isLogin,
   posts,
-  addPostHandler,
   modifyPostHandler,
   deletePostHandler,
   images,
-  openAuthHandler
+  openAuthHandler,
 }) {
   return (
     <>
@@ -19,7 +18,6 @@ export default function BoardPage({
             key={post.id}
             isLogin={isLogin}
             post={post}
-            addPostHandler={addPostHandler}
             modifyPostHandler={modifyPostHandler}
             deletePostHandler={deletePostHandler}
             images={images}
