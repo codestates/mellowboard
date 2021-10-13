@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import {
   BrowserRouter as Router,
@@ -153,7 +153,7 @@ export default function App() {
     /**
      * 세션관리 핸들러
      */
-    if (!token) setSession({ accessToken: 'init', isLogin: false });
+    if (!token) setSession({ accessToken: '', isLogin: false });
     else setSession({ accessToken: token, isLogin: true });
   };
   const [isOpenAuth, setIsOpenAuth] = useState(false);
@@ -185,6 +185,7 @@ export default function App() {
      * session이 변경되면 axios의 헤더값을 수정한다.
      */
     if (session.accessToken === "init") return;
+    console.log("token : ", session.accessToken)
     axios.defaults.headers.common = {
       Authorization: `Bearer ${session.accessToken}`,
     };
@@ -222,8 +223,30 @@ export default function App() {
 
   const addPostHandler = (more) => {
     if (!more) {
-      if (curPage === 1) setCurPage(-1);
-      setCurPage(1);
+      if (curPage === 1) {
+        axios.get('/posts', { params: { page: 1, size: 100 } }).then((res) => {
+          setTotal(res.data.pages.total);
+          if (curPage === 1) {
+            setPosts(res.data.posts);
+          } else {
+            // 글이 추가되는 등의 문제로 중복이 있을 수 있음
+            // 중복 제거 시행
+            const resData = res.data.posts.filter((post) => {
+              const index = posts.findIndex((originPost) => originPost.id === post.id);
+              if (index === -1) return true;
+              return false;
+            });
+            const newData = [
+              ...posts,
+              ...resData,
+            ];
+            setPosts(newData);
+          }
+        });
+      }
+      else {
+        setCurPage(1);
+      }
     } else if (curPage < total) {
       setCurPage(curPage + 1);
     }
