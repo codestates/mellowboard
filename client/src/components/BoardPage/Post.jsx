@@ -97,6 +97,7 @@ export default function Post({
   modifyPostHandler,
   deletePostHandler,
   openAuthHandler,
+  addPostHandler,
 }) {
   const { isMine, content, background, tags, commentCount, id } = post;
   const [isModify, setIsModify] = useState(false);
@@ -112,6 +113,7 @@ export default function Post({
 
   const openModalHandler = () => {
     setIsOpen(!isOpen);
+    addPostHandler();
   };
 
   const refreshHandler = () => {
@@ -166,14 +168,12 @@ export default function Post({
           }}
         >
           <PostText>
-            {content.split('\n').map((line) => {
-              return (
-                <span>
-                  {line}
-                  <br />
-                </span>
-              );
-            })}
+            {content.split('\n').map((line) => (
+              <span>
+                {line}
+                <br />
+              </span>
+            ))}
           </PostText>
           <BottomContainer>
             <HashtagContainer>
