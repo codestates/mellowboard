@@ -40,6 +40,9 @@ const PostText = styled.p`
   font-size: 1.5rem;
   word-break: break-all;
   height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   @media screen and (min-width: 768px) {
     font-size: 2rem;
@@ -208,8 +211,6 @@ export default function Post({
               />
             ) : null}
             <BottomBtnsContainer>
-              <ModifyBtn onClick={modifyHandler}>수정</ModifyBtn>
-              <DeleteBtn onClick={() => deletePostHandler(id)}>삭제</DeleteBtn>
               <EditAltButton onClick={modifyHandler} />
               <DeleteButton onClick={() => deletePostHandler(id)} />
             </BottomBtnsContainer>
