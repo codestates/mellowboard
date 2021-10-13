@@ -34,7 +34,7 @@ const PostText = styled.p`
   text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
   font-size: 1.5rem;
   word-break: break-all;
-  height: 100%;
+  height: 90%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -182,7 +182,16 @@ export default function MyPosts({
           background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
         }}
       >
-        <PostText>{content}</PostText>
+        <PostText>
+          {content.split('\n').map((line) => {
+            return (
+              <span>
+                {line}
+                <br />
+              </span>
+            );
+          })}
+        </PostText>
         <BottomContainer>
           <HashtagContainer>
             {tags.map((tag) => (
