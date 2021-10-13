@@ -103,7 +103,7 @@ export default function App() {
   const [session, setSession] = useState({ accessToken: '', isLogin: false });
   const [posts, setPosts] = useState([]);
   const { scrollY } = useScroll();
-  const [curPage, setCurPage] = useState(1);
+  const [curPage, setCurPage] = useState(-1);
   const [total, setTotal] = useState(1);
 
   useEffect(() => {
@@ -201,16 +201,11 @@ export default function App() {
 
   useEffect(() => {
     // 페이지가 변경되면 실행한다.
-    const size = 30;
-
-    const config = {
-      url: '/posts',
-      params: { page: curPage, size },
-    };
-
+    if(curPage === -1) return;
+    const size = 4;
     if (curPage > total) return;
-
-    axios.request(config).then((res) => {
+    console.log(axios.defaults.headers.common);
+    axios.get("/posts", { params: { page: curPage, size } }).then((res) => {
       setTotal(res.data.pages.total);
       if (curPage === 1) setPosts(res.data.posts);
       else {
@@ -228,7 +223,7 @@ export default function App() {
         setPosts(newData);
       }
     });
-  }, [curPage]);
+  }, [curPage, session]);
 
   const addPostHandler = (more) => {
     if (!more) setCurPage(1);
