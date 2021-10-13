@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import EditingStatePost from './EditingStatePost/index';
 import Comments from './Comments';
 
 export const PostList = styled.li`
+  background: url(${(props) => props.img}) center center / cover no-repeat;
   border-radius: 1rem;
   width: 100%;
   min-height: 30rem;
@@ -40,31 +42,6 @@ const PostText = styled.p`
   }
 `;
 
-const TextArea = styled.textarea`
-  margin: 3rem 5rem;
-  font-family: 'KyoboHand';
-  font-size: 1.5rem;
-  height: 9rem;
-  opacity: 0.4;
-`;
-
-const TopBtns = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const BackgroundBtn = styled.button`
-  margin-left: 43%;
-  margin-top: 1rem;
-  width: 5rem;
-  cursor: pointer;
-`;
-
-const CloseBtn = styled.button`
-  height: 1.5rem;
-  cursor: pointer;
-`;
-
 const HashtagContainer = styled.div`
   margin: 1rem;
 `;
@@ -93,11 +70,8 @@ const CommentsCnt = styled.span`
 const BottomContainer = styled.div`
   position: absolute;
   width: 100%;
-
   bottom: 1rem;
 `;
-
-const ConfirmBtn = styled.button``;
 
 const DeleteBtn = styled.button``;
 
@@ -113,18 +87,6 @@ const imageFiles = Array(20)
     return string;
   });
 
-function importAll(r) {
-  const images = {};
-  r.keys().forEach((item) => {
-    images[item.replace('./', '')] = r(item);
-  });
-  return images;
-}
-
-const images = importAll(
-  require.context('../../images/background', false, /\.(png|jpe?g|svg)$/)
-);
-
 export default function Post({
   images,
   isLogin,
@@ -136,30 +98,13 @@ export default function Post({
   const { isMine, content, background, tags, commentCount, id } = post;
   const [isModify, setIsModify] = useState(false);
   const [image, setImage] = useState(background);
-  const [text, setText] = useState(content);
   const [isOpen, setIsOpen] = useState(false);
   const [comments, setComments] = useState([]);
 
   const randomInteger = () => {
     const random = Math.ceil(Math.random() * 20);
-    setImage(images[imageFiles[random]]);
-  };
-
-  const changeContent = (event) => {
-    setText(event.target.value);
-  };
-
-  const confirm = (id) => {
-    const hashtagRule = /(\#[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]+)(?!;)/g;
-    let hashtagList = '';
-    try {
-      const array = [...text.matchAll(hashtagRule)].slice(0);
-      hashtagList = array.map((el) => el[0]);
-    } catch (err) {
-      console.log(err);
-    }
-
-    modifyPostHandler(id, text, image, hashtagList);
+    const a = imageFiles[random];
+    setImage(a);
   };
 
   const openModalHandler = () => {
@@ -186,35 +131,30 @@ export default function Post({
       openAuthHandler();
     }
   };
+  const modifyHandler = () => {
+    setIsModify(!isModify);
+  };
 
   if (!post) return null;
-
   // 내가 쓴 게시물 수정 상태
-  if (isModify) {
+  if (isMine && isModify && !isOpen) {
     return (
       <>
-        <PostList
-          style={{
-            background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
-          }}
-        >
-          <TopBtns>
-            <BackgroundBtn onClick={randomInteger}>배경 선택</BackgroundBtn>
-            <CloseBtn onclick={() => setIsModify(!isModify)}>&times;</CloseBtn>
-          </TopBtns>
-          <TextArea value={text} onChange={changeContent} />
-          <BottomContainer>
-            <BottomBtnsContainer>
-              <ConfirmBtn onClick={() => confirm(id)}>확인</ConfirmBtn>
-              <DeleteBtn onClick={() => deletePostHandler(id)}>삭제</DeleteBtn>
-            </BottomBtnsContainer>
-          </BottomContainer>
+        <PostList>
+          <EditingStatePost
+            isOpenPostBoard={isModify}
+            openPostBoardHandler={modifyHandler}
+            post={post}
+            modifyPostHandler={modifyPostHandler}
+            setIsModify={setIsModify}
+            image={image}
+            randomInteger={randomInteger}
+          />
         </PostList>
       </>
     );
   }
-  // 내가 쓴 게시물 보통 상태
-  if (isMine) {
+  if (isMine && !isModify && !isOpen) {
     return (
       <>
         <PostList
@@ -233,13 +173,6 @@ export default function Post({
               <CommentsCnt onClick={refreshHandler}>
                 {`댓글 ${commentCount}개`}
               </CommentsCnt>
-              {isOpen === true ? (
-                <Comments
-                  openModalHandler={openModalHandler}
-                  comments={comments}
-                  refreshHandler={refreshHandler}
-                />
-              ) : null}
               <BottomBtnsContainer>
                 <ModifyBtn onClick={() => setIsModify(true)}>수정</ModifyBtn>
                 <DeleteBtn onClick={() => deletePostHandler(id)}>
@@ -252,7 +185,18 @@ export default function Post({
       </>
     );
   }
-
+  if (isOpen) {
+    return (
+      <PostList>
+        <Comments
+          openModalHandler={openModalHandler}
+          comments={comments}
+          refreshHandler={refreshHandler}
+          postId={id}
+        />
+      </PostList>
+    );
+  }
   // 남이 쓴 게시물
   return (
     <>
@@ -272,16 +216,6 @@ export default function Post({
             {`댓글 ${commentCount}개`}
           </CommentsCnt>
         </BottomContainer>
-        {isOpen === true ? (
-          <Comments
-            openModalHandler={openModalHandler}
-            comments={comments}
-            refreshHandler={refreshHandler}
-            postId={id}
-          />
-        ) : (
-          ''
-        )}
       </PostList>
     </>
   );

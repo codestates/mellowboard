@@ -7,5 +7,6 @@ export default styled.textarea`
   font-size: 1.5rem;
   width: 90%;
   height: 80%;
+  min-height: 23rem;
   opacity: 0.4;
 `;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import EditingStatePost from '../BoardPage/EditingStatePost';
 import Comments from '../BoardPage/Comments';
 
 const MyPostList = styled.li`
@@ -16,10 +17,10 @@ const MyPostList = styled.li`
 
   @media screen and (min-width: 768px) {
     width: 49%;
-    min-width: 21.5rem;
     height: auto;
     min-height: 35rem;
     margin: 0rem -3rem 1rem -1rem;
+    min-width: 11rem;
 
     :nth-child(2n) {
       margin-left: 4rem;
@@ -39,31 +40,6 @@ const PostText = styled.p`
   }
 `;
 
-const TextArea = styled.textarea`
-  margin: 3rem 5rem;
-  font-family: 'KyoboHand';
-  font-size: 1.5rem;
-  height: 9rem;
-  opacity: 0.4;
-`;
-
-const TopBtns = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const BackgroundBtn = styled.button`
-  margin-left: 43%;
-  margin-top: 1rem;
-  width: 5rem;
-  cursor: pointer;
-`;
-
-const CloseBtn = styled.button`
-  height: 1.5rem;
-  cursor: pointer;
-`;
-
 const HashtagContainer = styled.div`
   margin: 1rem;
 `;
@@ -80,20 +56,20 @@ const CommentsBtns = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 `;
 
 const CommentsCnt = styled.span`
   margin: 1rem;
-  width: 4rem;
+  width: 5rem;
   cursor: pointer;
 `;
 
 const BottomContainer = styled.div`
   position: absolute;
   bottom: 1rem;
+  width: 100%;
 `;
-
-const ConfirmBtn = styled.button``;
 
 const DeleteBtn = styled.button``;
 
@@ -109,18 +85,6 @@ const imageFiles = Array(20)
     return string;
   });
 
-function importAll(r) {
-  const images = {};
-  r.keys().forEach((item) => {
-    images[item.replace('./', '')] = r(item);
-  });
-  return images;
-}
-
-const images = importAll(
-  require.context('../../images/background', false, /\.(png|jpe?g|svg)$/)
-);
-
 export default function MyPosts({
   images,
   isLogin,
@@ -128,34 +92,18 @@ export default function MyPosts({
   modifyPostHandler,
   deletePostHandler,
   openAuthHandler,
+  deleteMyPostHandler,
 }) {
   const { content, background, tags, commentCount, id } = myPost;
   const [isModify, setIsModify] = useState(false);
   const [image, setImage] = useState(background);
-  const [text, setText] = useState(content);
   const [isOpen, setIsOpen] = useState(false);
   const [comments, setComments] = useState([]);
 
   const randomInteger = () => {
     const random = Math.ceil(Math.random() * 20);
-    setImage(images[imageFiles[random]]);
-  };
-
-  const changeContent = (event) => {
-    setText(event.target.value);
-  };
-
-  const confirm = (id) => {
-    const hashtagRule = /(\#[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]+)(?!;)/g;
-    let hashtagList = '';
-    try {
-      const array = [...text.matchAll(hashtagRule)].slice(0);
-      hashtagList = array.map((el) => el[0]);
-    } catch (err) {
-      console.log(err);
-    }
-
-    modifyPostHandler(id, text, image, hashtagList);
+    const a = imageFiles[random];
+    setImage(a);
   };
 
   const openModalHandler = () => {
@@ -182,53 +130,45 @@ export default function MyPosts({
       openAuthHandler();
     }
   };
+  const modifyHandler = () => {
+    setIsModify(!isModify);
+  };
 
   if (!myPost) return null;
-  // <EditingStatePost />
-  // <PostList
-  //   style={{
-  //     background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
-  //   }}
-  // >
-  //   <TopBtns>
-  //     <BackgroundBtn onClick={randomInteger}>배경 선택</BackgroundBtn>
-  //     <CloseBtn onclick={() => setIsModify(false)}>&times;</CloseBtn>
-  //   </TopBtns>
-  //   <TextArea value={text} onChange={changeContent} />
-  //   <BottomContainer>
-  //     <BottomBtnsContainer>
-  //       <ConfirmBtn onClick={confirm(id)}>확인</ConfirmBtn>
-  //       <DeleteBtn onClick={() => handlePostDelete(id)}>삭제</DeleteBtn>
-  //     </BottomBtnsContainer>
-  //   </BottomContainer>
-  // </PostList>
 
   // 내가 쓴 게시물 수정 상태
   if (isModify) {
     return (
       <>
-        <MyPostList
-          style={{
-            background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
-          }}
-        >
-          <TopBtns>
-            <BackgroundBtn onClick={randomInteger}>배경 선택</BackgroundBtn>
-            <CloseBtn onClick={() => setIsModify(false)}>&times;</CloseBtn>
-          </TopBtns>
-          <TextArea value={text} onChange={changeContent} />
-          <BottomContainer>
-            <BottomBtnsContainer>
-              <ConfirmBtn onClick={confirm(id)}>확인</ConfirmBtn>
-              <DeleteBtn onClick={() => deletePostHandler(id)}>삭제</DeleteBtn>
-            </BottomBtnsContainer>
-          </BottomContainer>
+        <MyPostList>
+          <EditingStatePost
+            isOpenPostBoard={isModify}
+            openPostBoardHandler={modifyHandler}
+            post={myPost}
+            modifyPostHandler={modifyPostHandler}
+            setIsModify={setIsModify}
+            image={image}
+            randomInteger={randomInteger}
+          />
         </MyPostList>
       </>
     );
   }
-  // 내가 쓴 게시물 보통 상태
 
+  if (isOpen) {
+    return (
+      <MyPostList>
+        <Comments
+          openModalHandler={openModalHandler}
+          comments={comments}
+          refreshHandler={refreshHandler}
+          postId={id}
+        />
+      </MyPostList>
+    );
+  }
+
+  // 내가 쓴 게시물 보통 상태
   return (
     <>
       <MyPostList
@@ -247,16 +187,16 @@ export default function MyPosts({
             <CommentsCnt onClick={refreshHandler}>
               {`댓글 ${commentCount}개`}
             </CommentsCnt>
-            {isOpen === true ? (
-              <Comments
-                openModalHandler={openModalHandler}
-                comments={comments}
-                refreshHandler={refreshHandler}
-              />
-            ) : null}
             <BottomBtnsContainer>
               <ModifyBtn onClick={() => setIsModify(true)}>수정</ModifyBtn>
-              <DeleteBtn onClick={() => deletePostHandler(id)}>삭제</DeleteBtn>
+              <DeleteBtn
+                onClick={() => {
+                  deletePostHandler(id);
+                  deleteMyPostHandler(id);
+                }}
+              >
+                삭제
+              </DeleteBtn>
             </BottomBtnsContainer>
           </CommentsBtns>
         </BottomContainer>

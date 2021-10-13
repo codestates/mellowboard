@@ -7,16 +7,6 @@ import { ModalView, ModalBackdrop } from './Modal';
 import Wrapper from './Wrapper';
 import './index.css';
 
-const imageFiles = Array(20)
-  .fill(1)
-  .map((el, idx) => {
-    if (`${el + idx}`.length === 1) {
-      return '0' + `${el + idx}` + '.png';
-    }
-    const string = `${el + idx}` + '.png';
-    return string;
-  });
-
 export default function PostBoard({
   isOpenPostBoard,
   openPostBoardHandler,
@@ -27,7 +17,15 @@ export default function PostBoard({
   const [content, setContent] = useState('');
   const [textLength, setTextLength] = useState(0);
   const maxLength = 200;
-
+  const imageFiles = Array(20)
+    .fill(1)
+    .map((el, idx) => {
+      if (`${el + idx}`.length === 1) {
+        return '0' + `${el + idx}` + '.png';
+      }
+      const string = `${el + idx}` + '.png';
+      return string;
+    });
   const randomInteger = () => {
     const random = Math.ceil(Math.random() * 20);
     setImage(imageFiles[random]);
@@ -68,12 +66,15 @@ export default function PostBoard({
 
     setContent('');
   };
+
   if (isOpenPostBoard === true) {
     return (
       <>
         <ModalBackdrop onClick={() => openPostBoardHandler()}>
           <ModalView
-            img={images[image].default}
+            style={{
+              background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
+            }}
             onClick={(e) => e.stopPropagation()}
           >
             <ButtonBackground onClick={randomInteger}>

@@ -91,7 +91,6 @@ const PostBtn = styled.button`
   bottom: 3rem;
   color: #5758bb;
   background-color: #6d214f;
-  /* margin-left: 50%; */
 
   #pencil_icon {
     font-size: 2rem;
@@ -101,6 +100,7 @@ const PostBtn = styled.button`
 export default function App() {
   const [session, setSession] = useState({ accessToken: '', isLogin: false });
   const [posts, setPosts] = useState([]);
+  const [myPosts, setMyPosts] = useState([]);
 
   const addPostHandler = () => {
     axios
@@ -111,34 +111,57 @@ export default function App() {
       .catch((err) => {
         console.log(err);
       });
-  };
 
-  const modifyPostHandler = (postId, content, background, tags) => {
     axios
-      .patch('/posts', {
-        postId,
-        content,
-        background,
-        tags,
-      })
-      .then(() => {
-        setPosts([
-          ...posts.splice(postId, 1, {
-            id: postId,
-            isMine: true,
-            content,
-            background,
-            tags,
-          }),
-        ]);
+      .get('/posts/mypage')
+      .then((res) => {
+        setMyPosts(res.data.posts);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
+  const modifyPostHandler = async (post, content, background, tags) => {
+    /**
+     * 게시글을 수정하는 함수. 비동기로 작성
+     * 서버에 요청을 보내고 state를 변경하고 결과를 Promise타입으로 리턴한다.
+     * @return <Promise>
+     */
+    try {
+      await axios.patch('/posts', {
+        postId: post.id,
+        content,
+        background,
+        tags,
+      });
+    } catch (err) {
+      return Promise.reject(err);
+    }
+    const newPosts = posts.slice();
+    const changedPostIndex = newPosts.findIndex((e) => e.id === post.id);
+    newPosts[changedPostIndex] = {
+      ...post,
+      content,
+      background,
+      tags,
+    };
+    setPosts(newPosts);
+
+    const myNewPosts = myPosts.slice();
+    const changedMyPostIndex = myNewPosts.findIndex((e) => e.id === post.id);
+    myNewPosts[changedMyPostIndex] = {
+      ...post,
+      content,
+      background,
+      tags,
+    };
+    setMyPosts(myNewPosts);
+
+    return Promise.resolve(true);
+  };
+
   const deletePostHandler = (postId) => {
-    console.log(`포스트아이디 ${postId}`);
     axios
       .delete('/posts', {
         data: { postId },
@@ -149,6 +172,10 @@ export default function App() {
       .catch((err) => {
         console.log(err.response.data);
       });
+  };
+
+  const deleteMyPostHandler = (postId) => {
+    setMyPosts(myPosts.filter((post) => post.id !== postId));
   };
 
   const handleSession = (token) => {
@@ -185,6 +212,14 @@ export default function App() {
       .get('/posts', { headers: { Authorization: `Bearer ${newToken}` } })
       .then((res) => {
         setPosts(res.data.posts);
+      });
+
+    axios
+      .get('/posts/mypage', {
+        headers: { Authorization: `Bearer ${newToken}` },
+      })
+      .then((res) => {
+        setMyPosts(res.data.posts);
       });
   }, []);
 
@@ -249,6 +284,8 @@ export default function App() {
                 deletePostHandler={deletePostHandler}
                 openAuthHandler={openAuthHandler}
                 images={images}
+                deleteMyPostHandler={deleteMyPostHandler}
+                myPosts={myPosts}
               />
             ) : (
               <Redirect to="/" />

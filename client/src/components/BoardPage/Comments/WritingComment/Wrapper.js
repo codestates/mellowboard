@@ -5,7 +5,7 @@ export default styled.div`
   flex-direction: row;
   justify-content: flex-end;
   margin-right: 5px;
-  margin-top: 40px;
+  margin-top: 5px;
   margin-bottom: 10px;
   width: 80%;
 `;
