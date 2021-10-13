@@ -3,21 +3,44 @@ import axios from 'axios';
 import styled from 'styled-components';
 
 const MyInfoForm = styled.form`
-  border: 3px solid gray;
-  font-family: 'Noto Serif KR';
-  font-size: 2rem;
 
-  #change_password_container,
-  #change_password_check_container,
-  #change_email_container,
-  #change_email_container {
+  font-family: 'Noto Serif KR';
+  font-size: 1.5rem;
+  background-color: #cb883c63;
+  box-shadow: 0 0.9rem 1.7rem rgba(0, 0, 0, 0),
+  0 0.7rem 0.7rem rgba(0, 0, 0, 0.22);
+  border-radius: 20px;
+
+  .change_password,
+  .change_email {
     display: flex;
     justify-content: space-between;
+    padding: 1rem 1rem 1rem 1rem;
+  }
+
+  input {
+    height: 2rem;
+    border-radius: 5px;
+    padding-right: 10rem;
   }
 `;
 
+const Button = styled.button`
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+`;
+
 export const ErrorMessage = styled.div`
-  color: red;
+  color: #8e2305;
+  background-color: #9370478f;
+
   font-size: big;
   width: 100%;
 `;
@@ -85,13 +108,17 @@ export default function MyInfo() {
     }
 
     axios.patch('/users', userForm).then((res) => {
-      console.log(res.data);
+
       const msg = document.getElementById('errorMsg');
       msg.style.color = 'green';
       setErrorMsg('회원정보가 수정되었습니다.');
+      setUserForm({
+        password: '', password2: '', email: '', email2: '',
+      });
       setTimeout(() => {
         setErrorMsg('');
-        msg.style.color = 'red';
+        msg.style.color = '#8e2305';
+
       }, 4000);
     });
   };
@@ -99,34 +126,44 @@ export default function MyInfo() {
   return (
     <>
       <MyInfoForm id="infoForm">
-        <div id="my_id">{userInfo.account}님의 정보</div>
-        <div id="change_password_container">
-          <label htmlFor="" id="change_password">
+
+        <h3>{userInfo.account}님의 정보</h3>
+        <div className="change_password">
+          <label>
+
             변경하실 비밀번호
           </label>
           <input type="password" name="password" value={userForm.password} onChange={handleForm} />
         </div>
-        <div id="change_password_check_container">
+
+        <div className="change_password">
+
           <label htmlFor="" id="change_password_check">
             변경하실 비밀번호 확인
           </label>
           <input type="password" name="password2" value={userForm.password2} onChange={handleForm} />
         </div>
-        <div id="change_email_container">
+
+        <div className="change_email">
+
           <label htmlFor="" id="change_email">
             변경하실 이메일
           </label>
           <input type="text" name="email" value={userForm.email} onChange={handleForm} />
         </div>
-        <div id="change_email_container">
+
+        <div className="change_email">
+
           <label htmlFor="" id="change_email_check">
             변경하실 이메일 확인
           </label>
           <input type="text" name='email2' value={userForm.email2} onChange={handleForm} />
         </div>
         <div id="btn_container">
-          <button id="withdrawal_btn" onClick={deleteUser}>회원 탈퇴</button>
-          <button id="modify_info_btn" onClick={changeUserInfo}>정보 수정</button>
+
+          <Button id="withdrawal_btn" onClick={deleteUser}>회원 탈퇴</Button>
+          <Button id="modify_info_btn" onClick={changeUserInfo}>정보 수정</Button>
+
           <ErrorMessage id="errorMsg">{errorMsg}</ErrorMessage>
         </div>
       </MyInfoForm>

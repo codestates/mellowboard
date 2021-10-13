@@ -4,32 +4,43 @@ import TextBox from './TextBox';
 import Wrapper from './Wrapper';
 import { CheckButton } from '../Comment/Button';
 
-export default function WritingComment({ refreshHandler }) {
+export default function WritingComment({ refreshHandler, postId }) {
   const [comment, setComment] = useState('');
   const onChangeHandler = (event) => {
     setComment(event.target.value);
-    console.log(comment);
   };
   const writingCommentHandler = () => {
     axios({
       method: 'post',
       url: '/comments',
       data: {
-        postId: 1,
+        postId,
         comment,
       },
     })
-      .then((res) => {
-        console.log(res.data.message);
+      .then(() => {
         refreshHandler();
       })
       .catch((err) => {
         console.log(err);
       });
   };
+  const enterHandler = (event) => {
+    /**
+     * 엔터가 눌리면 댓글을 작성한다.
+     */
+    // if (event.code === 'Enter') {
+    //   writingCommentHandler();
+    //   setComment('');
+    // }
+  };
   return (
     <Wrapper>
-      <TextBox value={comment} onChange={onChangeHandler} />
+      <TextBox
+        value={comment}
+        onChange={onChangeHandler}
+        onKeyUp={enterHandler}
+      />
       <CheckButton onClick={writingCommentHandler} />
     </Wrapper>
   );

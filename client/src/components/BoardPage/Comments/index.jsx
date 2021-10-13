@@ -10,25 +10,28 @@ export default function Comments({
   openModalHandler,
   refreshHandler,
   comments,
+  postId,
 }) {
   return (
     <>
-      <ModalBackdrop>
-        <ModalView>
-          <XButton onClick={openModalHandler} />
-          <WritingComment refreshHandler={refreshHandler} />
-          <Wrapper>
-            {comments.map((el) => (
-              <Comment
-                comment={el.comment}
-                isMine={el.isMine}
-                commentId={el.id}
-                refreshHandler={refreshHandler}
-              />
-            ))}
-          </Wrapper>
-        </ModalView>
-      </ModalBackdrop>
+      {/* <ModalBackdrop onClick={openModalHandler}> */}
+      <ModalView onClick={(e) => e.stopPropagation()}>
+        <XButton onClick={openModalHandler} />
+        <WritingComment refreshHandler={refreshHandler} postId={postId} />
+        <Wrapper>
+          {comments.map((el) => (
+            <Comment
+              key={el.id}
+              comment={el.comment}
+              isMine={el.isMine}
+              commentId={el.id}
+              refreshHandler={refreshHandler}
+              postId={postId}
+            />
+          ))}
+        </Wrapper>
+      </ModalView>
+      {/* </ModalBackdrop> */}
     </>
   );
 }

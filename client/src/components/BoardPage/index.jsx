@@ -1,12 +1,31 @@
 import React from 'react';
-import Post from './Post';
 import BoardContainer from './BoardContainer';
+import Post from './Post';
 
-export default function BoardPage() {
+export default function BoardPage({
+  isLogin,
+  posts,
+  modifyPostHandler,
+  deletePostHandler,
+  images,
+  openAuthHandler,
+  addPostHandler,
+}) {
   return (
     <>
       <BoardContainer>
-        <Post />
+        {posts.map((post) => (
+          <Post
+            key={post.id}
+            isLogin={isLogin}
+            post={post}
+            modifyPostHandler={modifyPostHandler}
+            deletePostHandler={deletePostHandler}
+            images={images}
+            openAuthHandler={openAuthHandler}
+            addPostHandler={addPostHandler}
+          />
+        ))}
       </BoardContainer>
     </>
   );

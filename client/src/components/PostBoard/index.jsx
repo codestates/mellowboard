@@ -1,40 +1,32 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import Button from './Button';
 import ButtonBackground from './ButtonBackground';
 import TextArea from './TextArea';
 import { ModalView, ModalBackdrop } from './Modal';
 import Wrapper from './Wrapper';
 import './index.css';
-import axios from 'axios';
 
-const imageFiles = Array(20)
-  .fill(1)
-  .map((el, idx) => {
-    if (`${el + idx}`.length === 1) {
-      return '0' + `${el + idx}` + '.png';
-    }
-    const string = `${el + idx}` + '.png';
-    return string;
-  });
-
-function importAll(r) {
-  const images = {};
-  r.keys().forEach((item) => {
-    images[item.replace('./', '')] = r(item);
-  });
-  return images;
-}
-
-const images = importAll(
-  require.context('../../images/background', false, /\.(png|jpe?g|svg)$/)
-);
-
-export default function PostBoard({ isOpenPostBoard, openPostBoardHandler }) {
+export default function PostBoard({
+  isOpenPostBoard,
+  openPostBoardHandler,
+  addPostHandler,
+  addMyPostHandler,
+  images,
+}) {
   const [image, setImage] = useState('01.png');
   const [content, setContent] = useState('');
   const [textLength, setTextLength] = useState(0);
   const maxLength = 200;
-
+  const imageFiles = Array(20)
+    .fill(1)
+    .map((el, idx) => {
+      if (`${el + idx}`.length === 1) {
+        return '0' + `${el + idx}` + '.png';
+      }
+      const string = `${el + idx}` + '.png';
+      return string;
+    });
   const randomInteger = () => {
     const random = Math.ceil(Math.random() * 20);
     setImage(imageFiles[random]);
@@ -67,17 +59,28 @@ export default function PostBoard({ isOpenPostBoard, openPostBoardHandler }) {
         background: image,
         tags: hashtagList,
       },
-    }).catch((err) => {
-      console.log(err);
-    });
+    })
+      .then(() => {
+        addPostHandler();
+        addMyPostHandler();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     setContent('');
   };
+
   if (isOpenPostBoard === true) {
     return (
       <>
         <ModalBackdrop onClick={() => openPostBoardHandler()}>
-          <ModalView img={images[image].default} onClick={(e) => e.stopPropagation()}>
+          <ModalView
+            style={{
+              background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
             <ButtonBackground onClick={randomInteger}>
               배경 선택
             </ButtonBackground>
@@ -89,9 +92,7 @@ export default function PostBoard({ isOpenPostBoard, openPostBoardHandler }) {
             <Wrapper>
               <Button onClick={confirm}>확인</Button>
               <Button onClick={openPostBoardHandler}>취소</Button>
-              {textLength}
-              /
-              {maxLength}
+              {textLength}/{maxLength}
             </Wrapper>
           </ModalView>
         </ModalBackdrop>

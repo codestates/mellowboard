@@ -69,13 +69,13 @@ module.exports = {
       });
     }
     userInfo.save();
-    const accessToken = generateAccessToken(userInfo.toJSON());
-    sendTokenInCookie(res, generateRefreshToken(userInfo.toJSON()));
+    const accessToken = generateAccessToken(userInfo.json());
+    sendTokenInCookie(res, generateRefreshToken(userInfo.json()));
     return res.status(201).send({
       message: "회원가입을 성공했습니다.",
       result: true,
       userInfo: userInfo.json(),
-      accessToken: accessToken,
+      accessToken,
     });
   },
 
@@ -103,14 +103,14 @@ module.exports = {
     }
 
     // generate accessToken & declare accessToken
-    const accessToken = generateAccessToken(userInfo.toJSON());
+    const accessToken = generateAccessToken(userInfo.json());
     // send refresh token
-    sendTokenInCookie(res, generateRefreshToken(userInfo.toJSON()));
+    sendTokenInCookie(res, generateRefreshToken(userInfo.json()));
     return res.status(200).json({
       message: "로그인을 성공했습니다.",
       result: true,
       userinfo: userInfo.json(),
-      accessToken: accessToken,
+      accessToken,
     });
   },
 
@@ -139,7 +139,7 @@ module.exports = {
       message: "access token 발급이 성공했습니다.",
       result: true,
       userinfo: isValidUser.json(),
-      accessToken: accessToken,
+      accessToken,
     });
   },
 };

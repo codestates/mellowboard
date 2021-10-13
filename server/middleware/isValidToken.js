@@ -1,6 +1,6 @@
 const {verify} = require('jsonwebtoken');
-module.exports = async (req, res, next) =>
- {
+
+module.exports = async (req, res, next) => {
   /*
   * 로그인 상태를 유지하는 middleware.
   * access token이 서버에서 발급한 것인지 확인한다.

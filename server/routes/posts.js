@@ -6,10 +6,23 @@ const post = require("../controllers/posts");
 const validationError = require("../middleware/error");
 const {isValidToken} = require("../middleware")
 
-router.use(isValidToken);
+const {verify} = require('jsonwebtoken');
+
+async function getUserId (req, res, next) {
+  const {authorization} = req.headers;
+  let userId;
+  try{
+  const accessToken = authorization.split(' ')[1];
+    userId = await verify(accessToken, process.env.ACCESS_SECRET).id;
+  }catch(e) {}
+
+  res.locals.userId = parseInt(userId);
+  next();
+}
 
 // 게시글 조회 - 전체 게시글
 router.get("/", 
+  getUserId,
   query("page").default(1).isInt({min: 1}),
   query("size").default(100).isInt(),
   validationError,
@@ -17,6 +30,7 @@ router.get("/",
 
 // 게시글 조회 - 내가 쓴 게시글
 router.get("/mypage", 
+  isValidToken,
   query("page").default(1).isInt({min: 1}),
   query("size").default(100).isInt(),
   validationError,
@@ -24,6 +38,7 @@ router.get("/mypage",
 
 // 게시글 작성
 router.post("/",
+  isValidToken,
   body("content", "글내용을 추가해주세요").notEmpty().isString(),
   body("background", "배경색을 선택해주세요").notEmpty().isString(),
   body("tags").default([]).isArray(),
@@ -33,6 +48,7 @@ router.post("/",
 
 // 게시글 수정
 router.patch("/",
+  isValidToken,
   body("postId").notEmpty().isInt(),
   body("content").default("").isString(),
   body("background").default("").isString(),
@@ -41,6 +57,7 @@ router.patch("/",
   post.patch)
 
 router.delete("/",
+  isValidToken,
   body("postId").notEmpty().isInt(),
   validationError,
   post.delete
