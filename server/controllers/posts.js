@@ -6,7 +6,6 @@ module.exports = {
         const {userId} = res.locals;
         const page = req.query.page - 1;
         const size = parseInt(req.query.size, 10);
-        console.log(userId);
         /*
         //코멘트 같이 조회
         const posts = await Post.findAll({

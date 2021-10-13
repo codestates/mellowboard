@@ -100,18 +100,11 @@ const PostBtn = styled.button`
 `;
 
 export default function App() {
-  const [session, setSession] = useState({ accessToken: '', isLogin: false });
+  const [session, setSession] = useState({ accessToken: 'init', isLogin: false });
   const [posts, setPosts] = useState([]);
   const { scrollY } = useScroll();
   const [curPage, setCurPage] = useState(-1);
   const [total, setTotal] = useState(1);
-
-  useEffect(() => {
-    // 스크롤 이벤트
-    if (scrollY + window.innerHeight >= document.body.offsetHeight - 200) {
-      addPostHandler(true);
-    }
-  }, [scrollY]);
 
   const modifyPostHandler = async (post, content, background, tags) => {
     /**
@@ -160,7 +153,7 @@ export default function App() {
     /**
      * 세션관리 핸들러
      */
-    if (!token) setSession({ accessToken: '', isLogin: false });
+    if (!token) setSession({ accessToken: 'init', isLogin: false });
     else setSession({ accessToken: token, isLogin: true });
   };
   const [isOpenAuth, setIsOpenAuth] = useState(false);
@@ -184,7 +177,6 @@ export default function App() {
     try {
       newToken = await updateToken();
     } catch {}
-
     handleSession(newToken);
   }, []);
 
@@ -192,23 +184,26 @@ export default function App() {
     /**
      * session이 변경되면 axios의 헤더값을 수정한다.
      */
+    if (session.accessToken === "init") return;
     axios.defaults.headers.common = {
       Authorization: `Bearer ${session.accessToken}`,
     };
-
     addPostHandler();
   }, [session]);
 
   useEffect(() => {
     // 페이지가 변경되면 실행한다.
     if (curPage === -1) return;
-    const size = 30;
-    if (curPage > total) return;
-    console.log(axios.defaults.headers.common);
+    const size = 100;
+    if ((curPage > total) && (curPage !== 1)) {
+      return;
+    }
+
     axios.get('/posts', { params: { page: curPage, size } }).then((res) => {
       setTotal(res.data.pages.total);
-      if (curPage === 1) setPosts(res.data.posts);
-      else {
+      if (curPage === 1) {
+        setPosts(res.data.posts);
+      } else {
         // 글이 추가되는 등의 문제로 중복이 있을 수 있음
         // 중복 제거 시행
         const resData = res.data.posts.filter((post) => {
@@ -223,11 +218,13 @@ export default function App() {
         setPosts(newData);
       }
     });
-  }, [curPage, session]);
+  }, [curPage]);
 
   const addPostHandler = (more) => {
-    if (!more) setCurPage(1);
-    else if (curPage < total) {
+    if (!more) {
+      if (curPage === 1) setCurPage(-1);
+      setCurPage(1);
+    } else if (curPage < total) {
       setCurPage(curPage + 1);
     }
   };
