@@ -9,7 +9,6 @@ export const PostList = styled.li`
   background: url(${(props) => props.img}) center center / cover no-repeat;
   border-radius: 1rem;
   width: 100%;
-  //height: 10px;
   min-height: 30rem;
   margin: 0rem -1.2rem 1rem -1.2rem;
   display: flex;
