@@ -34,6 +34,12 @@ const PostText = styled.p`
   text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
   font-size: 1.5rem;
   word-break: break-all;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 
   @media screen and (min-width: 768px) {
     font-size: 2rem;

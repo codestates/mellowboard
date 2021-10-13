@@ -13,6 +13,7 @@ import BoardPage from './components/BoardPage';
 import MyPage from './components/MyPage';
 import Auth from './components/Auth';
 import PostBoard from './components/PostBoard';
+import WriteButton from './WriteButton';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
@@ -87,10 +88,10 @@ const PostBtn = styled.button`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: #6d214f;
   position: fixed;
   bottom: 3rem;
   color: #5758bb;
-  background-color: #6d214f;
 
   #pencil_icon {
     font-size: 2rem;
@@ -101,17 +102,11 @@ export default function App() {
   const [session, setSession] = useState({ accessToken: '', isLogin: false });
   const [posts, setPosts] = useState([]);
   const [myPosts, setMyPosts] = useState([]);
+  const { scrollY } = useScroll();
+  const [curPage, setCurPage] = useState(1);
+  const [total, setTotal] = useState(1);
 
-  const addPostHandler = () => {
-    axios
-      .get('/posts')
-      .then((res) => {
-        setPosts(res.data.posts);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
+  const addMyPostHandler = () => {
     axios
       .get('/posts/mypage')
       .then((res) => {
@@ -170,7 +165,7 @@ export default function App() {
         setPosts(posts.filter((post) => post.id !== postId));
       })
       .catch((err) => {
-        console.log(err.response.data);
+        console.log(err.response.data?.message);
       });
   };
 
@@ -224,13 +219,41 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    /**
-     * session이 변경되면 axios의 헤더값을 수정한다.
-     */
-    axios.defaults.headers.common = {
-      Authorization: `Bearer ${session.accessToken}`,
+    // 페이지가 변경되면 실행한다.
+    const size = 30;
+
+    const config = {
+      url: '/posts',
+      params: { page: curPage, size },
     };
-  }, [session]);
+
+    if (curPage > total) return;
+
+    axios.request(config).then((res) => {
+      setTotal(res.data.pages.total);
+      if (curPage === 1) setPosts(res.data.posts);
+      else {
+        // 글이 추가되는 등의 문제로 중복이 있을 수 있음
+        // 중복 제거 시행
+        const resData = res.data.posts.filter((post) => {
+          const index = posts.findIndex(
+            (originPost) => originPost.id === post.id
+          );
+          if (index === -1) return true;
+          return false;
+        });
+        const newData = [...posts, ...resData];
+        setPosts(newData);
+      }
+    });
+  }, [curPage]);
+
+  const addPostHandler = (more) => {
+    if (!more) setCurPage(1);
+    else if (curPage < total) {
+      setCurPage(curPage + 1);
+    }
+  };
 
   function importAll(r) {
     const images = {};
@@ -240,9 +263,49 @@ export default function App() {
     return images;
   }
 
+  useEffect(() => {
+    // 스크롤 이벤트
+    if (scrollY + window.innerHeight >= document.body.offsetHeight - 200) {
+      addPostHandler(true);
+    }
+  }, [scrollY]);
+
+  useEffect(() => {
+    /**
+     * session이 변경되면 axios의 헤더값을 수정한다.
+     */
+    axios.defaults.headers.common = {
+      Authorization: `Bearer ${session.accessToken}`,
+    };
+
+    addPostHandler();
+  }, [session]);
+
   const images = importAll(
     require.context('./images/background', false, /\.(png|jpe?g|svg)$/)
   );
+
+  function useScroll() {
+    const [scrollY, setScrollY] = useState(0);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+      let mounted = true;
+      window.addEventListener('scroll', () => {
+        if (mounted) {
+          setScrollY(window.scrollY);
+          setLoading(false);
+        }
+      });
+      return () => {
+        mounted = false;
+        // window.removeEventListener('scroll', scrollCallback);
+      };
+    });
+    return {
+      scrollY,
+    };
+  }
 
   return (
     <>
@@ -257,6 +320,7 @@ export default function App() {
         session={session}
         addPostHandler={addPostHandler}
         images={images}
+        addMyPostHandler={addMyPostHandler}
       />
       <GlobalStyle />
       <Router>
@@ -297,7 +361,8 @@ export default function App() {
             onClick={session.isLogin ? openPostBoardHandler : openAuthHandler}
           >
             {/* <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} /> */}
-            <span>글 작성</span>
+            {/* <span>글 작성</span> */}
+            <WriteButton />
           </PostBtn>
         </PostBtnContainer>
       </Router>

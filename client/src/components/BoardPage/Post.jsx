@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import EditingStatePost from './EditingStatePost/index';
 import Comments from './Comments';
+import { EditAltButton, DeleteButton } from './Button';
 
 export const PostList = styled.li`
   background: url(${(props) => props.img}) center center / cover no-repeat;
@@ -36,6 +37,12 @@ const PostText = styled.p`
   text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
   font-size: 1.5rem;
   word-break: break-all;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 
   @media screen and (min-width: 768px) {
     font-size: 2rem;
@@ -72,10 +79,6 @@ const BottomContainer = styled.div`
   width: 100%;
   bottom: 1rem;
 `;
-
-const DeleteBtn = styled.button``;
-
-const ModifyBtn = styled.button``;
 
 const imageFiles = Array(20)
   .fill(1)
@@ -162,7 +165,16 @@ export default function Post({
             background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
           }}
         >
-          <PostText>{content}</PostText>
+          <PostText>
+            {content.split('\n').map((line) => {
+              return (
+                <span>
+                  {line}
+                  <br />
+                </span>
+              );
+            })}
+          </PostText>
           <BottomContainer>
             <HashtagContainer>
               {tags.map((tag) => (
@@ -174,10 +186,8 @@ export default function Post({
                 {`댓글 ${commentCount}개`}
               </CommentsCnt>
               <BottomBtnsContainer>
-                <ModifyBtn onClick={() => setIsModify(true)}>수정</ModifyBtn>
-                <DeleteBtn onClick={() => deletePostHandler(id)}>
-                  삭제
-                </DeleteBtn>
+                <EditAltButton onClick={modifyHandler} />
+                <DeleteButton onClick={() => deletePostHandler(id)} />
               </BottomBtnsContainer>
             </CommentsBtns>
           </BottomContainer>

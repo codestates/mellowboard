@@ -11,6 +11,7 @@ export default function PostBoard({
   isOpenPostBoard,
   openPostBoardHandler,
   addPostHandler,
+  addMyPostHandler,
   images,
 }) {
   const [image, setImage] = useState('01.png');
@@ -59,7 +60,10 @@ export default function PostBoard({
         tags: hashtagList,
       },
     })
-      .then(() => addPostHandler())
+      .then(() => {
+        addPostHandler();
+        addMyPostHandler();
+      })
       .catch((err) => {
         console.log(err);
       });

@@ -16,7 +16,7 @@ module.exports = {
     });
     const commentsCount = await Comment.count();
     const total =
-      parseInt(commentsCount / size, 10) + (commentsCount % size) ? 1 : 0;
+      parseInt(commentsCount / size, 10) + (commentsCount % size ? 1 : 0);
 
     return res.json({
       message: "해당 포스트의 댓글을 조회합니다.",
@@ -44,7 +44,7 @@ module.exports = {
     });
     const commentsCount = await Comment.count();
     const total =
-      parseInt(commentsCount / size, 10) + (commentsCount % size) ? 1 : 0;
+      parseInt(commentsCount / size, 10) + (commentsCount % size ? 1 : 0);
 
     return res.json({
       message: "내가 쓴 댓글 조회합니다.",
