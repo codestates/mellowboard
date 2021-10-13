@@ -13,6 +13,7 @@ import BoardPage from './components/BoardPage';
 import MyPage from './components/MyPage';
 import Auth from './components/Auth';
 import PostBoard from './components/PostBoard';
+import WriteButton from './WriteButton';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
@@ -251,7 +252,8 @@ export default function App() {
             onClick={session.isLogin ? openPostBoardHandler : openAuthHandler}
           >
             {/* <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} /> */}
-            <span>글 작성</span>
+            {/* <span>글 작성</span> */}
+            <WriteButton />
           </PostBtn>
         </PostBtnContainer>
       </Router>

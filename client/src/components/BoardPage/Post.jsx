@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import EditingStatePost from './EditingStatePost/index';
 import Comments from './Comments';
+import { EditAltButton, DeleteButton } from './Button';
 
 export const PostList = styled.li`
   background: url(${(props) => props.img}) center center / cover no-repeat;
@@ -38,6 +39,7 @@ const PostText = styled.p`
   text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
   font-size: 1.5rem;
   word-break: break-all;
+  height: 80%;
 
   @media screen and (min-width: 768px) {
     font-size: 2rem;
@@ -253,6 +255,8 @@ export default function Post({ images, isLogin, post, addPostHandler }) {
             <BottomBtnsContainer>
               <ModifyBtn onClick={modifyHandler}>수정</ModifyBtn>
               <DeleteBtn onClick={() => handlePostDelete(id)}>삭제</DeleteBtn>
+              <EditAltButton onClick={modifyHandler} />
+              <DeleteButton onClick={() => handlePostDelete(id)} />
             </BottomBtnsContainer>
           </CommentsBtns>
         </PostList>
