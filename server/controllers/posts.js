@@ -37,7 +37,7 @@ module.exports = {
             order: [["id", "DESC"]]
        })
         const postsCount = await Post.count();
-        const total = parseInt(postsCount / size, 10) + postsCount % size ? 1 : 0
+        const total = parseInt(postsCount / size, 10) + (postsCount % size ? 1 : 0)
 
         return res.json({
             message: "최근 게시글을 조회합니다.",
@@ -70,7 +70,7 @@ module.exports = {
                 delete post.Index
                 */
             }),
-            pages: { page, size, total }
+            pages: { page: page + 1, size, total }
         });
     },
     mine: async (req, res) => {
@@ -111,7 +111,7 @@ module.exports = {
             order: [["id", "DESC"]]
         })
         const postsCount = await Post.count();
-        const total = parseInt(postsCount / size, 10) + postsCount % size ? 1 : 0
+        const total = parseInt(postsCount / size, 10) + (postsCount % size ? 1 : 0)
 
     return res.json({
         message: "내가 쓴 게시글을 조회합니다.",

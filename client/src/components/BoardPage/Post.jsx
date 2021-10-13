@@ -165,7 +165,6 @@ export default function Post({
   const modifyHandler = () => {
     setIsModify(!isModify);
   };
-  console.log('cd', content);
 
   if (!post) return null;
   // 내가 쓴 게시물 수정 상태

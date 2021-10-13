@@ -102,17 +102,16 @@ const PostBtn = styled.button`
 export default function App() {
   const [session, setSession] = useState({ accessToken: '', isLogin: false });
   const [posts, setPosts] = useState([]);
+  const { scrollY } = useScroll();
+  const [curPage, setCurPage] = useState(1);
+  const [total, setTotal] = useState(1);
 
-  const addPostHandler = () => {
-    axios
-      .get('/posts')
-      .then((res) => {
-        setPosts(res.data.posts);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  useEffect(() => {
+    // 스크롤 이벤트
+    if (scrollY + window.innerHeight >= document.body.offsetHeight - 200) {
+      addPostHandler(true);
+    }
+  }, [scrollY]);
 
   const modifyPostHandler = async (post, content, background, tags) => {
     /**
@@ -153,7 +152,7 @@ export default function App() {
         setPosts(posts.filter((post) => post.id !== postId));
       })
       .catch((err) => {
-        console.log(err.response.data);
+        console.log(err.response.data?.message);
       });
   };
 
@@ -187,11 +186,6 @@ export default function App() {
     } catch {}
 
     handleSession(newToken);
-    axios
-      .get('/posts', { headers: { Authorization: `Bearer ${newToken}` } })
-      .then((res) => {
-        setPosts(res.data.posts);
-      });
   }, []);
 
   useEffect(() => {
@@ -201,7 +195,47 @@ export default function App() {
     axios.defaults.headers.common = {
       Authorization: `Bearer ${session.accessToken}`,
     };
+
+    addPostHandler();
   }, [session]);
+
+  useEffect(() => {
+    // 페이지가 변경되면 실행한다.
+    const size = 10;
+
+    const config = {
+      url: '/posts',
+      params: { page: curPage, size },
+    };
+
+    if (curPage > total) return;
+
+    axios.request(config).then((res) => {
+      setTotal(res.data.pages.total);
+      if (curPage === 1) setPosts(res.data.posts);
+      else {
+        // 글이 추가되는 등의 문제로 중복이 있을 수 있음
+        // 중복 제거 시행
+        const resData = res.data.posts.filter((post) => {
+          const index = posts.findIndex((originPost) => originPost.id === post.id);
+          if (index === -1) return true;
+          return false;
+        });
+        const newData = [
+          ...posts,
+          ...resData,
+        ];
+        setPosts(newData);
+      }
+    });
+  }, [curPage]);
+
+  const addPostHandler = (more) => {
+    if (!more) setCurPage(1);
+    else if (curPage < total) {
+      setCurPage(curPage + 1);
+    }
+  };
 
   function importAll(r) {
     const images = {};
@@ -214,6 +248,28 @@ export default function App() {
   const images = importAll(
     require.context('./images/background', false, /\.(png|jpe?g|svg)$/)
   );
+
+  function useScroll() {
+    const [scrollY, setScrollY] = useState(0);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+      let mounted = true;
+      window.addEventListener('scroll', () => {
+        if (mounted) {
+          setScrollY(window.scrollY);
+          setLoading(false);
+        }
+      });
+      return () => {
+        mounted = false;
+        // window.removeEventListener('scroll', scrollCallback);
+      };
+    });
+    return {
+      scrollY,
+    };
+  }
 
   return (
     <>
