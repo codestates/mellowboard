@@ -18,7 +18,7 @@ const NavContainer = styled.header`
   z-index: 1;
 
   @media screen and (min-width: 768px) {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 `;
 
@@ -41,17 +41,11 @@ const BtnContainer = styled.span`
     margin-right: 2rem;
 
     &:hover {
-      font-size: 0.8rem;
+      transform: translateY(-0.5rem);
       transition: 0.5s;
     }
-
-    @media screen and (min-width: 768px) {
-      &:hover {
-        font-size: 1.2rem;
-        transition: 0.5s;
-      }
-    }
   }
+
   #login_btn:hover {
     color: #78e08f;
   }
