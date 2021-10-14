@@ -54,6 +54,7 @@ const MyPostsContainer = styled.ul`
     flex-direction: row;
     flex-wrap: wrap;
     max-width: 55rem;
+    min-width: 45rem;
   }
 `;
 
@@ -63,7 +64,7 @@ const MyContentsContainer = styled.ul`
   margin: 1rem 1rem -4.5rem 1rem;
   -webkit-padding-start: 0;
   list-style: none;
-  min-width: 22rem;
+  max-width: 22rem;
   font-size: 0.5rem;
 
   @media screen and (min-width: 768px) {
