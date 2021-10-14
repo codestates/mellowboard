@@ -21,7 +21,7 @@
 ![](https://img.shields.io/badge/Deploy-AWS-red) ![](https://img.shields.io/badge/Deploy-AWS-red) ![](https://img.shields.io/badge/Deploy-Certificate%20Manger-lightgrey) ![](https://img.shields.io/badge/Deploy-Route53-inactive) ![](https://img.shields.io/badge/Deploy-S3-red) ![](https://img.shields.io/badge/Deploy-EC2-yellowgreen)
 ![](https://img.shields.io/badge/DevOps-GitHub-inactive) ![](https://img.shields.io/badge/DevOps-Jenkins-lightgrey) ![](https://img.shields.io/badge/DevOps-Figma-red) ![](https://img.shields.io/badge/DevOps-GitBook-success) ![](https://img.shields.io/badge/DevOps-Notion-lightgrey) ![](https://img.shields.io/badge/DevOps-Discord-yellowgreen) ![](https://img.shields.io/badge/DevOps-ESLint-red) ![](https://img.shields.io/badge/DevOps-Prettier-orange)
 
-## 기능 시연
+# 기능 시연
 
 
 # Members
