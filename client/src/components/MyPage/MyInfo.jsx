@@ -49,6 +49,10 @@ const MyInfoForm = styled.form`
   #modify_info_btn:hover {
     background-color: #0a3d62;
   }
+
+  #btn_container {
+    margin: 1rem 0rem 2rem 0rem;
+  }
 `;
 
 const Button = styled.button`

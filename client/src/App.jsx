@@ -109,6 +109,7 @@ export default function App() {
   const { scrollY } = useScroll();
   const [curPage, setCurPage] = useState(-1);
   const [total, setTotal] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   const addMyPostHandler = () => {
     axios
@@ -200,7 +201,7 @@ export default function App() {
      */
 
     // axios global 설정
-    setAxios(handleSession);
+    setAxios(handleSession, setIsLoading);
     let newToken;
     try {
       newToken = await updateToken();
@@ -319,10 +320,11 @@ export default function App() {
       scrollY,
     };
   }
-
+  console.log(isLoading);
+  if (isLoading) return <LoadingPage />;
   return (
     <>
-      {/* <LoadingPage /> */}
+      {/* <LoadingPage style={{ display: isLoading ? 'block' : 'none' }} /> */}
       <Auth
         handleSession={handleSession}
         openAuthHandler={openAuthHandler}

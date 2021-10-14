@@ -19,7 +19,7 @@ const TabMenu = styled.ul`
   position: sticky;
   top: 3.5rem;
   z-index: 1;
-  font-size: 0.2em;
+  font-size: 0.8rem;
   font-weight: bold;
 
   @media screen and (min-width: 768px) {
