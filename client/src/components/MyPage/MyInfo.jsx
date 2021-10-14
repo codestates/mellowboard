@@ -103,7 +103,7 @@ export default function MyInfo() {
   const deleteUser = (e) => {
     e.preventDefault();
     if (window.confirm('정말로 탈퇴하시겠습니까?')) {
-      axios.delete('/users').then((res) => {
+      axios.delete('/users').then(() => {
         window.location.reload();
       });
     }
@@ -173,7 +173,7 @@ export default function MyInfo() {
         </div>
 
         <div className="change_password">
-          <label htmlFor="" id="change_password_check">
+          <label>
             변경하실 비밀번호 확인
           </label>
           <input
@@ -185,7 +185,7 @@ export default function MyInfo() {
         </div>
 
         <div className="change_email">
-          <label htmlFor="" id="change_email">
+          <label>
             변경하실 이메일
           </label>
           <input
@@ -197,7 +197,7 @@ export default function MyInfo() {
         </div>
 
         <div className="change_email">
-          <label htmlFor="" id="change_email_check">
+          <label>
             변경하실 이메일 확인
           </label>
           <input
