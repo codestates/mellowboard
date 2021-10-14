@@ -49,7 +49,6 @@ export default function Comment({ comment, commentId, refreshHandler }) {
       },
     })
       .then((res) => {
-        console.log(res.data.message);
         refreshHandler();
       })
       .catch((err) => {
