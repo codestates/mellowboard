@@ -12,7 +12,7 @@
 익명을 이용해 개인적인 마음의 소리를 마음껏 표출해주세요
 
 
-## Tech Stacks
+# Tech Stacks
 
 ![undefined.png](https://user-images.githubusercontent.com/83799934/135991881-6e691024-edb2-485c-9514-6f94ab0d5d07.png)
 
