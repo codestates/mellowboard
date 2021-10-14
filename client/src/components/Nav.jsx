@@ -12,13 +12,13 @@ const NavContainer = styled.header`
   align-items: center;
   justify-content: space-between;
   color: #f5f6fa;
-  font-size: 0.5rem;
+  font-size: 0.7rem;
   position: sticky;
   top: 0;
   z-index: 1;
 
   @media screen and (min-width: 768px) {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 `;
 
@@ -39,6 +39,21 @@ const BtnContainer = styled.span`
     all: unset;
     cursor: pointer;
     margin-right: 2rem;
+
+    &:hover {
+      transform: translateY(-0.5rem);
+      transition: 0.5s;
+    }
+  }
+
+  #login_btn:hover {
+    color: #78e08f;
+  }
+  #logout_btn:hover {
+    color: #eb2f06;
+  }
+  #mypage_btn:hover {
+    color: #38ada9;
   }
 `;
 

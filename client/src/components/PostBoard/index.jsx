@@ -22,9 +22,9 @@ export default function PostBoard({
     .fill(1)
     .map((el, idx) => {
       if (`${el + idx}`.length === 1) {
-        return '0' + `${el + idx}` + '.png';
+        return `0${el + idx}.png`;
       }
-      const string = `${el + idx}` + '.png';
+      const string = `${el + idx}.png`;
       return string;
     });
   const randomInteger = () => {

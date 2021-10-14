@@ -29,10 +29,10 @@ export default function WritingComment({ refreshHandler, postId }) {
     /**
      * 엔터가 눌리면 댓글을 작성한다.
      */
-    // if (event.code === 'Enter') {
-    //   writingCommentHandler();
-    //   setComment('');
-    // }
+    if (event.code === 'Enter') {
+      writingCommentHandler();
+      setComment('');
+    }
   };
   return (
     <Wrapper>

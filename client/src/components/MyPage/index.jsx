@@ -17,13 +17,14 @@ const TabMenu = styled.ul`
   -webkit-padding-start: 0;
   text-align: center;
   position: sticky;
-  top: 5rem;
+  top: 3.5rem;
   z-index: 1;
-  font-size: 0.2em;
+  font-size: 0.8rem;
   font-weight: bold;
 
   @media screen and (min-width: 768px) {
     font-size: 1rem;
+    top: 6rem;
   }
 
   .submenu {
@@ -47,11 +48,12 @@ const MyPostsContainer = styled.ul`
   flex-direction: column;
   height: 100%;
   margin-top: 1rem;
-  max-width: 55rem;
+  min-width: 20rem;
 
   @media screen and (min-width: 768px) {
     flex-direction: row;
     flex-wrap: wrap;
+    max-width: 55rem;
   }
 `;
 
@@ -61,6 +63,13 @@ const MyContentsContainer = styled.ul`
   margin: 1rem 1rem -4.5rem 1rem;
   -webkit-padding-start: 0;
   list-style: none;
+  min-width: 22rem;
+  font-size: 0.5rem;
+
+  @media screen and (min-width: 768px) {
+    font-size: 1rem;
+    min-width: 45rem;
+  }
 `;
 
 export default function MyPage({

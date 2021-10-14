@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import {
   BrowserRouter as Router,
@@ -14,6 +14,7 @@ import MyPage from './components/MyPage';
 import Auth from './components/Auth';
 import PostBoard from './components/PostBoard';
 import WriteButton from './WriteButton';
+import LoadingPage from './components/LoadingPage';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
@@ -108,6 +109,7 @@ export default function App() {
   const { scrollY } = useScroll();
   const [curPage, setCurPage] = useState(-1);
   const [total, setTotal] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
 
   const addMyPostHandler = () => {
     axios
@@ -199,7 +201,7 @@ export default function App() {
      */
 
     // axios global 설정
-    setAxios(handleSession);
+    setAxios(handleSession, setIsLoading);
     let newToken;
     try {
       newToken = await updateToken();
@@ -212,7 +214,8 @@ export default function App() {
       })
       .then((res) => {
         setMyPosts(res.data.posts);
-      });
+      })
+      .catch((err) => {});
   }, []);
 
   useEffect(() => {
@@ -321,6 +324,7 @@ export default function App() {
 
   return (
     <>
+      {isLoading ? <LoadingPage /> : ''}
       <Auth
         handleSession={handleSession}
         openAuthHandler={openAuthHandler}
@@ -374,8 +378,6 @@ export default function App() {
           <PostBtn
             onClick={session.isLogin ? openPostBoardHandler : openAuthHandler}
           >
-            {/* <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} /> */}
-            {/* <span>글 작성</span> */}
             <WriteButton />
           </PostBtn>
         </PostBtnContainer>

@@ -12,7 +12,6 @@ import {
 } from './Button';
 
 export default function Comment({ comment, commentId, refreshHandler }) {
-  console.log(comment);
   const isMine = true;
   const [editMode, setEditMode] = useState(false);
   const editHandler = () => {
@@ -34,7 +33,6 @@ export default function Comment({ comment, commentId, refreshHandler }) {
       },
     })
       .then((res) => {
-        console.log(res.data.message);
         refreshHandler();
         setEditMode(!editMode);
       })
@@ -51,7 +49,6 @@ export default function Comment({ comment, commentId, refreshHandler }) {
       },
     })
       .then((res) => {
-        console.log(res.data.message);
         refreshHandler();
       })
       .catch((err) => {
