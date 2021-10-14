@@ -32,6 +32,7 @@ export default function setAxios(handleSession, setIsLoading) {
      * axios 인터럽트 설정
      * 401일 경우 App내의 상태를 변경해야 해서 여기서 적용...
      */
+
     (response) => {
       setIsLoading(false);
       return response;
@@ -55,6 +56,6 @@ export default function setAxios(handleSession, setIsLoading) {
         }
       }
       return Promise.reject(err);
-    },
+    }
   );
 }

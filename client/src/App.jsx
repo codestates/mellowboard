@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import {
   BrowserRouter as Router,
@@ -214,7 +214,8 @@ export default function App() {
       })
       .then((res) => {
         setMyPosts(res.data.posts);
-      }).catch(err => {});
+      })
+      .catch((err) => {});
   }, []);
 
   useEffect(() => {
@@ -323,7 +324,6 @@ export default function App() {
 
   return (
     <>
-      {/* <LoadingPage /> */}
       {isLoading ? <LoadingPage /> : ''}
       <Auth
         handleSession={handleSession}
@@ -378,8 +378,6 @@ export default function App() {
           <PostBtn
             onClick={session.isLogin ? openPostBoardHandler : openAuthHandler}
           >
-            {/* <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} /> */}
-            {/* <span>글 작성</span> */}
             <WriteButton />
           </PostBtn>
         </PostBtnContainer>
