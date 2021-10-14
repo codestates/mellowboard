@@ -111,6 +111,17 @@ export default function App() {
   const [total, setTotal] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
 
+  const updateMyPostHandler = () => {
+    axios
+      .get('/posts/mypage')
+      .then((res) => {
+        setMyPosts(res.data.posts);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const addMyPostHandler = () => {
     axios
       .get('/posts/mypage')
@@ -345,6 +356,7 @@ export default function App() {
           session={session}
           handleSession={handleSession}
           addPostHandler={addPostHandler}
+          updateMyPostHandler={updateMyPostHandler}
         />
         <Switch>
           <Route exact path="/">
