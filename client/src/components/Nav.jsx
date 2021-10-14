@@ -57,7 +57,7 @@ const BtnContainer = styled.span`
   }
 `;
 
-export default function Nav({ openAuthHandler, session, handleSession }) {
+export default function Nav({ openAuthHandler, session, handleSession, addPostHandler }) {
   const logout = () => {
     axios.get('/auth/logout').then(() => {
       handleSession();
@@ -68,7 +68,7 @@ export default function Nav({ openAuthHandler, session, handleSession }) {
     <>
       <NavContainer>
         <Link to="/" style={{ textDecoration: 'none', color: '#f5f6fa' }}>
-          <NavTitle>
+          <NavTitle onClick={() => { addPostHandler(); }}>
             <img className="logo" src={logo} alt="logo" />
             <h1>무르익게</h1>
           </NavTitle>
