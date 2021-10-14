@@ -34,15 +34,13 @@ export default function setAxios(handleSession, setIsLoading) {
      */
     (response) => {
       setIsLoading(false);
-      console.log("asdasd")
       return response;
     },
     async (err) => {
       setIsLoading(false);
-      console.log("asdasd2")
       if (err.response?.status === 401) {
         /**
-         * 토큰이 더 이상 유효하지 않음..
+         * 토큰이 더 이상 유효하지 않음..부
          * 토큰 갱신을 시도해서 성공하면 요청을 재전송한다.
          */
         const newToken = await updateToken();
