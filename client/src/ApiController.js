@@ -39,7 +39,6 @@ export default function setAxios(handleSession, setIsLoading) {
     },
     async (err) => {
       setIsLoading(false);
-
       if (err.response?.status === 401) {
         /**
          * 토큰이 더 이상 유효하지 않음..

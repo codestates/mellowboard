@@ -10,6 +10,10 @@ const LoadingWrapper = styled.body`
   height: 100vh;
   width: 100vw;
   background: #240229;
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
 `;
 
 const Loader = styled.div`

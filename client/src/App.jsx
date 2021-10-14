@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import {
   BrowserRouter as Router,
@@ -109,7 +109,7 @@ export default function App() {
   const { scrollY } = useScroll();
   const [curPage, setCurPage] = useState(-1);
   const [total, setTotal] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const addMyPostHandler = () => {
     axios
@@ -214,7 +214,8 @@ export default function App() {
       })
       .then((res) => {
         setMyPosts(res.data.posts);
-      });
+      })
+      .catch((err) => {});
   }, []);
 
   useEffect(() => {
@@ -320,11 +321,10 @@ export default function App() {
       scrollY,
     };
   }
-  console.log(isLoading);
-  if (isLoading) return <LoadingPage />;
+
   return (
     <>
-      {/* <LoadingPage style={{ display: isLoading ? 'block' : 'none' }} /> */}
+      {isLoading ? <LoadingPage /> : ''}
       <Auth
         handleSession={handleSession}
         openAuthHandler={openAuthHandler}
@@ -378,8 +378,6 @@ export default function App() {
           <PostBtn
             onClick={session.isLogin ? openPostBoardHandler : openAuthHandler}
           >
-            {/* <FontAwesomeIcon id="pencil_icon" icon={faPencilAlt} /> */}
-            {/* <span>글 작성</span> */}
             <WriteButton />
           </PostBtn>
         </PostBtnContainer>
