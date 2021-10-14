@@ -1,159 +1,40 @@
 ![](https://img.shields.io/badge/Project-MellowBoard-brightgreen)
 ![](https://img.shields.io/badge/Team-DBDBDEEP-blue)
 
-# 1. Intro
+# <a href="https://www.mellowboard.xyz" target="_blank">무르익게</a>
+<img src="https://user-images.githubusercontent.com/16643184/137252489-8eb54862-54aa-4ba7-a9aa-8d108ca8d091.png" width='200'>
 
-
-
-## About Us
-
-팀 명: 디비디비딥 (DBDBDEEP)
-
-프로젝트 명 : 무르익게 (Mellow Board)
-
-프로젝트 형태 : 수강생 프로젝트
-
-프로젝트 기간 : 2021.10.01 ~ 2021.10.15
-
-팀원 : 김정훈, 이준상, 허도영, 황호준(팀장)
-
-배포 링크 : 무르익게
-
-Github 링크 : CLIENT SERVER
-
-Wiki 바로가기: 무르익게 Wiki
-
-# 2. Project
-
-## 프로젝트 소개
 
 익명으로 오늘의 힘들었던 일이나 명언, 글귀 등을 작성해서
 
-유저들과 소통을 통해 위로를 받거나 동기부여를 할수 있음
+유저들과 소통을 통해 위로를 받거나 동기부여를 할수 있습니다.
 
-익명으로 하기 때문에 개인적인 마음의 소리를 더 표출할수 있음
+익명을 이용해 개인적인 마음의 소리를 마음껏 표출해주세요
 
-## Landing Page
-
-?추가 바람
 
 ## Tech Stacks
 
-![undefined.png](First%20Project%20e30262df9270424ab0ed154daf326800/undefined.png)
+![undefined.png](https://user-images.githubusercontent.com/83799934/135991881-6e691024-edb2-485c-9514-6f94ab0d5d07.png)
 
-## Tools
+![](https://img.shields.io/badge/Front-React-green) ![](https://img.shields.io/badge/Front-Styled%20Components-lightgrey) ![](https://img.shields.io/badge/Front-Axios-orange) ![](https://img.shields.io/badge/Front-React%20Hooks-yellowgreen) ![](https://img.shields.io/badge/Front-React%20Router-orange) 
+![](https://img.shields.io/badge/BackEnd-NodeJS-green) ![](https://img.shields.io/badge/BackEnd-Express.js-lightgrey) ![](https://img.shields.io/badge/BackEnd-Sequelize-blueviolet) ![](https://img.shields.io/badge/BackEnd-MySQL-blue) ![](https://img.shields.io/badge/BackEnd-JWT-important)
+![](https://img.shields.io/badge/Deploy-AWS-red) ![](https://img.shields.io/badge/Deploy-AWS-red) ![](https://img.shields.io/badge/Deploy-Certificate%20Manger-lightgrey) ![](https://img.shields.io/badge/Deploy-Route53-inactive) ![](https://img.shields.io/badge/Deploy-S3-red) ![](https://img.shields.io/badge/Deploy-EC2-yellowgreen)
+![](https://img.shields.io/badge/DevOps-GitHub-inactive) ![](https://img.shields.io/badge/DevOps-Jenkins-lightgrey) ![](https://img.shields.io/badge/DevOps-Figma-red) ![](https://img.shields.io/badge/DevOps-GitBook-success) ![](https://img.shields.io/badge/DevOps-Notion-lightgrey) ![](https://img.shields.io/badge/DevOps-Discord-yellowgreen) ![](https://img.shields.io/badge/DevOps-ESLint-red) ![](https://img.shields.io/badge/DevOps-Prettier-orange)
 
-Git & Github
+## 기능 시연
 
-Gitbook
 
-Figma
+# Members
 
-Notion
-
-Discord
-
-Prettier
-
-ESLint
-
-## Common
-
-Node.js
-
-Axios
-
-dotenv
-
-## Front
-
-React
-
-React Hooks
-
-React-Router
-
-axios
-
-Styled components
-
-## Back
-
-Express.js
-
-Sequelize
-
-MySQL
-
-JWT
-
-node.js
-
-## Deploy
-
-AWS
-
-Certificate Manager
-
-Route53
-
-S3
-
-CloudFront
-
-EC2
-
-## 스택을 선택한 이유
-
-- Front-end
-- Back-end
-
-## Figma Link
-
-?추가 바람
-
-## DB Schema
-
-![mellowBoard.png](First%20Project%20e30262df9270424ab0ed154daf326800/mellowBoard.png)
-
-## 주요 기능별 시연
-
-? 추가바람
-
-# 3. Members
-
-### 김정훈
-
-?사진 or 이미지
-
-### Stack
-
-### Works
-
-- Works Logs
-
-### Tech-Presentation
-
-### 허도영
-
-?사진 or 이미지
-
-### Stack
-
-### Works
-
-- Works Logs
-
-### Tech-Presentation
-
-### 황호준(팀장)
-
-?사진 or 이미지
-
-### Stack
-
-### Works
-
-- Works Logs
-
-### Tech-Presentation
+<table>
+  <tr>
+    <td align="center"><img src="https://user-images.githubusercontent.com/61819703/136003978-9c57d57a-182c-4376-8932-3cff38ef8f13.png" width="100"><br />황호준</td>
+    <td align="center"><img src="https://user-images.githubusercontent.com/61819703/136006412-76e3faf1-1c2d-4b63-b502-813039d84fc1.png" width="100"><br />김정훈</td>
+    <td align="center"><img src="https://user-images.githubusercontent.com/83799934/136011920-918b2aa3-c297-4e07-9225-6860aa49c0f4.png" width="100"><br />허도영</td>
+  </tr>
+  <tr>
+    <td>BackEnd, FrontEnd, TeamLeader</td>
+    <td>FrontEnd, User Interface, Interaction</td>
+    <td>BackEnd, FrontEnd Support, Deploy</td>
+  </tr>
+</table>
