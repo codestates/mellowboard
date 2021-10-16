@@ -7,38 +7,24 @@ module.exports = {
     const page = req.query.page - 1;
     const size = parseInt(req.query.size, 10);
 
-    /*
-        //코멘트 같이 조회
-        const posts = await Post.findAll({
-            offset: page * size, 
-            limit: size, 
-            include: {
-                model: Index,
-                limit: 2,
-                order: [["id", "DESC"]]
-            },
-            order: [["id", "DESC"]]
-        });
-        */
     // 게시글과 해시태그 조회
     const postsModel = await Post.findAll({
-      offset: page * size,
+      attributes: {include : [[sequelize.fn("COUNT", sequelize.col("comment.id")), "commentCount"]]},
+      include: [{
+        model: Comment,
+        as: "comment",
+        attributes: [],
+        duplicating: false,
+      }, {
+        model: Hashtag,
+        as: "tags",
+        duplicating: false,
+        attributes: ["tag"]
+      }],
+      offset: page*size,
       limit: size,
-      include: [
-        {
-          model: Hashtag,
-          as: "tags",
-        },
-        {
-          model: Comment,
-          attributes: ["id"],
-        },
-      ],
-      attributes: {
-        include: [[sequelize.fn("COUNT", "Index.id"), "commentCount"]],
-      },
-      group: ["Post.id"],
       order: [["id", "DESC"]],
+      group: ["Post.id", "tags.tag"]
     });
     const postsCount = await Post.count();
     const total = parseInt(postsCount / size, 10) + (postsCount % size ? 1 : 0);
@@ -49,30 +35,10 @@ module.exports = {
       posts: postsModel.map((el) => {
         const post = el.toJSON();
         // 자신이 작성한 글인지 체크
-
         if (post.userId === userId) post.isMine = true;
         else post.isMine = false;
-
-        post.commentCount = post.Comments.length;
-        delete post.Comments;
-        const tagList = [];
-        post.tags.map((tag) => tagList.push(tag.tag));
-        post.tags = tagList;
-
+        post.tags = post.tags.map((tag) => tag.tag);
         return post;
-
-        /*
-                // 자신이 작성한 댓글인지 체크
-                post.Index.map(comment => {
-                    if(comment.userId === userId) comment.isMine = true;
-                    else comment.isMine = false;
-                    return comment;
-                })
-    
-                // Index 모델키 소문자로 변경..
-                post.comments = post.Index;
-                delete post.Index
-                */
       }),
       pages: { page: page + 1, size, total },
     });
@@ -82,41 +48,26 @@ module.exports = {
     const { userId } = res.locals;
     const { size } = req.query;
     const page = req.query.page - 1;
-    /*
-        // 댓글 같이 가져오기
-        const posts = await Post.findAll({
-            where: {uesrId: userId},
-            offset: page * size, 
-            limit: size, 
-            include: {
-                model: Index,
-                limit: 2,
-                order: [["id", "DESC"]]
-            },
-            order: [["id", "DESC"]]
-        });
-        */
 
     // 해시태그와 댓글개수를 포함한 게시글 가져오기
     const posts = await Post.findAll({
-      where: { userId },
-      offset: page * size,
+      where: {userId},
+      attributes: {include : [[sequelize.fn("COUNT", sequelize.col("comment.id")), "commentCount"]]},
+      include: [{
+        model: Comment,
+        as: "comment",
+        attributes: [],
+        duplicating: false,
+      }, {
+        model: Hashtag,
+        as: "tags",
+        duplicating: false,
+        attributes: ["tag"]
+      }],
+      offset: page*size,
       limit: size,
-      attributes: {
-        include: [[sequelize.fn("COUNT", "Index.id"), "commentCount"]],
-      },
-      include: [
-        {
-          model: Hashtag,
-          as: "tags",
-        },
-        {
-          model: Comment,
-          attributes: ["id"],
-        },
-      ],
-      group: ["Post.id"],
       order: [["id", "DESC"]],
+      group: ["Post.id", "tags.tag"]
     });
     const postsCount = await Post.count();
     const total = parseInt(postsCount / size, 10) + (postsCount % size ? 1 : 0);
@@ -128,28 +79,10 @@ module.exports = {
         const post = el.toJSON();
         // 자신이 작성한 글 체크
         post.isMine = true;
-        post.commentCount = post.Comments.length;
-        delete post.Comments;
-        const tagList = [];
-        post.tags.map((tag) => tagList.push(tag.tag));
-        post.tags = tagList;
-
+        post.tags = post.tags.map((tag) => tag.tag);
         return post;
-
-        /*
-            // 자신이 작성한 댓글인지 체크
-            post.Index.map(comment => {
-                if(comment.userId === userId) comment.isMine = true;
-                else comment.isMine = false;
-                return comment;
-            })
-
-            // Index 모델키 소문자로 변경..
-            post.comments = post.Index;
-            delete post.Index
-            */
       }),
-      pages: { page, size, total },
+      pages: { page: page+1, size, total },
     });
   },
   post: async (req, res) => {
