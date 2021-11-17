@@ -11,9 +11,9 @@ const imageFiles = Array(20)
   .fill(1)
   .map((el, idx) => {
     if (`${el + idx}`.length === 1) {
-      return '0' + `${el + idx}` + '.png';
+      return '0' + `${el + idx}` + '.jpg';
     }
-    const string = `${el + idx}` + '.png';
+    const string = `${el + idx}` + '.jpg';
     return string;
   });
 
@@ -26,7 +26,7 @@ function importAll(r) {
 }
 
 const images = importAll(
-  require.context('../../images/background', false, /\.(png|jpe?g|svg)$/)
+  require.context('../../images/background', false, /\.(jpg|jpe?g|svg)$/)
 );
 
 export default function PostBoard({
@@ -34,7 +34,7 @@ export default function PostBoard({
   openPostBoardHandler,
   addPostHandler,
 }) {
-  const [image, setImage] = useState('01.png');
+  const [image, setImage] = useState('01.jpg');
   const [content, setContent] = useState('');
   const [textLength, setTextLength] = useState(0);
   const maxLength = 200;
