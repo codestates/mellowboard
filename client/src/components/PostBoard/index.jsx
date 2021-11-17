@@ -14,7 +14,7 @@ export default function PostBoard({
   addMyPostHandler,
   images,
 }) {
-  const [image, setImage] = useState('01.png');
+  const [image, setImage] = useState('01.jpg');
   const [content, setContent] = useState('');
   const [textLength, setTextLength] = useState(0);
   const maxLength = 200;
@@ -22,13 +22,13 @@ export default function PostBoard({
     .fill(1)
     .map((el, idx) => {
       if (`${el + idx}`.length === 1) {
-        return `0${el + idx}.png`;
+        return `0${el + idx}.jpg`;
       }
-      const string = `${el + idx}.png`;
+      const string = `${el + idx}.jpg`;
       return string;
     });
   const randomInteger = () => {
-    const random = Math.ceil(Math.random() * 20);
+    const random = Math.ceil(Math.random() * 19);
     setImage(imageFiles[random]);
   };
 
