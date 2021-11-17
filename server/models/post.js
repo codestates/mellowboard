@@ -17,9 +17,10 @@ module.exports = (sequelize, DataTypes) => {
       });
       this.hasMany(models.Comment, {
         foreignKey: "postId",
-        onDelete: "cascade"
+        onDelete: "cascade",
+        as: 'comment'
       })
-      this.belongsToMany(models.Hashtag, {as: 'tags', through: "PostTags"})
+      this.belongsToMany(models.Hashtag, {as: 'tags', through: models.PostTags})
     }
   };
   Post.init({
