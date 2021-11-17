@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "cascade",
         as: 'comment'
       })
-      this.belongsToMany(models.Hashtag, {as: 'tags', through: "PostTags"})
+      this.belongsToMany(models.Hashtag, {as: 'tags', through: models.PostTags})
     }
   };
   Post.init({
