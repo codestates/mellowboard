@@ -31,7 +31,11 @@ module.exports = (sequelize, DataTypes) => {
     content: DataTypes.TEXT,
     background: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      get() {
+        const img = this.getDataValue('background');
+        return `https://cdn.gunsigi.com/mellow/background/${img}`
+      },
     }
   }, {
     sequelize,

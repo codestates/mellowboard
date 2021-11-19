@@ -91,7 +91,6 @@ const imageFiles = Array(20)
   });
 
 export default function Post({
-  images,
   isLogin,
   post,
   modifyPostHandler,
@@ -124,6 +123,7 @@ export default function Post({
         params: {
           postId: id,
         },
+        loading: false,
       })
         .then((res) => {
           setComments(res.data.comments);
@@ -164,7 +164,7 @@ export default function Post({
       <>
         <PostList
           style={{
-            background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
+            background: `url(${image}) no-repeat center center/cover`,
           }}
         >
           <PostText>
@@ -212,7 +212,7 @@ export default function Post({
     <>
       <PostList
         style={{
-          background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
+          background: `url(${image}) no-repeat center center/cover`,
         }}
       >
         <PostText>

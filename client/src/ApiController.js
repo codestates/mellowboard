@@ -24,7 +24,7 @@ export default function setAxios(handleSession, setIsLoading) {
   // axios.defaults.baseURL = process.env.REACT_APP_API_URL;
   axios.defaults.withCredentials = true;
   axios.interceptors.request.use((config) => {
-    setIsLoading(true);
+    if (config.loading !== false) setIsLoading(true);
     return config;
   });
   axios.interceptors.response.use(

@@ -29,6 +29,7 @@ export default function PostBoard({
     });
   const randomInteger = () => {
     const random = Math.ceil(Math.random() * 19);
+    console.log(imageFiles[random]);
     setImage(imageFiles[random]);
   };
 
@@ -77,7 +78,7 @@ export default function PostBoard({
         <ModalBackdrop onClick={() => openPostBoardHandler()}>
           <ModalView
             style={{
-              background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
+              background: `url(https://cdn.gunsigi.com/mellow/background/${image}) no-repeat center center/cover`,
             }}
             onClick={(e) => e.stopPropagation()}
           >

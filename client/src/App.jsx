@@ -237,7 +237,7 @@ export default function App() {
     axios.defaults.headers.common = {
       Authorization: `Bearer ${session.accessToken}`,
     };
-    addPostHandler();
+    // addPostHandler();
   }, [session]);
 
   useEffect(() => {
@@ -271,7 +271,7 @@ export default function App() {
   const addPostHandler = (more) => {
     if (!more) {
       if (curPage === 1) {
-        axios.get('/posts', { params: { page: 1, size: 100 } }).then((res) => {
+        axios.get('/posts', { params: { page: 1, size: 100 }, loading: false }).then((res) => {
           setTotal(res.data.pages.total);
           setPosts(res.data.posts);
         });
@@ -366,7 +366,6 @@ export default function App() {
               modifyPostHandler={modifyPostHandler}
               deletePostHandler={deletePostHandler}
               openAuthHandler={openAuthHandler}
-              images={images}
               addPostHandler={addPostHandler}
             />
           </Route>

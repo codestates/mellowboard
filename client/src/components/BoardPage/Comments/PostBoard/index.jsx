@@ -84,7 +84,7 @@ export default function PostBoard({
       <>
         <ModalBackdrop onClick={() => openPostBoardHandler()}>
           <ModalView
-            img={images[image].default}
+            img={`https://cdn.gunsigi.com/mellow/background/${image}`}
             onClick={(e) => e.stopPropagation()}
           >
             <ButtonBackground onClick={randomInteger}>
