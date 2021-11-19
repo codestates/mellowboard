@@ -11,6 +11,7 @@ export default function Comments() {
     axios({
       method: 'get',
       url: '/comments/mypage',
+      loading: false,
     })
       .then((res) => {
         // setComments(res.data.comments);

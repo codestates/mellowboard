@@ -125,6 +125,7 @@ export default function MyPosts({
         params: {
           postId: id,
         },
+        loading: false,
       })
         .then((res) => {
           setComments(res.data.comments);
@@ -180,7 +181,7 @@ export default function MyPosts({
     <>
       <MyPostList
         style={{
-          background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
+          background: `url(${image}) no-repeat center center/cover`,
         }}
       >
         <PostText>

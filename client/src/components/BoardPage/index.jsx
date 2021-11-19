@@ -7,7 +7,6 @@ export default function BoardPage({
   posts,
   modifyPostHandler,
   deletePostHandler,
-  images,
   openAuthHandler,
   addPostHandler,
 }) {
@@ -21,7 +20,6 @@ export default function BoardPage({
             post={post}
             modifyPostHandler={modifyPostHandler}
             deletePostHandler={deletePostHandler}
-            images={images}
             openAuthHandler={openAuthHandler}
             addPostHandler={addPostHandler}
           />
