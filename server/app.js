@@ -1,3 +1,7 @@
+const dotenv = require("dotenv");
+
+const envFile = process.env.NODE_ENV === "production" ? ".env.production" : ".env.dev";
+dotenv.config({path: envFile});
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -47,5 +51,8 @@ app.use((err, req, res, next) => {
 });
 
 db.sequelize.sync();
+
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`listening : ${PORT}`));
 
 module.exports = app;

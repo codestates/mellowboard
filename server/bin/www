@@ -4,9 +4,6 @@
  * Module dependencies.
  */
 
-const dotenv = require("dotenv");
-const envFile = process.env.NODE_ENV === "production" ? ".env.production" : ".env.dev";
-dotenv.config({path: envFile});
 const debug = require('debug')('server:server');
 const http = require('http');
 const app = require('../app');

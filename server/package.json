@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "export NODE_ENV=production && node ./bin/www",
-    "dev": "export NODE_ENV=development && nodemon ./bin/www",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "NODE_ENV=test mocha '__tests__/server.test.js' --exit"
   },
   "dependencies": {
