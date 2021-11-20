@@ -47,7 +47,7 @@ export default function EditingStatePost({
       <>
         <ModalView
           style={{
-            background: `url(${process.env.PUBLIC_URL}/background/${image}) no-repeat center center/cover`,
+            background: `url(https://cdn.gunsigi.com/mellow/background/${image.split('/').slice(-1).toString()}) no-repeat center center/cover`,
           }}
         >
           <ButtonBackground onClick={randomInteger}>배경 선택</ButtonBackground>

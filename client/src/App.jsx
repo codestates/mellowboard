@@ -154,7 +154,7 @@ export default function App() {
     newPosts[changedPostIndex] = {
       ...post,
       content,
-      background,
+      background: `https://cdn.gunsigi.com/mellow/background/${background}`,
       tags,
     };
     setPosts(newPosts);
@@ -164,7 +164,7 @@ export default function App() {
     myNewPosts[changedMyPostIndex] = {
       ...post,
       content,
-      background,
+      background: `https://cdn.gunsigi.com/mellow/background/${background}`,
       tags,
     };
     setMyPosts(myNewPosts);

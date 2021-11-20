@@ -108,7 +108,7 @@ export default function MyPosts({
   const [comments, setComments] = useState([]);
 
   const randomInteger = () => {
-    const random = Math.ceil(Math.random() * 20);
+    const random = Math.ceil(Math.random() * 19);
     const a = imageFiles[random];
     setImage(a);
   };
@@ -181,7 +181,7 @@ export default function MyPosts({
     <>
       <MyPostList
         style={{
-          background: `url(${image}) no-repeat center center/cover`,
+          background: `url(https://cdn.gunsigi.com/mellow/background/${image.split('/').slice(-1).toString()}) no-repeat center center/cover`,
         }}
       >
         <PostText>
