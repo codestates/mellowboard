@@ -29,7 +29,6 @@ export default function PostBoard({
     });
   const randomInteger = () => {
     const random = Math.ceil(Math.random() * 19);
-    console.log(imageFiles[random]);
     setImage(imageFiles[random]);
   };
 

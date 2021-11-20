@@ -279,7 +279,7 @@ export default function App() {
         setCurPage(1);
       }
     } else if (curPage < total) {
-      setCurPage(curPage + 1);
+      setCurPage((page) => page + 1);
     }
   };
 
