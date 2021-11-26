@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
 
 const envFile = process.env.NODE_ENV === "production" ? ".env.production" : ".env.dev";
-dotenv.config({path: envFile});
+dotenv.config({path: `${__dirname}/${envFile}`});
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
