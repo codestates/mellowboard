@@ -95,7 +95,7 @@ export default function MyInfo() {
 
   useEffect(() => {
     // 회원정보를 가져온다.
-    axios.get('/users', { loading: false }).then((res) => {
+    axios.get('/users').then((res) => {
       setUserInfo(res.data);
     });
   }, []);

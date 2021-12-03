@@ -21,8 +21,13 @@ const ModalView = styled.div`
   border-radius: 1rem;
   background: url(${(props) => props.img}) center center / cover no-repeat;
   width: 650px;
-  height: 800px;
+  max-height: 100%;
   margin: 80px;
+  @media screen and (max-width: 500px) {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
   //width: 0rem;
   //margin: rem;
 `;

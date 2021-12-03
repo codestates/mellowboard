@@ -125,7 +125,6 @@ export default function MyPosts({
         params: {
           postId: id,
         },
-        loading: false,
       })
         .then((res) => {
           setComments(res.data.comments);
