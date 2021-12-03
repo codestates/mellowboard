@@ -116,25 +116,21 @@ export default function Post({
   };
 
   const refreshHandler = () => {
-    if (isLogin) {
-      axios({
-        method: 'get',
-        url: '/comments',
-        params: {
-          postId: id,
-        },
-        loading: false,
+    axios({
+      method: 'get',
+      url: '/comments',
+      params: {
+        postId: id,
+      },
+      loading: false,
+    })
+      .then((res) => {
+        setComments(res.data.comments);
+        !isOpen ? setIsOpen(!isOpen) : null;
       })
-        .then((res) => {
-          setComments(res.data.comments);
-          !isOpen ? setIsOpen(!isOpen) : null;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      openAuthHandler();
-    }
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const modifyHandler = () => {
     setIsModify(!isModify);
@@ -203,6 +199,8 @@ export default function Post({
           comments={comments}
           refreshHandler={refreshHandler}
           postId={id}
+          isLogin={isLogin}
+          openAuthHandler={openAuthHandler}
         />
       </PostList>
     );

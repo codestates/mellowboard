@@ -4,7 +4,7 @@ const isValidToken = require("../middleware/isValidToken");
 
 const router = express.Router();
 
-router.use(isValidToken);
+router.use(isValidToken.isValid);
 router.get('/', users.get);
 router.patch('/', users.patch);
 router.delete('/', users.del);
