@@ -24,7 +24,7 @@ const ModalView = styled.div`
   border-radius: 1rem;
   background: wheat center center / cover no-repeat;
   height: 100%;
-  //width: 650px;
+  min-height: 30rem;
 `;
 
 export { ModalView, ModalBackdrop };
