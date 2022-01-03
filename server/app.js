@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 const dotenv = require("dotenv");
 
 const envFile = process.env.NODE_ENV === "production" ? ".env.production" : ".env.dev";
@@ -8,6 +9,8 @@ const logger = require("morgan");
 const cors = require("cors");
 const db = require("./models");
 const router = require("./routes");
+
+if(process.env.NODE_ENV === 'production') require('newrelic');
 
 const app = express();
 app.use(logger("combined"));

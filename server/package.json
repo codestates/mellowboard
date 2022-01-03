@@ -24,6 +24,7 @@
     "morgan": "~1.9.1",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.0",
+    "newrelic": "^8.6.0",
     "nodemon": "^2.0.13",
     "sequelize": "^6.6.5",
     "supertest": "^6.1.6"
