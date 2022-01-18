@@ -5,7 +5,7 @@ import TextBox from './TextBox';
 import Wrapper from './Wrapper';
 import { CheckButton } from '../Comment/Button';
 
-export default function WritingComment({ refreshHandler, postId, isLogin, openAuthHandler }) {
+export default function WritingComment({ refreshHandler, postId, isLogin }) {
   const [comment, setComment] = useState('');
   const onChangeHandler = (event) => {
     setComment(event.target.value);
@@ -20,6 +20,7 @@ export default function WritingComment({ refreshHandler, postId, isLogin, openAu
       },
     })
       .then(() => {
+        setComment('');
         refreshHandler();
       })
       .catch((err) => {
@@ -31,12 +32,8 @@ export default function WritingComment({ refreshHandler, postId, isLogin, openAu
      * 엔터가 눌리면 댓글을 작성한다.
      */
     if (event.code === 'Enter') {
-      if (isLogin) {
-        writingCommentHandler();
-        setComment('');
-      } else {
-        openAuthHandler();
-      }
+      writingCommentHandler();
+      setComment('');
     }
   };
   return (
@@ -50,12 +47,11 @@ export default function WritingComment({ refreshHandler, postId, isLogin, openAu
         :
         <TextBox
           value={comment}
-          placeholder="로그인 이후 댓글을 작성할 수 있습니다."
           onChange={onChangeHandler}
           onKeyUp={enterHandler}
         />
       }
-      <CheckButton onClick={isLogin ? writingCommentHandler : openAuthHandler} />
+      <CheckButton onClick={writingCommentHandler} />
     </Wrapper>
   );
 }

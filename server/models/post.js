@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.belongsTo(models.User, {
         foreignKey: "userId",
-        onDelete: "cascade"
+        onDelete: "cascade",
       });
       this.hasMany(models.Comment, {
         foreignKey: "postId",
@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
   Post.init({
     userId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true,
     },
     content: DataTypes.TEXT,
     background: {

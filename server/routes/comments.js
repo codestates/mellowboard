@@ -30,7 +30,7 @@ router.post("/",
   body("postId").notEmpty().isInt(),
   body("comment").notEmpty().isString(),
   validationError,
-  isValidToken.isValid,
+  isValidToken.getUserId,
   comment.post
 )
 

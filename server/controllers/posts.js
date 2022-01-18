@@ -91,7 +91,7 @@ module.exports = {
     let post;
     try {
       post = await Post.create({
-        userId,
+        userId: userId || null,
         content: req.body.content,
         background: req.body.background,
       });
@@ -132,7 +132,7 @@ module.exports = {
     }
 
     // 본인의 글인지 확인
-    if (post.userId !== res.locals.userId)
+    if (!post.userId || (post.userId !== res.locals.userId))
       return res.status(401).json({
         message: "타인의 게시글은 수정할 수 없습니다.",
         result: false,
@@ -159,7 +159,7 @@ module.exports = {
       });
 
     // 본인 글인지 확인
-    if (post.userId !== res.locals.userId)
+    if (!post.userId || (post.userId !== res.locals.userId))
       return res.status(401).json({
         message: "자신의 게시글만 삭제할 수 있습니다.",
         result: false,

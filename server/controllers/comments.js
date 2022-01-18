@@ -57,7 +57,7 @@ module.exports = {
     // 댓글 작성
     const { userId } = res.locals;
     const comment = await Comment.create({
-      userId,
+      userId: userId || null,
       postId: req.body.postId,
       comment: req.body.comment,
     });
@@ -78,7 +78,7 @@ module.exports = {
     }
 
     // 본인의 댓글인지 확인
-    if (comment.userId !== res.locals.userId)
+    if (!comment.userId || (comment.userId !== res.locals.userId))
       return res.status(403).json({
         message: "타인의 댓글은 수정할 수 없습니다.",
         result: false,
@@ -109,7 +109,7 @@ module.exports = {
     }
 
     // 본인 글인지 확인
-    if (comment.userId !== res.locals.userId){
+    if (!comment.userId || (comment.userId !== res.locals.userId)){
       return res.status(403).json({
         message: "자신의 댓글만 삭제할 수 있습니다.",
         result: false,

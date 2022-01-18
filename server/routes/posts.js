@@ -24,7 +24,7 @@ router.get("/mypage",
 
 // 게시글 작성
 router.post("/",
-  isValidToken.isValid,
+  isValidToken.getUserId,
   body("content", "글내용을 추가해주세요").notEmpty().isString(),
   body("background", "배경색을 선택해주세요").notEmpty().isString(),
   body("tags").default([]).isArray(),

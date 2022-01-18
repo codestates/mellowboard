@@ -387,7 +387,7 @@ export default function App() {
         </Switch>
         <PostBtnContainer>
           <PostBtn
-            onClick={session.isLogin ? openPostBoardHandler : openAuthHandler}
+            onClick={openPostBoardHandler}
           >
             <WriteButton />
           </PostBtn>
